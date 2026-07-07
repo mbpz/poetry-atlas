@@ -8,4 +8,5 @@ next-env.d.ts
 .DS_Store
 *.pem
 .env*.local
+.env.production
 .vercel
