@@ -277,11 +277,17 @@ Poetry Atlas 计划开放一套 **Model Context Protocol (MCP) Server**，让 Cl
 
 # 四、传输模式
 
+> **约束**：遵循 `ARCHITECTURE.md` 的 **Zero-Ops First** 原则。
+> 
+> **不提供 HTTP + SSE / Streamable HTTP 远程部署**。Vercel Serverless 不支持长连接 SSE，且自托管服务器违反零运维约束。
+> 
+> **stdio 模式**是推荐的唯一传输方式：Claude Code / Cursor 在本地通过 npx 启动，直接连接 Supabase。
+
 | 模式 | 场景 | 配置 |
 | ---- | ---- | ---- |
-| **stdio** | Claude Code / Cursor 本地调用 | 默认 |
-| **HTTP + SSE** | 远程部署、多用户共享 | `/sse` 端点 |
-| **Streamable HTTP** | 最新 MCP 规范，通用性最好 | `/mcp` 端点 |
+| **stdio** | Claude Code / Cursor 本地调用 | 唯一支持模式 |
+
+> **远程访问替代方案**：通过 Supabase PostgREST API 直接查询（无需 MCP Server），无需额外部署。
 
 ---
 
@@ -301,22 +307,6 @@ Poetry Atlas 计划开放一套 **Model Context Protocol (MCP) Server**，让 Cl
 }
 ```
 
-或远程模式：
-
-```jsonc
-{
-  "mcpServers": {
-    "poetry-atlas": {
-      "type": "sse",
-      "url": "https://mcp.poetryatlas.cn/sse",
-      "headers": {
-        "Authorization": "Bearer YOUR_API_KEY"
-      }
-    }
-  }
-}
-```
-
 ## 5.2 Cursor 配置
 
 ```jsonc
@@ -324,8 +314,8 @@ Poetry Atlas 计划开放一套 **Model Context Protocol (MCP) Server**，让 Cl
 {
   "mcpServers": {
     "poetry-atlas": {
-      "type": "sse",
-      "url": "https://mcp.poetryatlas.cn/sse"
+      "command": "npx",
+      "args": ["-y", "@poetryatlas/mcp-server@latest"]
     }
   }
 }
@@ -350,29 +340,34 @@ Claude: [调用 get_poem_detail(poem_id="xxx", include=["annotation","map"])]
 
 # 六、Server 实现（TypeScript）
 
+> **约束**：遵循 `ARCHITECTURE.md` 的 **Zero-Ops First** 原则。
+> 
+> - **无 Dockerfile**（不容器化）
+> - **无 HTTP Server**（stdio 模式，无需端口监听）
+> - **数据直接走 Supabase PostgREST**（通过 supabase-js，无中间 API 层）
+> - **认证通过 Supabase Anon Key + 用户 JWT**（无自定义 OAuth）
+
 ## 6.1 项目结构
 
 ```
-mcp-server/
+packages/mcp-server/          # monorepo 子包
 ├── src/
-│   ├── index.ts          # 入口
-│   ├── server.ts         # MCP Server 实例
-│   ├── tools/            # Tool 定义
+│   ├── index.ts              # 入口（stdio transport）
+│   ├── tools/                # Tool 定义（直接查 Supabase）
 │   │   ├── poem.ts
 │   │   ├── place.ts
 │   │   ├── author.ts
 │   │   ├── search.ts
 │   │   └── graph.ts
-│   ├── resources/        # Resource 定义
-│   │   └── poem.ts
-│   ├── prompts/          # Prompt 模板
-│   │   ├── analyze.ts
-│   │   └── trip.ts
-│   ├── client.ts         # 后端 API 客户端
+│   ├── client.ts             # Supabase Client 封装
 │   └── types.ts
-├── package.json
-└── Dockerfile
+├── package.json              # 发布到 npm 作为 @poetryatlas/mcp-server
+└── README.md
 ```
+
+> **注意**：`mcp-server` 是 monorepo 内子包，部署时：
+> - `next build` → Vercel 托管前端（免费）
+> - `@poetryatlas/mcp-server` → npm 包，本地 npx 启动（零服务器）
 
 ## 6.2 核心代码
 
@@ -384,54 +379,28 @@ import { registerPoemTools } from './tools/poem.js';
 import { registerPlaceTools } from './tools/place.js';
 import { registerAuthorTools } from './tools/author.js';
 
+// 直接连接 Supabase（无需自建 API）
+const supabase = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  process.env.SUPABASE_SERVICE_KEY    // 从环境变量读取
+);
+
 const server = new Server(
   { name: 'poetry-atlas', version: '0.1.0' },
   { capabilities: { tools: {}, resources: {}, prompts: {} } }
 );
 
-registerPoemTools(server);
-registerPlaceTools(server);
-registerAuthorTools(server);
+// Tool 实现中直接使用 supabase-js 查询
+registerPoemTools(server, supabase);
+registerPlaceTools(server, supabase);
+registerAuthorTools(server, supabase);
 
 async function main() {
-  const transport = new StdioServerTransport();
+  const transport = new StdioServerTransport();   // 仅支持 stdio
   await server.connect(transport);
 }
 
 main().catch(console.error);
-```
-
-```typescript
-// src/tools/poem.ts
-export function registerPoemTools(server: Server) {
-  server.setRequestHandler(ListToolsRequestSchema, async () => ({
-    tools: [
-      {
-        name: 'search_poem',
-        description: '搜索诗词',
-        inputSchema: { /* ... */ }
-      },
-      {
-        name: 'get_poem_detail',
-        description: '获取诗词详情',
-        inputSchema: { /* ... */ }
-      }
-    ]
-  }));
-
-  server.setRequestHandler(CallToolRequestSchema, async (request) => {
-    const { name, arguments: args } = request.params;
-    
-    switch (name) {
-      case 'search_poem':
-        return await handleSearchPoem(args);
-      case 'get_poem_detail':
-        return await handleGetPoemDetail(args);
-      default:
-        throw new Error(`Unknown tool: ${name}`);
-    }
-  });
-}
 ```
 
 ## 6.3 发布
@@ -455,13 +424,16 @@ export function registerPoemTools(server: Server) {
 
 # 七、安全与治理
 
-| 维度 | 措施 |
-| ---- | ---- |
-| 认证 | API Key + OAuth（未来） |
-| 限速 | 单 Key 100 req/min |
-| 可见性 | 仅公开数据可通过 MCP 访问 |
-| 审计 | 所有 Tool 调用记录 |
-| 版本化 | Minor 版本保持向后兼容 |
+> **认证复用 Supabase Auth**（无需自建 API Key / OAuth / Rate Limiter）。
+
+| 维度 | 措施 | 来源 |
+| ---- | ---- | ---- |
+| 认证 | Supabase JWT（用户级权限） | Supabase Auth 内置 |
+| 授权 | RLS（行级安全策略） | Supabase 内置 |
+| 可见性 | 仅公开数据可通过 MCP 访问 | RLS 策略控制 |
+| 审计 | Supabase Audit Log | 内置（免费层可用） |
+| 限速 | 环境变量 `SUPABASE_SERVICE_KEY` 仅本机持有 | 本地机密 |
+| 版本化 | Minor 版本保持向后兼容 | npm 语义化版本 |
 
 ---
 
@@ -469,13 +441,13 @@ export function registerPoemTools(server: Server) {
 
 | 工具 | 接入方式 |
 | | ---- |
-| Claude Code | `.mcp.json` 或全局配置 |
-| Cursor | `.cursor/mcp.json` |
-| ChatGPT (GPTs) | MCP Bridge 或 Actions |
-| LangChain / LangGraph | `MCPClient` |
-| PydanticAI | MCP 工具提供商 |
-| OpenAI Agents SDK | `MCPServer` |
-| n8n | MCP 节点 |
+| Claude Code | `.mcp.json`（stdio 模式） |
+| Cursor | `.cursor/mcp.json`（stdio 模式） |
+| ChatGPT (GPTs) | 通过 Supabase PostgREST API（无需 MCP） |
+| LangChain / LangGraph | 直接调用 Supabase + OpenRouter |
+| PydanticAI | 直接调用 Supabase + OpenRouter |
+| OpenAI Agents SDK | 直接调用 Supabase + OpenRouter |
+| n8n | 通过 Supabase HTTP 节点 |
 
 ---
 
@@ -490,6 +462,7 @@ export function registerPoemTools(server: Server) {
 
 # 十、开源计划
 
-- MCP Server 开源（MIT 协议）
+- MCP Server 开源（MIT 协议），npm 发布 `@poetryatlas/mcp-server`
 - 鼓励社区贡献：新数据源适配器、新 Tool 实现、多语言 Prompt
-- 提供沙箱实例供开发者体验
+- 开发者通过 `npx @poetryatlas/mcp-server` 一键启动（零服务器）
+- 公共 Supabase 沙箱实例供体验（通过环境变量 `NEXT_PUBLIC_SUPABASE_URL` 配置）

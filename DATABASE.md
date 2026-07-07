@@ -332,6 +332,8 @@ KnowledgeGraphEdge
 
 # 四、核心查询场景与索引策略
 
+> **数据库使用 Supabase（PostgreSQL + PostGIS + pgvector + RLS）**，ORM 使用 **Drizzle**。
+
 | 查询场景 | 索引方案 |
 | -------- | -------- |
 | 按地点查诗词全覆盖 | `PoemPlace(place_id, relation_type)` + `Poem` 全文索引 |
@@ -339,8 +341,9 @@ KnowledgeGraphEdge
 | 空间范围查询（"附近有什么诗"） | `Place GIST(geom)` + PostGIS `ST_DWithin` |
 | 层级下钻（省→市→县） | `Place.region_path` 的 `LTREE` 索引 |
 | 作者轨迹 | `TravelRoute` 的 `geom` + `author_id` |
-| 名句全文检索 | `Poem` 表 GIN 全文索引 + OpenSearch 镜像 |
-| 意象网络查询 | `PoemTag JOIN Tag` + 图数据库扩展 |
+| 名句全文检索 | `Poem` 表 GIN 全文索引（Postgres 内置中文分词） |
+| 意象网络查询 | `PoemTag JOIN Tag`（关系型查询，无需图数据库） |
+| 语义搜索 | `pgvector` 向量列 + HNSW 索引 |
 
 ---
 
@@ -354,16 +357,32 @@ KnowledgeGraphEdge
 | PoemPlace | 15 万条 | 100 万条 |
 | Tag | 500 个 | 2,000 个 |
 | Tag 关联 | 50 万条 | 300 万条 |
-| Image | 2 万张 | 20 万张 |
+| Image | 2 万张 | 20 万张（存 Cloudflare R2） |
 
-> 该量级单实例 PostgreSQL 即可承载，暂无需分布式。
+> **存储预算**：结构化数据预估 ~150MB（含索引），远低于 Supabase Free 500MB 限额。图片通过 Cloudflare R2 存储，不计入数据库配额。
 
 ---
 
-# 六、扩展方向
+# 六、技术栈对齐
 
-1. **Neo4j / Age**：将 `KnowledgeGraphNode/Edge` 映射到图数据库，支持复杂关系查询
-2. **Elasticsearch / OpenSearch**：全文搜索、自动补全、同义词扩展
-3. **Vector 列**：`Poem embedding VECTOR(768)` 支持语义搜索（pgvector）
-4. **TimescaleDB**：时间维度数据量增长后扩展时序分析
-5. **物化视图**：朝代×地点×作者三维统计立方体，定时刷新加速热力图查询
+| 能力 | 方案 | 理由 |
+| ---- | ---- | ---- |
+| 主数据库 | **Supabase PostgreSQL**（500MB 免费） | 零运维、内置 Auth/Storage/Realtime |
+| 空间扩展 | **PostGIS**（Supabase 内置） | 免费、满足所有空间查询 |
+| 向量搜索 | **pgvector**（Supabase 支持） | 无需额外部署 |
+| ORM | **Drizzle ORM** | 轻量、Serverless 友好、Server Components 兼容 |
+| 全文搜索 | **Postgres GIN + 中文分词** | 几十万数据无需外部搜索引擎 |
+| 对象存储 | **Cloudflare R2** | 免费出口、图片/JSON 备份 |
+| 行级安全 | **Supabase RLS** | 零代码实现数据权限 |
+| 认证 | **Supabase Auth** | 免费 50k 用户/月 |
+
+---
+
+# 七、扩展方向（遵循 Vercel-Free 约束）
+
+1. **后续可升级至 Supabase Pro**（$25/月，8GB 数据库），前端代码零改动
+2. **向量搜索升级**：如 pgvector 性能不足，可接入 **Supabase pgvector HNSW 索引**
+3. **搜索升级**：如 Postgres 全文搜索不足，可接入 **Algolia Free Tier**（10k 文档）
+4. **知识图谱**：复杂图查询可借此在 PostgreSQL 内通过递归 CTE 实现，**无需 Neo4j**
+5. **时序分析**：时间维度增长后，使用 **Supabase 分区表**（原生 PG 能力）
+6. **物化视图**：朝代×地点×作者三维统计立方体，通过 GitHub Actions 定时刷新

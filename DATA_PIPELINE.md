@@ -66,25 +66,42 @@
 
 ## 3.1 采集架构
 
+> **约束**：遵循 `ARCHITECTURE.md` 中的 **Zero-Ops First** 原则。**不在 Vercel 上运行任何爬虫任务**，全部通过 **GitHub Actions** 离线执行。
+
 ```
 ┌────────────────────────────────────────────────────────────┐
-│                    Scheduler (Cron / BullMQ)               │
-└──────────────────────────┬─────────────────────────────────┘
+│                    GitHub Actions (定时 / 手动)              │
+│                                                            │
+│   ┌─────────────────────────────────────────────────────┐  │
+│   │  Cron: 每天 22:00 UTC (北京时间 06:00)              │  │
+│   │  workflow_dispatch: 支持手动触发                     │  │
+│   └───────────────────────┬─────────────────────────────┘  │
+│                           │                                │
+│        ┌──────────────────┼──────────────────┐             │
+│        ▼                  ▼                  ▼             │
+│   ┌─────────┐       ┌─────────┐       ┌─────────┐         │
+│   │ Scrapy  │       │ HTTP    │       │ 开放数据 │         │
+│   │ Spider  │       │ Client  │       │ 文件下载 │         │
+│   │ (Python)│       │ (API)   │       │         │         │
+│   └────┬────┘       └────┬────┘       └────┬────┘         │
+│        │                  │                  │              │
+│        └──────────────────┼──────────────────┘              │
+│                           ▼                                │
+│                    ┌─────────────┐                         │
+│                    │ Raw Storage │                         │
+│                    │ (Cloudflare │                         │
+│                    │  R2 免费)   │                         │
+│                    └─────────────┘                         │
+└────────────────────────────────────────────────────────────┘
                            │
-        ┌──────────────────┼──────────────────┐
-        ▼                  ▼                  ▼
-   ┌─────────┐       ┌─────────┐       ┌─────────┐
-   │ Scrapy  │       │ HTTP    │       │ FTP/    │
-   │ Spider  │       │ Client  │       │ File    │
-   │ (Python)│       │ (API)   │       │ Download│
-   └────┬────┘       └────┬────┘       └────┬────┘
-        │                  │                  │
-        └──────────────────┼──────────────────┘
                            ▼
-                    ┌─────────────┐
-                    │ Raw Storage │
-                    │ (S3 / MinIO)│
-                    └─────────────┘
+                 清洗 + LLM 地点抽取 + 关联
+                           │
+                           ▼
+                 写入 Supabase + 生成静态 JSON
+                           │
+                           ▼
+                  git commit + push → Vercel 自动部署
 ```
 
 ## 3.2 采集代码示例（Python）
@@ -318,47 +335,52 @@ ANCIENT_PLACE_MAPPING = {
 ## 6.1 ETL 流程
 
 ```python
-# pipelines/etl.py
-async def run_etl(batch_size: int = 100):
-    """主 ETL 流程"""
-    raw_poems = await storage.list_raw('poems/')
+# scripts/etl/transform_and_load.py
+# 在 GitHub Actions 中为独立 Python 进程执行
+def run_etl(batch_size: int = 100):
+    """主 ETL 流程（在 GitHub Actions Runner 中执行，无 Serverless 超时限制）"""
+    raw_poems = storage.list_raw('poems/')   # 从 Cloudflare R2 读取原始数据
     
     for batch in chunked(raw_poems, batch_size):
         cleaned = [clean_poem(p) for p in batch]
         deduped = deduplicate(cleaned)
         
         for poem in deduped:
-            # 1. 写入诗词
-            poem_id = await db.poem.create(poem)
+            # 1. 写入 Supabase
+            poem_id = supabase.table('poem').insert(poem).execute()
             
-            # 2. 地点关联（异步任务）
-            await queue.enqueue('extract_places', {'poem_id': poem_id})
+            # 2. 地点关联（通过 OpenRouter 调用 LLM 抽取）
+            extract_places_for_poem(poem_id)   # 同步调用，Actions Runner 无时间限制
             
             # 3. 标签提取
-            await queue.enqueue('extract_tags', {'poem_id': poem_id})
-        
-        # 4. 刷新物化视图
-        await db.refresh_materialized_view('place_poem_stats')
+            extract_tags_for_poem(poem_id)
+    
+    # 4. 重新生成静态 JSON（写入 public/data/，供下次部署使用）
+    generate_static_json()
+    
+    # 5. 刷新 Supabase 物化视图
+    supabase.rpc('refresh_place_poem_stats')
 ```
 
 ## 6.2 增量更新
 
 ```python
-async def incremental_update():
-    """增量更新：仅处理新增/变更数据"""
-    last_sync = await db.get_last_sync_time()
+# scripts/etl/incremental.py
+def incremental_update():
+    """增量更新：仅处理新增/变更数据（在 GitHub Actions 中执行）"""
+    last_sync = supabase.table('sync_metadata').select('last_sync').execute()
     
-    new_sources = await source.scan(since=last_sync)
+    new_sources = source.scan(since=last_sync)
     
-    for source in new_sources:
-        if source.is_deleted:
-            await db.soft_delete(source.id)
-        elif source.is_modified:
-            await db.update(source)
+    for src in new_sources:
+        if src.is_deleted:
+            supabase.table('poem').update({'deleted_at': 'now()'}).eq('id', src.id).execute()
+        elif src.is_modified:
+            supabase.table('poem').update(src.data).eq('id', src.id).execute()
         else:
-            await db.insert(source)
+            supabase.table('poem').insert(src.data).execute()
     
-    await db.set_last_sync_time(now())
+    supabase.table('sync_metadata').update({'last_sync': 'now()'}).execute()
 ```
 
 ---
@@ -436,35 +458,43 @@ async def run_quality_checks():
 | 层面 | 措施 |
 | ---- | ---- |
 | 采集合规 | 遵守 robots.txt，不采集版权受保护内容 |
-| 存储加密 | 敏感字段 AWS KMS / 国密加密 |
-| 访问控制 | 数据分级公开（公开/内部/保密） |
-| 备份策略 | 每日全量增量 + 异地备份 |
-| 审计日志 | 所有数据变更可追溯 |
+| 存储加密 | Supabase 静态加密（免费内置） |
+| 访问控制 | Supabase RLS（行级安全策略） |
+| 备份策略 | Supabase 每日自动备份（免费） |
+| 审计日志 | Supabase Audit Log + 触发器记录变更 |
+| 敏感配置 | GitHub Secrets（API Key 等） |
 
 ---
 
 # 十、技术栈
 
-| 模块 | 技术 |
-| ---- | ---- |
-| 爬虫框架 | Scrapy (Python) / Crawlee (Node) |
-| 数据处理 | Pandas / Polars |
-| ETL 编排 | Prefect / Dagster |
-| 任务队列 | BullMQ (Redis) |
-| LLM 调用 | Anthropic SDK / 本地模型 |
-| 质量监控 | Great Expectations / 自定义 |
-| 存储 | MinIO (Raw) + PostgreSQL (Clean) |
+> **约束**：技术选型遵循 `ARCHITECTURE.md` 中的 **Zero-Ops First** 原则。
+
+| 模块 | 技术 | 理由 |
+| ---- | ---- | ---- |
+| 定时调度 | **GitHub Actions Cron** | 零成本、零运维 |
+| 爬虫框架 | **Scrapy (Python)** | 成熟、兼容 GitHub Actions |
+| 数据处理 | **Polars** | 比 Pandas 快、内存占用低 |
+| ETL 编排 | **GitHub Actions Steps** | 无需额外调度器 |
+| AI 调用 | **OpenRouter API** | 统一网关、按调用付费 |
+| 质量监控 | **自定义脚本** | 轻量、足够 |
+| 原始存储 | **Cloudflare R2**（免费出口） | 备份爬取数据 |
+| 主数据库 | **Supabase PostgreSQL** | 内置 Auth/Storage/RLS |
+| ORM | **Drizzle** | Serverless 友好 |
+| 部署触发 | **GitHub Push → Vercel** | 全自动 |
 
 ---
 
 # 十一、Milestone
 
-| 阶段 | 时间 | 任务 | 产出 |
-| ---- | ---- | ---- | ---- |
-| DP-1 | M1 | 采集脚本 + 清洗 | 5 万首诗词入库 |
-| DP-2 | M2 | 作者/地名库 | 5000 作者 + 3000 地点 |
-| DP-3 | M2 | 地点关联（规则） | 8 万条关联（高置信度） |
-| DP-4 | M3 | LLM 地点抽取 | 15 万条关联 |
-| DP-5 | M3 | 人工审核平台 | 审核通过率 > 90% |
-| DP-6 | M4 | 知识图谱自动构建 | 图谱节点 10 万+ |
-| DP-7 | M5 | 增量更新 + 监控 | 自动化流水线 |
+> **所有数据任务通过 GitHub Actions 完成，不占用 Vercel 资源**。
+
+| 阶段 | 时间 | 任务 | 产出 | 执行方式 |
+| ---- | ---- | ---- | ---- | -------- |
+| DP-1 | M1 | 采集脚本 + 清洗 | 5 万首诗词入库 | GitHub Actions |
+| DP-2 | M2 | 作者/地名库 | 5000 作者 + 3000 地点 | GitHub Actions |
+| DP-3 | M2 | 地点关联（规则） | 8 万条关联（高置信度） | GitHub Actions |
+| DP-4 | M3 | LLM 地点抽取（OpenRouter） | 15 万条关联 | GitHub Actions |
+| DP-5 | M3 | 人工审核平台（Next.js Admin） | 审核通过率 > 90% | Supabase + Admin UI |
+| DP-6 | M4 | 知识图谱自动构建 | 图谱节点 10 万+ | GitHub Actions |
+| DP-7 | M5 | 增量更新 + 质量监控 | 自动化流水线（Cron + Push） | GitHub Actions |

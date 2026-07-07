@@ -18,13 +18,16 @@
 
 # 二、技术选型
 
+> **约束**：遵循 `ARCHITECTURE.md` 的 **Zero-Ops First** 原则。**不自行部署瓦片服务器**，全部使用静态瓦片 + Cloudflare R2 分发。
+
 | 模块 | 选型 | 理由 |
 | ---- | ---- | ---- |
 | 渲染引擎 | **MapLibre GL JS** | Mapbox GL 开源分支、无 Key 限制、矢量渲染 |
 | 3D 可视化 | **Deck.gl** | 热力图、轨迹、点聚合、GPU 加速 |
 | 几何计算 | **Turf.js** | 距离、缓冲区、路径插值 |
 | 坐标系 | **GCJ-02** → **WGS-84** | 国内合规 + 开源底图兼容 |
-| 瓦片源 | GISpande / 天地图（国内）+ OpenStreetMap | 合规底图 + 海外访问 |
+| 底图瓦片 | **OpenStreetMap**（免费）+ **MapTiler Free Tier** | 零成本 |
+| 静态瓦片/GeoJSON | **Cloudflare R2**（免费出口） | 预生成瓦片托管 |
 | 动画 | **Framer Motion** + **d3-interpolate** | 时间轴插值、相机移动 |
 
 ---
@@ -399,20 +402,27 @@ requestAnimationFrame animate => {
 }
 ```
 
-## 9.2 API 端点
+## 9.2 API 端点（Next.js Route Handlers）
+
+> **数据源**：Supabase PostGIS（动态）+ Cloudflare R2（静态 GeoJSON）。
 
 ```
-GET /api/v1/places
+GET /api/places
   ?bbox=110,20,125,35         # 视口范围
   &dynasty=唐                 # 朝代筛选
   &author_id=xxx              # 作者筛选
   &zoom=8                      # 缩放级别
   &mode=bubble                # 展示模式
 
-GET /api/v1/places/:id/detail     # 地点详情
-GET /api/v1/places/:id/poems      # 地点诗词列表
-GET /api/v1/authors/:id/route     # 作者旅行路线
-GET /api/v1/map/tile/:z/:x/:y     # MVT 瓦片
+GET /api/places/:id          # 地点详情
+GET /api/places/:id/poems    # 地点诗词列表
+GET /api/authors/:id         # 作者详情（含静态轨迹 R2 URL）
+
+--- 静态数据（Vercel CDN / Cloudflare R2） ---
+GET /data/map/china.geojson           # 全国地点聚合
+GET /data/map/provinces.json          # 省级边界
+GET /data/map/cities.json             # 城市边界
+GET /data/routes/libai.json           # 作者轨迹（预计算）
 ```
 
 ---

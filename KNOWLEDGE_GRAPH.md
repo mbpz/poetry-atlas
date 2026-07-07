@@ -100,63 +100,89 @@
 
 # 四、存储方案
 
-## 4.1 关系型存储（PostgreSQL）
+> **约束**：遵循 `ARCHITECTURE.md` 的 **Zero-Ops First** 原则。**不引入外部图数据库**，全部使用 **Supabase PostgreSQL + 递归 CTE + pgvector** 实现。
 
-简单关系与知识图谱边表（Phase 1–3 使用）：
+## 4.1 关系型存储（Drizzle Schema + Supabase）
 
-```sql
--- 知识图谱节点
-CREATE TABLE "KnowledgeGraphNode" (
-  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  entity_type VARCHAR(50) NOT NULL,    -- poem/author/place/dynasty/event/tag
-  entity_id UUID NOT NULL,
-  label VARCHAR(200),
-  properties JSONB DEFAULT '{}',
-  created_at TIMESTAMPTZ DEFAULT NOW(),
-  UNIQUE(entity_type, entity_id)
-);
+知识图谱节点与边均存储在 PostgreSQL 中，使用 Drizzle ORM 定义：
 
--- 知识图谱边
-CREATE TABLE "KnowledgeGraphEdge" (
-  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  source_id UUID NOT NULL REFERENCES "KnowledgeGraphNode"(id),
-  target_id UUID NOT NULL REFERENCES "KnowledgeGraphNode"(id),
-  relation VARCHAR(100) NOT NULL,
-  weight DECIMAL(5,4) DEFAULT 1.0,
-  properties JSONB DEFAULT '{}',
-  created_at TIMESTAMPTZ DEFAULT NOW()
-);
+```typescript
+// db/schema/knowledgeGraph.ts
+import { pgTable, uuid, varchar, jsonb, timestamp, decimal, index } from 'drizzle-orm/pg-core';
 
--- 复合索引
-CREATE INDEX idx_kg_edge_relation ON "KnowledgeGraphEdge"(relation);
-CREATE INDEX idx_kg_edge_source ON "KnowledgeGraphEdge"(source_id);
-CREATE INDEX idx_kg_edge_target ON "KnowledgeGraphEdge"(target_id);
+// 知识图谱节点（统一存储所有实体引用）
+export const knowledgeGraphNode = pgTable('knowledge_graph_node', {
+  id: uuid('id').defaultRandom().primaryKey(),
+  entityType: varchar('entity_type', { length: 50 }).notNull(),   // poem/author/place/dynasty/event/tag
+  entityId: uuid('entity_id').notNull(),
+  label: varchar('label', { length: 200 }),
+  properties: jsonb('properties').default({}),
+  createdAt: timestamp('created_at', { withTimezone: true }).defaultNow(),
+}, (t) => ({
+  typeIdx: index('kg_node_type_idx').on(t.entityType),
+  uniqueEntity: unique().on(t.entityType, t.entityId),
+}));
 
--- 节点索引
-CREATE INDEX idx_kg_node_type ON "KnowledgeGraphNode"(entity_type);
+// 知识图谱边（存储实体间关系）
+export const knowledgeGraphEdge = pgTable('knowledge_graph_edge', {
+  id: uuid('id').defaultRandom().primaryKey(),
+  sourceId: uuid('source_id').notNull().references(() => knowledgeGraphNode.id),
+  targetId: uuid('target_id').notNull().references(() => knowledgeGraphNode.id),
+  relation: varchar('relation', { length: 100 }).notNull(),      // FRIEND_OF / AUTHORED / WRITTEN_AT ...
+  weight: decimal('weight', { precision: 5, scale: 4 }).default('1.0'),
+  properties: jsonb('properties').default({}),
+  createdAt: timestamp('created_at', { withTimezone: true }).defaultNow(),
+}, (t) => ({
+  relationIdx: index('kg_edge_relation_idx').on(t.relation),
+  sourceIdx: index('kg_edge_source_idx').on(t.sourceId),
+  targetIdx: index('kg_edge_target_idx').on(t.targetId),
+}));
 ```
 
-## 4.2 图数据库存储（Phase 4+，可选）
+## 4.2 路径查询（PostgreSQL 递归 CTE）
 
-当关系复杂度超过关系型数据库承载后，迁移到图数据库：
+> **不需要图数据库**。PostgreSQL 内置的递归 CTE 已能高效处理多层关系查询。
 
-| 方案 | 说明 |
-| ---- | ---- |
-| **Neo4j** | 原生图数据库、Cypher 查询、可视化 |
-| **Apache AGE** | PostgreSQL 扩展、复用现有 PG |
-| **Nebula Graph** | 分布式、国内生态 |
+```sql
+-- 查询：与李白有 2 跳以内关系的全部人物（朋友的朋友）
+WITH RECURSIVE poe AS (
+  -- 起点：李白
+  SELECT kn.id, kn.entity_id, 0 AS depth, ARRAY[kn.id] AS path
+  FROM knowledge_graph_node kn
+  WHERE kn.entity_type = 'author'
+    AND kn.entity_id = (SELECT id FROM author WHERE name = '李白')
+  
+  UNION ALL
+  
+  -- 递归：通过边扩展到相邻节点
+  SELECT kn2.id, kn2.entity_id, poe.depth + 1, poe.path || kg2.target_id
+  FROM poe
+  JOIN knowledge_graph_edge kg2 ON kg2.source_id = poe.id
+  JOIN knowledge_graph_node kn2 ON kn2.id = kg2.target_id
+  WHERE poe.depth < 3                          -- 最大 3 跳
+    AND NOT kn2.id = ANY(poe.path)             -- 避免循环
+    AND kn2.entity_type = 'author'
+)
+SELECT DISTINCT a.name, a.dynasty, poe.depth
+FROM poe
+JOIN author a ON a.id = poe.entity_id
+WHERE poe.depth > 0
+ORDER BY poe.depth
+LIMIT 50;
+```
 
-```cypher
-// Neo4j 示例
-CREATE (libai:Author {name:'李白', dynasty:'唐'})
-CREATE (place:Place {name:'黄鹤楼', lng:114.3, lat:30.5})
-CREATE (poem:Poem {title:'黄鹤楼送孟浩然之广陵'})
-CREATE (libai)-[:AUTHORED]->(poem)
-CREATE (poem)-[:FAREWELL_AT]->(place)
+## 4.3 语义搜索（pgvector）
 
-// 查询：与黄鹤楼相关的所有人物
-MATCH (p:Place {name:'黄鹤楼'})<-[:FAREWELL_AT|WRITTEN_AT]-(poem:AUTHORED)-[]->(author:Author)
-RETURN author, poem
+推荐系统的"相似诗词"查询通过 pgvector 实现：
+
+```sql
+-- 查找与某首诗词语义相近的诗词
+SELECT p.title, p.content, 1 - (pe.embedding <=> :query_embedding) AS similarity
+FROM poem_embedding pe
+JOIN poem p ON p.id = pe.poem_id
+WHERE 1 - (pe.embedding <=> :query_embedding) > 0.7
+ORDER BY similarity DESC
+LIMIT 20;
 ```
 
 ---
@@ -193,38 +219,63 @@ RETURN author, poem
 
 # 六、查询能力
 
-## 6.1 关系查询
+## 6.1 关系查询（通过 Drizzle）
 
-```sql
--- 查询：李白的所有朋友
-SELECT a2.name
-FROM "KnowledgeGraphEdge" e
-JOIN "KnowledgeGraphNode" n1 ON n1.id = e.source_id AND n1.entity_type = 'author'
-JOIN "KnowledgeGraphNode" n2 ON n2.id = e.target_id AND n2.entity_type = 'author'
-JOIN "Author" a1 ON a1.id = n1.entity_id
-JOIN "Author" a2 ON a2.id = n2.entity_id
-WHERE a1.name = '李白' AND e.relation = 'FRIEND_OF';
+```typescript
+// lib/db/repositories/knowledgeGraph.ts
+export async function getFriends(authorName: string) {
+  return db.select({ name: author.name })
+    .from(knowledgeGraphEdge)
+    .innerJoin(knowledgeGraphNode as n1, eq(n1.id, knowledgeGraphEdge.sourceId))
+    .innerJoin(knowledgeGraphNode as n2, eq(n2.id, knowledgeGraphEdge.targetId))
+    .innerJoin(author as a1, eq(a1.id, n1.entityId))
+    .innerJoin(author as a2, eq(a2.id, n2.entityId))
+    .where(and(
+      eq(a1.name, authorName),
+      eq(knowledgeGraphEdge.relation, 'FRIEND_OF')
+    ));
+}
 ```
 
-## 6.2 路径查询（Neo4j Cypher）
+## 6.2 路径查询（PostgreSQL 递归 CTE）
 
-```cypher
-// 查询李白到辛弃疾的最短文学影响路径
-MATCH p = shortestPath(
-  (a1:Author {name:'李白'})-[:INFLUENCED_BY|FRIEND_OF*]-(a2:Author {name:'辛弃疾'})
-)
-RETURN p
+```typescript
+// lib/db/query.ts
+export async function findPath(fromAuthor: string, toAuthor: string) {
+  return db.execute(sql`
+    WITH RECURSIVE path AS (
+      SELECT kn.id, kn.entity_id AS author_id, 1 AS depth, ARRAY[kn.id] AS visited
+      FROM knowledge_graph_node kn
+      JOIN author a ON a.id = kn.entity_id
+      WHERE a.name = ${fromAuthor}
+      
+      UNION ALL
+      
+      SELECT kn2.id, kn2.entity_id, path.depth + 1, path.visited || kg.target_id
+      FROM path
+      JOIN knowledge_graph_edge kg ON kg.source_id = path.id
+      JOIN knowledge_graph_node kn2 ON kn2.id = kg.target_id
+      WHERE path.depth < 5
+        AND NOT kn2.id = ANY(path.visited)
+    )
+    SELECT a.name, a.dynasty, path.depth
+    FROM path
+    JOIN author a ON a.id = path.author_id
+    WHERE a.name = ${toAuthor}
+    ORDER BY path.depth
+    LIMIT 1
+  `);
+}
 ```
 
-## 6.3 推荐查询
+## 6.3 推荐查询（静态预计算）
 
-```cypher
-// 推荐与用户浏览地点相关的其他地点
-MATCH (p:Place {name:'黄鹤楼'})<-[:DESCRIBES]-(poem:Poem)-[:DESCRIBES]->(related:Place)
-WHERE related.name <> '黄鹤楼'
-RETURN related.name, count(*) AS score
-ORDER BY score DESC
-LIMIT 10
+```typescript
+// 推荐与用户浏览地点相关的其他地点（离线预计算，存 public/data/related-places.json）
+export async function getRelatedPlaces(placeId: string): Promise<RelatedPlace[]> {
+  const res = await fetch(`/data/related-places/${placeId}.json`);
+  return res.json();
+}
 ```
 
 ---
@@ -267,5 +318,5 @@ LIMIT 10
 | KG-1 | M2 | 基础关系抽取入库（作者-作品-地点） |
 | KG-2 | M3 | 人物关系网络上线 |
 | KG-3 | M4 | 历史事件关联 + 图谱可视化 |
-| KG-4 | M5 | 迁移 Neo4j / AGE + 复杂查询 |
+| KG-4 | M4 | 递归 CTE 路径查询 + pgvector 语义推荐 |
 | KG-5 | V2 | AI 自动知识发现 + 关系推理 |
