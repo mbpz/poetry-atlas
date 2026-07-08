@@ -32,6 +32,8 @@ export default function Home() {
   const [searchLoading, setSearchLoading] = useState(false);
   const [showSearch, setShowSearch] = useState(false);
   const searchTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const [activeDynasty, setActiveDynasty] = useState<string>("all");
+  const [dynasties, setDynasties] = useState<{ id: string; name: string }[]>([]);
 
   const handleSearch = useCallback(async (q: string) => {
     setSearchQuery(q);
@@ -122,6 +124,16 @@ export default function Home() {
       mapRef.current?.remove();
       mapRef.current = null;
     };
+  }, []);
+
+  // 加载朝代列表
+  useEffect(() => {
+    fetch("https://ivjopdktmxbvubeqqujd.supabase.co/rest/v1/dynasties?id=not.eq.contemp&select=id,name&order=sort_order", {
+      headers: { apikey: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY! },
+    })
+      .then((r) => r.json())
+      .then(setDynasties)
+      .catch(console.error);
   }, []);
 
   // 加载地点列表
@@ -218,6 +230,56 @@ export default function Home() {
           <span style={{ marginLeft: "auto", color: "#a09070", fontSize: "13px" }}>
             {places.length} 个地点
           </span>
+        </div>
+
+        {/* 朝代时间轴 */}
+        <div
+          style={{
+            padding: "10px 20px",
+            background: "#f5f0e0",
+            borderBottom: "1px solid #e0d8c8",
+            display: "flex",
+            gap: "6px",
+            alignItems: "center",
+            overflowX: "auto",
+          }}
+        >
+          <span style={{ color: "#8b6914", fontSize: "13px", marginRight: "8px", whiteSpace: "nowrap" }}>
+            朝代：
+          </span>
+          <button
+            onClick={() => setActiveDynasty("all")}
+            style={{
+              padding: "4px 12px",
+              border: "1px solid #8b6914",
+              borderRadius: "4px",
+              background: activeDynasty === "all" ? "#8b6914" : "transparent",
+              color: activeDynasty === "all" ? "#fff" : "#8b6914",
+              cursor: "pointer",
+              fontSize: "12px",
+              whiteSpace: "nowrap",
+            }}
+          >
+            全部
+          </button>
+          {dynasties.map((d) => (
+            <button
+              key={d.id}
+              onClick={() => setActiveDynasty(d.id)}
+              style={{
+                padding: "4px 12px",
+                border: "1px solid #8b6914",
+                borderRadius: "4px",
+                background: activeDynasty === d.id ? "#8b6914" : "transparent",
+                color: activeDynasty === d.id ? "#fff" : "#8b6914",
+                cursor: "pointer",
+                fontSize: "12px",
+                whiteSpace: "nowrap",
+              }}
+            >
+              {d.name}
+            </button>
+          ))}
         </div>
 
         {/* 搜索框 */}
@@ -385,9 +447,15 @@ export default function Home() {
               </button>
             </div>
             <p style={{ color: "#8b6914", fontSize: "14px", marginBottom: "24px" }}>
-              共 {selected.poems.length} 首诗词
+              {activeDynasty === "all"
+                ? `共 ${selected.poems.length} 首诗词`
+                : `${dynasties.find((d) => d.id === activeDynasty)?.name || ""}筛选 · ${
+                    selected.poems.filter((po) => po.dynasty_id === activeDynasty).length
+                  } / ${selected.poems.length} 首`}
             </p>
-            {selected.poems.map((poem, i) => (
+            {selected.poems
+              .filter((po) => activeDynasty === "all" || po.dynasty_id === activeDynasty)
+              .map((poem, i) => (
               <div
                 key={poem.id || i}
                 style={{

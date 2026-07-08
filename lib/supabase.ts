@@ -16,6 +16,7 @@ export type Poem = {
   title: string;
   author: string;
   dynasty: string;
+  dynasty_id?: string;
   content: string;
 };
 
