@@ -4,6 +4,7 @@ import { useEffect, useRef, useState, useCallback } from "react";
 import { PLACE_TYPES, type Place } from "@/lib/supabase";
 import { MapSkeleton, PoemCardSkeleton, AuthorPanelSkeleton } from "@/components/Skeleton";
 import { BottomDrawer } from "@/components/BottomDrawer";
+import { PoemCard } from "@/components/PoemCard";
 import { useIsMobile } from "@/lib/useMediaQuery";
 import dynamic from "next/dynamic";
 
@@ -288,13 +289,7 @@ export default function Home() {
                   共 {selected.poems?.length || 0} 首诗词
                 </p>
                 {selected.poems?.map((poem: any, i: number) => (
-                  <div key={poem.id || i} style={{ marginBottom: 28, paddingBottom: 20, borderBottom: "1px solid #e8e0d0" }}>
-                    <h3 style={{ fontSize: 17, color: "#3a2f1a", marginBottom: 6 }}>{poem.title}</h3>
-                    <p style={{ color: "#8b6914", fontSize: 13, marginBottom: 12 }}>{poem.author} · {poem.dynasty}</p>
-                    <p style={{ fontSize: 15, lineHeight: 1.9, color: "#4a3f2a", whiteSpace: "pre-line", fontFamily: '"Noto Serif SC", "SimSun", serif' }}>
-                      {poem.content}
-                    </p>
-                  </div>
+                  <PoemCard key={poem.id || i} poem={poem} />
                 ))}
               </>
             ) : (
@@ -333,13 +328,7 @@ export default function Home() {
                   共 {selected.poems?.length || 0} 首诗词
                 </p>
                 {selected.poems?.map((poem: any, i: number) => (
-                  <div key={poem.id || i} style={{ marginBottom: 28, paddingBottom: 20, borderBottom: "1px solid #e8e0d0" }}>
-                    <h3 style={{ fontSize: 17, color: "#3a2f1a", marginBottom: 6 }}>{poem.title}</h3>
-                    <p style={{ color: "#8b6914", fontSize: 13, marginBottom: 12 }}>{poem.author} · {poem.dynasty}</p>
-                    <p style={{ fontSize: 15, lineHeight: 1.9, color: "#4a3f2a", whiteSpace: "pre-line", fontFamily: '"Noto Serif SC", "SimSun", serif' }}>
-                      {poem.content}
-                    </p>
-                  </div>
+                  <PoemCard key={poem.id || i} poem={poem} />
                 ))}
               </>
             ) : (

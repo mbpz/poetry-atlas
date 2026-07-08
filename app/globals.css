@@ -154,6 +154,168 @@
   }
 }
 
+/* ========= 诗词卡片沉浸样式 ========= */
+
+.poem-card {
+  position: relative;
+  padding: 20px;
+  margin-bottom: 16px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #fdf8f0 0%, #f8f2e4 50%, #f5edd8 100%);
+  border: 1px solid #e8dcc8;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  animation: fadeIn 0.4s ease-out;
+  overflow: hidden;
+}
+
+.poem-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #c9a961, #8b6914, #c9a961);
+  opacity: 0.6;
+}
+
+.poem-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(139, 105, 20, 0.12);
+  border-color: #c9a961;
+}
+
+.poem-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 16px;
+}
+
+.poem-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: #3a2f1a;
+  letter-spacing: 0.05em;
+  margin: 0;
+}
+
+.poem-author {
+  font-size: 12px;
+  color: #a08050;
+  white-space: nowrap;
+  margin-left: 12px;
+}
+
+.poem-content {
+  font-family: "Noto Serif SC", "Source Han Serif SC", "STSong", "SimSun", serif;
+  font-size: 16px;
+  line-height: 2;
+  color: #4a3f2a;
+  white-space: pre-line;
+  letter-spacing: 0.03em;
+}
+
+.poem-expanded {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px dashed #d0c8b0;
+  animation: fadeIn 0.3s ease-out;
+}
+
+.imagery-tags {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 12px;
+}
+
+.imagery-tag {
+  font-size: 18px;
+  padding: 2px 8px;
+  background: rgba(255, 255, 255, 0.6);
+  border-radius: 12px;
+  border: 1px solid #e8dcc8;
+}
+
+.recite-hint {
+  font-size: 12px;
+  color: #a08050;
+  text-align: center;
+  padding: 8px;
+  background: rgba(255, 255, 255, 0.4);
+  border-radius: 8px;
+}
+
+.expand-hint {
+  text-align: center;
+  font-size: 11px;
+  color: #b8a080;
+  margin-top: 12px;
+  transition: color 0.2s;
+}
+
+.poem-card:hover .expand-hint {
+  color: #8b6914;
+}
+
+/* 分享卡片 */
+.share-card {
+  position: relative;
+  width: 360px;
+  min-height: 480px;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+  display: none; /* 默认隐藏，仅用于生成图片 */
+}
+
+.share-bg {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, #f5e6d0 0%, #e8d5b0 100%);
+}
+
+.share-content {
+  position: relative;
+  padding: 40px;
+  color: #3a2f1a;
+}
+
+.share-author {
+  color: #a08050;
+  margin: 8px 0 24px;
+}
+
+.share-poem {
+  font-family: "Noto Serif SC", serif;
+  font-size: 18px;
+  line-height: 2.2;
+}
+
+.share-watermark {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  font-size: 12px;
+  color: #b8a080;
+}
+
+/* 移动端诗词卡片 */
+@media (max-width: 768px) {
+  .poem-card {
+    padding: 16px;
+    margin-bottom: 12px;
+  }
+  .poem-title {
+    font-size: 16px;
+  }
+  .poem-content {
+    font-size: 15px;
+    line-height: 1.9;
+  }
+}
+
 * {
   margin: 0;
   padding: 0;
