@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useMemo } from "react";
+import { useSpeech } from "@/lib/useSpeech";
 
 type PoemProps = {
   id: string;
@@ -72,9 +73,21 @@ export function PoemCard({ poem }: { poem: PoemProps }) {
   const [expanded, setExpanded] = useState(false);
   const [liked, setLiked] = useState(false);
   const contentRef = useRef<HTMLDivElement>(null);
+  const { state, currentLine, speak, pause, resume, stop } = useSpeech();
 
-  const imagery = getImagery(poem.content);
+  const imagery = useMemo(() => getImagery(poem.content), [poem.content]);
   const lines = poem.content.split("\n");
+
+  // 吟诵控制
+  const handleRecite = () => {
+    if (state === "playing") {
+      pause();
+    } else if (state === "paused") {
+      resume();
+    } else {
+      speak(poem.content, lines);
+    }
+  };
 
   return (
     <div className="poem-card">
@@ -92,7 +105,13 @@ export function PoemCard({ poem }: { poem: PoemProps }) {
         {lines.map((line, i) => (
           <span
             key={i}
-            className={isFamousLine(line) ? "poem-line famous" : "poem-line"}
+            className={
+              currentLine === i
+                ? "poem-line reciting"
+                : isFamousLine(line)
+                ? "poem-line famous"
+                : "poem-line"
+            }
           >
             {line}
             {i < lines.length - 1 && "\n"}
@@ -117,13 +136,22 @@ export function PoemCard({ poem }: { poem: PoemProps }) {
 
           {/* 明确操作按钮 */}
           <div className="poem-actions">
-            <button className="action-btn" title="聆听吟诵">
-              🔊 <span>吟诵</span>
+            <button
+              className={`action-btn ${state === "playing" ? "active" : ""}`}
+              title={state === "playing" ? "暂停" : "吟诵"}
+              onClick={handleRecite}
+            >
+              {state === "playing" ? "⏸️" : "🔊"} <span>{state === "playing" ? "暂停" : "吟诵"}</span>
             </button>
-            <button className="action-btn" title="查看注释">
+            {state !== "idle" && (
+              <button className="action-btn" title="停止" onClick={stop}>
+                ⏹️ <span>停止</span>
+              </button>
+            )}
+            <button className="action-btn" title="查看注释" onClick={() => alert("注释功能敬请期待")}>
               📖 <span>注释</span>
             </button>
-            <button className="action-btn" title="生成分享卡片">
+            <button className="action-btn" title="生成分享卡片" onClick={() => alert("分享功能敬请期待")}>
               📤 <span>分享</span>
             </button>
             <button

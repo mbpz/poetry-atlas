@@ -222,6 +222,21 @@
   padding-bottom: 1px;
 }
 
+.poem-line.reciting {
+  color: #b8860b;
+  background: linear-gradient(90deg, rgba(201, 169, 97, 0.15), rgba(201, 169, 97, 0.3), rgba(201, 169, 97, 0.15));
+  border-radius: 4px;
+  padding: 2px 4px;
+  font-weight: 600;
+  transition: all 0.3s;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
 .poem-expanded {
   margin-top: 16px;
   padding-top: 16px;
