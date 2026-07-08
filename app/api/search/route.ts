@@ -10,6 +10,7 @@ export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
   const keyword = searchParams.get("q")?.trim();
   const typeFilter = searchParams.get("type"); // 维度过滤
+  const dynastyFilter = searchParams.get("dynasty"); // 朝代过滤
 
   if (!keyword || keyword.length < 1) {
     return NextResponse.json({ results: [] });
@@ -88,6 +89,18 @@ export async function GET(request: NextRequest) {
 
   if (typeFilter && typeFilter !== "all") {
     results = results.filter((r) => r.places.some((pl: { type: string }) => pl.type === typeFilter));
+  }
+
+  if (dynastyFilter && dynastyFilter !== "all") {
+    // 将朝代 ID 转为中文名（如 tang → 唐），再按 dynasty 文本过滤
+    const { data: dynRow } = await supabase
+      .from("dynasties")
+      .select("name")
+      .eq("id", dynastyFilter)
+      .single();
+    if (dynRow?.name) {
+      results = results.filter((r) => r.dynasty === dynRow.name);
+    }
   }
 
   return NextResponse.json({ results });

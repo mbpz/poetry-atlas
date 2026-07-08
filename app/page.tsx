@@ -74,7 +74,8 @@ export default function Home() {
     setSearchLoading(true);
     try {
       const typeParam = activeType !== "all" ? `&type=${activeType}` : "";
-      const res = await fetch(`/api/search?q=${encodeURIComponent(q)}${typeParam}`, {
+      const dynastyParam = activeDynasty !== "all" ? `&dynasty=${activeDynasty}` : "";
+      const res = await fetch(`/api/search?q=${encodeURIComponent(q)}${typeParam}${dynastyParam}`, {
         signal: ac.signal,
       });
       if (!res.ok) throw new Error("search failed");
@@ -197,14 +198,14 @@ export default function Home() {
     }
   }, []);
 
-  // 加载地点列表
+  // 加载地点列表（按维度 + 朝代过滤）
   useEffect(() => {
     setLoading(true);
-    fetchPlaces(activeType)
+    fetchPlaces(activeType, activeDynasty)
       .then(setPlaces)
       .catch(console.error)
       .finally(() => setLoading(false));
-  }, [activeType]);
+  }, [activeType, activeDynasty]);
 
   // 渲染作者路线标记
   useEffect(() => {

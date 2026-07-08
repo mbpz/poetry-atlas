@@ -42,7 +42,35 @@ export const PLACE_TYPES: Record<string, { label: string; icon: string }> = {
   pass: { label: "关隘", icon: "🏰" },
 };
 
-export async function fetchPlaces(type?: string): Promise<Place[]> {
+export async function fetchPlaces(type?: string, dynasty?: string): Promise<Place[]> {
+  if (dynasty && dynasty !== "all") {
+    // 先获取中文名
+    const { data: dynRow } = await getSupabase()
+      .from("dynasties")
+      .select("name")
+      .eq("id", dynasty)
+      .single();
+    const dynastyName = dynRow?.name;
+
+    // 按朝代查询：只返回该朝代有诗词的地点
+    const { data, error } = await getSupabase()
+      .from("poem_places")
+      .select("places(id,name,type,lng,lat,ancient_names)")
+      .eq("poems.dynasty", dynastyName)
+      .limit(200);
+    if (error) throw error;
+    const places = (data ?? [])
+      .map((r: any) => r.places)
+      .filter(Boolean);
+    // 去重
+    const seen = new Set<string>();
+    return places.filter((p: Place) => {
+      if (seen.has(p.id)) return false;
+      seen.add(p.id);
+      return true;
+    });
+  }
+
   let query = getSupabase()
     .from("places")
     .select("id,name,type,lng,lat,ancient_names")
