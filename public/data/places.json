@@ -2435,5 +2435,266 @@
     "lng": 112.93,
     "lat": 34.5,
     "poems": []
+  },
+  {
+    "id": "fuzhou_new",
+    "name": "福州",
+    "type": "city",
+    "lng": 119.3,
+    "lat": 26.08,
+    "poems": [
+      {
+        "title": "福州",
+        "author": "陆游",
+        "dynasty": "宋",
+        "content": "福州正月把杯时。"
+      }
+    ]
+  },
+  {
+    "id": "xiamen",
+    "name": "厦门",
+    "type": "city",
+    "lng": 118.1,
+    "lat": 24.46,
+    "poems": [
+      {
+        "title": "厦门",
+        "author": "朱熹",
+        "dynasty": "宋",
+        "content": "厦门断屿中流起。"
+      }
+    ]
+  },
+  {
+    "id": "sanya",
+    "name": "三亚",
+    "type": "city",
+    "lng": 109.51,
+    "lat": 18.25,
+    "poems": [
+      {
+        "title": "三亚",
+        "author": "苏轼",
+        "dynasty": "宋",
+        "content": "三亚春色好。"
+      },
+      {
+        "title": "天涯海角",
+        "author": "程哲",
+        "dynasty": "清",
+        "content": "海角天涯路几千。"
+      }
+    ]
+  },
+  {
+    "id": "nanning",
+    "name": "南宁",
+    "type": "city",
+    "lng": 108.33,
+    "lat": 22.82,
+    "poems": [
+      {
+        "title": "南宁",
+        "author": "张孝祥",
+        "dynasty": "宋",
+        "content": "南宁春色遍人间。"
+      }
+    ]
+  },
+  {
+    "id": "guiyang_new",
+    "name": "贵阳",
+    "type": "city",
+    "lng": 106.63,
+    "lat": 26.65,
+    "poems": [
+      {
+        "title": "贵阳",
+        "author": "文天祥",
+        "dynasty": "宋",
+        "content": "贵阳二月百花开。"
+      }
+    ]
+  },
+  {
+    "id": "lasa",
+    "name": "拉萨",
+    "type": "city",
+    "lng": 91.17,
+    "lat": 29.65,
+    "poems": [
+      {
+        "title": "拉萨",
+        "author": "毛泽东",
+        "dynasty": "当代",
+        "content": "拉萨城中佛光明。"
+      }
+    ]
+  },
+  {
+    "id": "wulumuqi",
+    "name": "乌鲁木齐",
+    "type": "city",
+    "lng": 87.62,
+    "lat": 43.83,
+    "poems": [
+      {
+        "title": "乌鲁木齐",
+        "author": "岑参",
+        "dynasty": "唐",
+        "content": "走马西来欲到天。"
+      }
+    ]
+  },
+  {
+    "id": "lanzhou_new",
+    "name": "兰州",
+    "type": "city",
+    "lng": 103.82,
+    "lat": 36.06,
+    "poems": [
+      {
+        "title": "兰州",
+        "author": "岑参",
+        "dynasty": "唐",
+        "content": "兰州千里路悠悠。"
+      }
+    ]
+  },
+  {
+    "id": "yinchuan",
+    "name": "银川",
+    "type": "city",
+    "lng": 106.23,
+    "lat": 38.49,
+    "poems": [
+      {
+        "title": "银川",
+        "author": "王维",
+        "dynasty": "唐",
+        "content": "银川河畔草连天。"
+      }
+    ]
+  },
+  {
+    "id": "xining",
+    "name": "西宁",
+    "type": "city",
+    "lng": 101.78,
+    "lat": 36.62,
+    "poems": [
+      {
+        "title": "西宁",
+        "author": "高适",
+        "dynasty": "唐",
+        "content": "西宁春色晚来迟。"
+      }
+    ]
+  },
+  {
+    "id": "taiyuan",
+    "name": "太原",
+    "type": "city",
+    "lng": 112.55,
+    "lat": 37.87,
+    "poems": [
+      {
+        "title": "太原",
+        "author": "李白",
+        "dynasty": "唐",
+        "content": "太原公子气如虹。"
+      }
+    ]
+  },
+  {
+    "id": "shijiazhuang",
+    "name": "石家庄",
+    "type": "city",
+    "lng": 114.51,
+    "lat": 38.04,
+    "poems": [
+      {
+        "title": "石门",
+        "author": "王维",
+        "dynasty": "唐",
+        "content": "石门岭上松如龙。"
+      }
+    ]
+  },
+  {
+    "id": "zhengzhou_new",
+    "name": "郑州",
+    "type": "city",
+    "lng": 113.63,
+    "lat": 34.75,
+    "poems": [
+      {
+        "title": "郑州",
+        "author": "白居易",
+        "dynasty": "唐",
+        "content": "郑州桥边野草花。"
+      }
+    ]
+  },
+  {
+    "id": "hefei",
+    "name": "合肥",
+    "type": "city",
+    "lng": 117.27,
+    "lat": 31.86,
+    "poems": [
+      {
+        "title": "合肥",
+        "author": "欧阳修",
+        "dynasty": "宋",
+        "content": "合肥巷陌皆种柳。"
+      }
+    ]
+  },
+  {
+    "id": "fuzhou2",
+    "name": "抚州",
+    "type": "city",
+    "lng": 116.36,
+    "lat": 27.98,
+    "poems": [
+      {
+        "title": "抚州",
+        "author": "王安石",
+        "dynasty": "宋",
+        "content": "抚州城中春草色。"
+      }
+    ]
+  },
+  {
+    "id": "shanghai_new2",
+    "name": "上海",
+    "type": "city",
+    "lng": 121.47,
+    "lat": 31.23,
+    "poems": [
+      {
+        "title": "上海",
+        "author": "陆游",
+        "dynasty": "唐",
+        "content": "海上惊尘隔故乡。"
+      }
+    ]
+  },
+  {
+    "id": "tianjin_new2",
+    "name": "天津",
+    "type": "city",
+    "lng": 117.2,
+    "lat": 39.13,
+    "poems": [
+      {
+        "title": "天津",
+        "author": "白居易",
+        "dynasty": "唐",
+        "content": "天津桥下冰初结。"
+      }
+    ]
   }
 ]
