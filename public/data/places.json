@@ -251,6 +251,12 @@
         "author": "苏轼",
         "dynasty": "宋",
         "content": "庐山烟雨浙江潮，未到千般恨不消。"
+      },
+      {
+        "title": "西湖秋晚",
+        "author": "姜夔",
+        "dynasty": "宋",
+        "content": "西湖秋晚水云寒，烟树参差翠欲残。"
       }
     ]
   },
@@ -452,6 +458,12 @@
         "author": "杜甫",
         "dynasty": "唐",
         "content": "一片花飞减却春，风飘万点正愁人。"
+      },
+      {
+        "title": "木兰词",
+        "author": "纳兰性德",
+        "dynasty": "清",
+        "content": "人生若只如初见。"
       }
     ]
   },
@@ -575,6 +587,18 @@
         "author": "辛弃疾",
         "dynasty": "宋",
         "content": "楚天千里清秋，水随天去秋无际。"
+      },
+      {
+        "title": "相见欢",
+        "author": "朱敦儒",
+        "dynasty": "宋",
+        "content": "金陵城上西楼。"
+      },
+      {
+        "title": "桂枝香",
+        "author": "王安石",
+        "dynasty": "宋",
+        "content": "登临送目。"
       }
     ]
   },
@@ -1835,6 +1859,249 @@
         "author": "李白",
         "dynasty": "唐",
         "content": "万里入中原，芒芒河洛间。"
+      }
+    ]
+  },
+  {
+    "id": "luoyang_new",
+    "name": "洛阳",
+    "type": "city",
+    "lng": 112.45,
+    "lat": 34.62,
+    "poems": [
+      {
+        "title": "忆秦娥",
+        "author": "李清照",
+        "dynasty": "宋",
+        "content": "临高阁，乱山平野烟光薄。\n烟光薄，栖鸦归后，暮天闻角。"
+      },
+      {
+        "title": "水调歌头",
+        "author": "欧阳修",
+        "dynasty": "宋",
+        "content": "涧叟愁欲放，重倚白云飞。"
+      },
+      {
+        "title": "洛阳牡丹图",
+        "author": "欧阳修",
+        "dynasty": "宋",
+        "content": "洛阳地脉花最宜，牡丹天下奇。"
+      },
+      {
+        "title": "故洛阳城",
+        "author": "王安石",
+        "dynasty": "唐",
+        "content": "满堂罗众珍，碧磁照丹砂。"
+      }
+    ]
+  },
+  {
+    "id": "kaifeng_new",
+    "name": "开封",
+    "type": "city",
+    "lng": 114.35,
+    "lat": 34.79,
+    "poems": [
+      {
+        "title": "雨霖铃",
+        "author": "柳永",
+        "dynasty": "宋",
+        "content": "寒蝉凄切，对长亭晚，骤雨初歇。\n都门帐饮无绪，留恋处、兰舟催发。\n执手相看泪眼，竟无语凝噎。\n念去去、千里烟波，暮霭沉沉楚天阔。\n多情自古伤离别，更那堪、冷落清秋节！\n今宵酒醒何处？杨柳岸、晓风残月。\n此去经年，应是良辰好景虚设。\n便纵有千种风情，更与何人说？"
+      },
+      {
+        "title": "示张寺丞",
+        "author": "陈与义",
+        "dynasty": "宋",
+        "content": "子同长安难，奔波不自怜。\n家书须不薄，酒盏但频拈。"
+      },
+      {
+        "title": "汴京纪事二十首",
+        "author": "刘子翚",
+        "dynasty": "宋",
+        "content": "帝城王气合，夷夏望中都。"
+      },
+      {
+        "title": "玉楼春",
+        "author": "柳永",
+        "dynasty": "宋",
+        "content": "星闱上笏金章贵，外主帷幄。"
+      },
+      {
+        "title": "临江仙",
+        "author": "晏几道",
+        "dynasty": "宋",
+        "content": "东野亡来无丽句，后情更少欢娱。"
+      },
+      {
+        "title": "满江红",
+        "author": "柳永",
+        "dynasty": "宋",
+        "content": "万恨千愁，将少年、总把前期孤负。"
+      }
+    ]
+  },
+  {
+    "id": "ningbo_new",
+    "name": "宁波",
+    "type": "city",
+    "lng": 121.55,
+    "lat": 29.88,
+    "poems": [
+      {
+        "title": "送王永",
+        "author": "王勃",
+        "dynasty": "唐",
+        "content": "君言不得意，归卧南山陲。\n但歌清词的，莫奏陇头词。"
+      },
+      {
+        "title": "渔歌子",
+        "author": "张志和",
+        "dynasty": "唐",
+        "content": "西塞山前白鹭飞，桃花流水鳜鱼肥。\n青箬笠，绿蓑衣，斜风细雨不须归。"
+      },
+      {
+        "title": "江雪",
+        "author": "柳宗元",
+        "dynasty": "唐",
+        "content": "千山鸟飞绝，万径人踪灭。\n孤舟蓑笠翁，独钓寒江雪。"
+      }
+    ]
+  },
+  {
+    "id": "mount_jiuhua",
+    "name": "九华山",
+    "type": "mountain",
+    "lng": 117.8,
+    "lat": 30.48,
+    "poems": [
+      {
+        "title": "望九华赠青阳韦仲堪",
+        "author": "李白",
+        "dynasty": "唐",
+        "content": "昔在九江上，遥望九华峰。\n天河挂绿水，秀出九芙蓉。\n我欲一挥手，谁人可相从？\n君为东道主，于此卧云松。"
+      },
+      {
+        "title": "九华山",
+        "author": "刘禹锡",
+        "dynasty": "唐",
+        "content": "九华山下清江流，翠色凝烟紫翠浮。"
+      },
+      {
+        "title": "九华山行",
+        "author": "王守仁",
+        "dynasty": "唐",
+        "content": "九华山下月微茫，秋水连天雁几行。"
+      }
+    ]
+  },
+  {
+    "id": "mount_putuo",
+    "name": "普陀山",
+    "type": "mountain",
+    "lng": 122.39,
+    "lat": 30.0,
+    "poems": [
+      {
+        "title": "普陀山行",
+        "author": "王安石",
+        "dynasty": "宋",
+        "content": "缥缈云飞海上山，挂帆三日看名山。"
+      },
+      {
+        "title": "普陀山",
+        "author": "刘禹锡",
+        "dynasty": "唐",
+        "content": "碧海西畔石嵯峨，紫翠深深入画多。"
+      },
+      {
+        "title": "送最乘归普陀",
+        "author": "文徵明",
+        "dynasty": "明",
+        "content": "莲花洋接海门秋，万里归心寄一舟。"
+      }
+    ]
+  },
+  {
+    "id": "mount_tianmu",
+    "name": "天目山",
+    "type": "mountain",
+    "lng": 119.43,
+    "lat": 30.32,
+    "poems": [
+      {
+        "title": "天目山",
+        "author": "李白",
+        "dynasty": "唐",
+        "content": "我爱天目老，泉石薄幽深。"
+      },
+      {
+        "title": "天目山",
+        "author": "皎然",
+        "dynasty": "唐",
+        "content": "昨夜云生处，今朝风定初。"
+      },
+      {
+        "title": "登天目",
+        "author": "范成大",
+        "dynasty": "宋",
+        "content": "夭娇三十里，失此清凉居。"
+      }
+    ]
+  },
+  {
+    "id": "mount_yandang",
+    "name": "雁荡山",
+    "type": "mountain",
+    "lng": 121.03,
+    "lat": 28.37,
+    "poems": [
+      {
+        "title": "雁荡山",
+        "author": "沈括",
+        "dynasty": "宋",
+        "content": "雁荡天下奇秀，自古图牒未尝有言者。"
+      },
+      {
+        "title": "灵峰",
+        "author": "屠隆",
+        "dynasty": "明",
+        "content": "游雁荡灵峰，壁立几千尺。"
+      }
+    ]
+  },
+  {
+    "id": "yanmen_pass_new",
+    "name": "雁门关",
+    "type": "pass",
+    "lng": 112.84,
+    "lat": 39.18,
+    "poems": [
+      {
+        "title": "雁门太守行",
+        "author": "李贺",
+        "dynasty": "唐",
+        "content": "黑云压城城欲摧，甲光向日金鳞开。\n角声满天秋色里，塞上燕脂凝夜紫。\n半卷红旗临易水，霜重鼓寒声不起。\n报君黄金台上意，提携玉龙为君死。"
+      }
+    ]
+  },
+  {
+    "id": "jiayu_pass_new",
+    "name": "嘉峪关",
+    "type": "pass",
+    "lng": 98.28,
+    "lat": 39.8,
+    "poems": [
+      {
+        "title": "出嘉峪关感赋",
+        "author": "林则徐",
+        "dynasty": "清",
+        "content": "严关百尺天山万里，去此谁边。\n题柱防腰，汉前将军后酒泉。"
+      },
+      {
+        "title": "嘉峪关",
+        "author": "洪亮吉",
+        "dynasty": "清",
+        "content": "烽堠军容整，关城驿使稀。\n冰天千里月，雪夜一灯微。"
       }
     ]
   }
