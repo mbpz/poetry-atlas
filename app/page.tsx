@@ -50,6 +50,7 @@ export default function Home() {
   const [showSearch, setShowSearch] = useState(false);
   const searchTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const searchAbortRef = useRef<AbortController | null>(null);
+  const [isComposing, setIsComposing] = useState(false);
   const [activeDynasty, setActiveDynasty] = useState<string>("all");
   const [dynasties, setDynasties] = useState<{ id: string; name: string }[]>([]);
   const [authors, setAuthors] = useState<Author[]>([]);
@@ -528,7 +529,15 @@ export default function Home() {
                   autoFocus
                   type="text"
                   value={searchQuery}
-                  onChange={(e) => debouncedSearch(e.target.value)}
+                  onCompositionStart={() => setIsComposing(true)}
+                  onCompositionEnd={(e) => {
+                    setIsComposing(false);
+                    debouncedSearch((e.target as HTMLInputElement).value);
+                  }}
+                  onChange={(e) => {
+                    // 仅在非中文输入法组合状态（英文/数字）下触发搜索
+                    if (!isComposing) debouncedSearch(e.target.value);
+                  }}
                   placeholder="搜索诗名、作者、名句..."
                   style={{
                     border: "none",
