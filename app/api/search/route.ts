@@ -16,7 +16,7 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ results: [] });
   }
 
-  // 使用数据库函数搜索（解决中文 ILIKE 失效问题）
+  // 使用数据库函数搜索（PostgreSQL 原生 ILIKE，支持中文）
   const { data, error } = await supabase.rpc("search_poems", {
     keyword,
     type_filter: typeFilter,
