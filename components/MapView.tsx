@@ -2,7 +2,8 @@
 
 import { useEffect, useRef } from "react";
 import maplibregl from "maplibre-gl";
-import { PLACE_TYPES, type Place } from "@/lib/supabase";
+import { type Place } from "@/lib/supabase";
+import { getMarkerIcon } from "@/components/AnimatedMarker";
 
 export default function MapView({
   places,
@@ -50,16 +51,20 @@ export default function MapView({
     };
   }, []);
 
-  // 渲染标记
+  // 渲染动态标记
   useEffect(() => {
     if (!mapRef.current) return;
-    document.querySelectorAll(".marker").forEach((el) => el.remove());
+    document.querySelectorAll(".animated-marker").forEach((el) => el.remove());
 
     places.forEach((place) => {
       const el = document.createElement("div");
-      el.className = "marker";
-      const icon = PLACE_TYPES[place.type]?.icon || "📍";
-      el.innerHTML = `${icon}<br><b>${place.name}</b>`;
+      el.className = "animated-marker";
+      el.innerHTML = `
+        <div class="marker-wrap">
+          ${getMarkerIcon(place.type)}
+          <span class="marker-name">${place.name}</span>
+        </div>
+      `;
       el.addEventListener("click", () => onMarkerClick(place.id));
       new maplibregl.Marker({ element: el, anchor: "center" })
         .setLngLat([place.lng, place.lat])
