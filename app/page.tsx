@@ -41,6 +41,7 @@ export default function Home() {
   // 作者数据
   const [authors, setAuthors] = useState<any[]>([]);
   const [authorsLoading, setAuthorsLoading] = useState(true);
+  const [authorRouteLoading, setAuthorRouteLoading] = useState(false);
 
   useEffect(() => {
     fetch("/api/authors?minPoems=5")
@@ -252,9 +253,30 @@ export default function Home() {
                 <AuthorPanelSkeleton />
               ) : (
                 authors.slice(0, 15).map((a) => (
-                  <div key={a.id} style={styles.authorItem} onClick={() => loadAuthorRoute(a.id)}>
-                    <span>{a.name} · {a.dynasty}</span>
-                    <span style={{ color: "#a09070", fontSize: 11 }}>{a.poem_count}首/{a.place_count}地</span>
+                  <div
+                    key={a.id}
+                    style={authorRouteLoading ? styles.authorItemLoading : styles.authorItem}
+                    onClick={() => !authorRouteLoading && loadAuthorRoute(a.id)}
+                  >
+                    {authorRouteLoading ? (
+                      <>
+                        <span style={{
+                          width: 14,
+                          height: 14,
+                          border: "2px solid #e8e0d0",
+                          borderTopColor: "#8b6914",
+                          borderRadius: "50%",
+                          animation: "spin 0.6s linear infinite",
+                          display: "inline-block",
+                        }} />
+                        <span>加载{a.name}的路线...</span>
+                      </>
+                    ) : (
+                      <>
+                        <span>{a.name} · {a.dynasty}</span>
+                        <span style={{ color: "#a09070", fontSize: 11 }}>{a.poem_count}首/{a.place_count}地</span>
+                      </>
+                    )}
                   </div>
                 ))
               )}
@@ -345,13 +367,26 @@ export default function Home() {
     </div>
   );
 
-  // 加载作者旅行路线（全局函数供 MapView 调用）
-  async function loadAuthorRoute(authorId: string) {
-    const res = await fetch(`/api/authors/${authorId}`);
-    const data = await res.json();
-    // TODO: 在地图上显示路线
-    console.log("Author route:", data);
-  }
+  // 加载作者旅行路线
+  const loadAuthorRoute = useCallback(async (authorId: string) => {
+    setAuthorRouteLoading(true);
+    setShowAuthorPanel(false);
+    try {
+      const res = await fetch(`/api/authors/${authorId}`);
+      const data = await res.json();
+      // 飞到路线中心
+      if (data.route?.length > 0) {
+        const avgLng = data.route.reduce((s: number, r: any) => s + r.lng, 0) / data.route.length;
+        const avgLat = data.route.reduce((s: number, r: any) => s + r.lat, 0) / data.route.length;
+        // TODO: 显示路线
+        console.log("Route center:", avgLng, avgLat);
+      }
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setAuthorRouteLoading(false);
+    }
+  }, []);
 }
 
 const styles: Record<string, React.CSSProperties> = {
@@ -458,13 +493,22 @@ const styles: Record<string, React.CSSProperties> = {
     padding: 12,
   },
   authorItem: {
-    padding: "6px 8px",
+    padding: "10px 8px",
     cursor: "pointer",
     borderRadius: 4,
     fontSize: 13,
     color: "#3a2f1a",
     display: "flex",
     justifyContent: "space-between",
+    transition: "background 0.15s",
+  },
+  authorItemLoading: {
+    padding: "10px 8px",
+    display: "flex",
+    alignItems: "center",
+    gap: 8,
+    color: "#8b6914",
+    fontSize: 13,
   },
   poemPanel: {
     width: 420,

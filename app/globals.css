@@ -163,25 +163,22 @@
   border-radius: 12px;
   background: linear-gradient(135deg, #fdf8f0 0%, #f8f2e4 50%, #f5edd8 100%);
   border: 1px solid #e8dcc8;
-  cursor: pointer;
-  transition: all 0.3s ease;
+  transition: box-shadow 0.3s ease, border-color 0.3s ease;
   animation: fadeIn 0.4s ease-out;
   overflow: hidden;
 }
 
-.poem-card::before {
-  content: "";
+.poem-card-top {
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   height: 3px;
   background: linear-gradient(90deg, #c9a961, #8b6914, #c9a961);
-  opacity: 0.6;
+  opacity: 0.7;
 }
 
 .poem-card:hover {
-  transform: translateY(-2px);
   box-shadow: 0 8px 24px rgba(139, 105, 20, 0.12);
   border-color: #c9a961;
 }
@@ -208,13 +205,21 @@
   margin-left: 12px;
 }
 
-.poem-content {
+.poem-body {
   font-family: "Noto Serif SC", "Source Han Serif SC", "STSong", "SimSun", serif;
   font-size: 16px;
-  line-height: 2;
+  line-height: 2.2;
   color: #4a3f2a;
   white-space: pre-line;
-  letter-spacing: 0.03em;
+  letter-spacing: 0.04em;
+  cursor: default;
+}
+
+.poem-line.famous {
+  color: #8b4513;
+  font-weight: 700;
+  border-bottom: 2px solid #c9a961;
+  padding-bottom: 1px;
 }
 
 .poem-expanded {
@@ -224,38 +229,88 @@
   animation: fadeIn 0.3s ease-out;
 }
 
+.imagery-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+}
+
+.imagery-label {
+  font-size: 12px;
+  color: #a08050;
+}
+
 .imagery-tags {
   display: flex;
   gap: 6px;
-  margin-bottom: 12px;
+  flex-wrap: wrap;
 }
 
-.imagery-tag {
-  font-size: 18px;
-  padding: 2px 8px;
-  background: rgba(255, 255, 255, 0.6);
-  border-radius: 12px;
-  border: 1px solid #e8dcc8;
+.imagery-chip {
+  font-size: 13px;
+  color: #5a4a30;
+  padding: 3px 10px;
+  background: rgba(255, 255, 255, 0.7);
+  border: 1px solid #d0c8b0;
+  border-radius: 14px;
 }
 
-.recite-hint {
-  font-size: 12px;
-  color: #a08050;
-  text-align: center;
-  padding: 8px;
-  background: rgba(255, 255, 255, 0.4);
+.poem-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 16px;
+  padding-top: 12px;
+  border-top: 1px solid #e8dcc8;
+  overflow-x: auto;
+}
+
+.action-btn {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 12px;
+  border: 1px solid #d0c8b0;
   border-radius: 8px;
+  background: rgba(255, 255, 255, 0.6);
+  color: #5a4a30;
+  font-size: 12px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s;
 }
 
-.expand-hint {
-  text-align: center;
-  font-size: 11px;
-  color: #b8a080;
-  margin-top: 12px;
+.action-btn:hover {
+  background: #fff;
+  border-color: #c9a961;
+  color: #8b6914;
+}
+
+.action-btn.active {
+  background: #fff0f0;
+  border-color: #e8a0a0;
+  color: #c96060;
+}
+
+.action-btn span {
+  font-size: 12px;
+}
+
+.expand-btn {
+  display: block;
+  width: 100%;
+  margin-top: 16px;
+  padding: 8px 0;
+  border: none;
+  background: transparent;
+  color: #a08050;
+  font-size: 12px;
+  cursor: pointer;
   transition: color 0.2s;
 }
 
-.poem-card:hover .expand-hint {
+.expand-btn:hover {
   color: #8b6914;
 }
 
@@ -310,9 +365,18 @@
   .poem-title {
     font-size: 16px;
   }
-  .poem-content {
+  .poem-body {
     font-size: 15px;
-    line-height: 1.9;
+    line-height: 2;
+  }
+  .poem-actions {
+    gap: 6px;
+  }
+  .action-btn {
+    padding: 6px 10px;
+  }
+  .action-btn span {
+    display: none; /* 移动端只显示图标，省空间 */
   }
 }
 
