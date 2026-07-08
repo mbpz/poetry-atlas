@@ -532,17 +532,23 @@ export default function Home() {
                   onCompositionStart={() => { isComposingRef.current = true; }}
                   onCompositionEnd={(e) => {
                     isComposingRef.current = false;
-                    // 组合结束后立即触发搜索
                     if (searchTimerRef.current) clearTimeout(searchTimerRef.current);
                     handleSearch((e.target as HTMLInputElement).value);
                   }}
                   onChange={(e) => {
-                    // 仅在非中文输入法组合状态下触发搜索（英文/数字直接搜）
-                    if (!isComposingRef.current) {
+                    setSearchQuery(e.target.value);
+                    // 仅英文/数字模式下自动搜索（跳过中文拼音组合阶段）
+                    if (!isComposingRef.current && e.target.value.trim().length >= 2) {
                       debouncedSearch(e.target.value);
                     }
                   }}
-                  placeholder="搜索诗名、作者、名句..."
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" && searchQuery.trim().length >= 2) {
+                      if (searchTimerRef.current) clearTimeout(searchTimerRef.current);
+                      handleSearch(searchQuery);
+                    }
+                  }}
+                  placeholder="搜索诗名/作者/名句..."
                   style={{
                     border: "none",
                     outline: "none",
