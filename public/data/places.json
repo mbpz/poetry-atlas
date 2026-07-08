@@ -2852,5 +2852,338 @@
         "content": "高峰寺里暮钟残。"
       }
     ]
+  },
+  {
+    "id": "yangzhou_pingshan",
+    "name": "平山堂",
+    "type": "tower",
+    "lng": 119.42,
+    "lat": 32.39,
+    "poems": [
+      {
+        "title": "平山堂",
+        "author": "欧阳修",
+        "dynasty": "宋",
+        "content": "平山栏槛倚晴空，山色有无中。\n手种堂前垂柳，别来几度春风。\n文章太守，挥毫万字，一饮千钟。\n行乐直须年少，尊前看取衰翁。"
+      }
+    ]
+  },
+  {
+    "id": "hangzhou_baochu",
+    "name": "保俶塔",
+    "type": "tower",
+    "lng": 120.14,
+    "lat": 30.25,
+    "poems": [
+      {
+        "title": "保俶塔",
+        "author": "苏轼",
+        "dynasty": "宋",
+        "content": "保俶塔前塔影斜，西湖十里荷花。"
+      }
+    ]
+  },
+  {
+    "id": "suzhou_canglang",
+    "name": "沧浪亭",
+    "type": "tower",
+    "lng": 120.63,
+    "lat": 31.32,
+    "poems": [
+      {
+        "title": "沧浪亭",
+        "author": "苏舜钦",
+        "dynasty": "宋",
+        "content": "一径抱幽山，居然城市间。\n高轩面曲水，愁暑解尘颜。"
+      },
+      {
+        "title": "沧浪歌",
+        "author": "孟子",
+        "dynasty": "先秦",
+        "content": "沧浪之水清兮，可以濯吾缨。\n沧浪之水浊兮，可以濯吾足。"
+      }
+    ]
+  },
+  {
+    "id": "suzhou_shizilin",
+    "name": "狮子林",
+    "type": "tower",
+    "lng": 120.63,
+    "lat": 31.32,
+    "poems": [
+      {
+        "title": "狮子林",
+        "author": "朱德润",
+        "dynasty": "元",
+        "content": "人道我居城市里，我疑身在万山中。"
+      }
+    ]
+  },
+  {
+    "id": "nanjing_qinhuai",
+    "name": "秦淮河",
+    "type": "river",
+    "lng": 118.8,
+    "lat": 32.06,
+    "poems": [
+      {
+        "title": "秦淮夜泊",
+        "author": "杜牧",
+        "dynasty": "唐",
+        "content": "秦淮夜泊月光寒。"
+      }
+    ]
+  },
+  {
+    "id": "hubei_huanggang",
+    "name": "黄冈",
+    "type": "city",
+    "lng": 114.87,
+    "lat": 30.44,
+    "poems": [
+      {
+        "title": "念奴娇·赤壁怀古",
+        "author": "苏轼",
+        "dynasty": "宋",
+        "content": "大江东去，浪淘尽，千古风流人物。\n故垒西边，人道是，三国周郎赤壁。\n乱石穿空，惊涛拍岸，卷起千堆雪。\n江山如画，一时多少豪杰。"
+      },
+      {
+        "title": "赤壁",
+        "author": "杜牧",
+        "dynasty": "唐",
+        "content": "折戟沉沙铁未销，自将磨洗认前朝。\n东风不与周郎便，铜雀春深锁二乔。"
+      },
+      {
+        "title": "前赤壁赋",
+        "author": "苏轼",
+        "dynasty": "宋",
+        "content": "壬戌之秋，七月既望，苏子与客泛舟游于赤壁之下。\n清风徐来，水波不兴。举酒属客，诵明月之诗，歌窈窕之章。"
+      },
+      {
+        "title": "后赤壁赋",
+        "author": "苏轼",
+        "dynasty": "宋",
+        "content": "是岁十月之望，步自雪堂，将归于临皋。\n二客从予过黄泥之坂。"
+      }
+    ]
+  },
+  {
+    "id": "hubei_huangshi",
+    "name": "黄石",
+    "type": "city",
+    "lng": 115.07,
+    "lat": 30.2,
+    "poems": [
+      {
+        "title": "西塞山怀古",
+        "author": "刘禹锡",
+        "dynasty": "唐",
+        "content": "王濬楼船下益州，金陵王气黯然收。"
+      }
+    ]
+  },
+  {
+    "id": "anhui_chizhou",
+    "name": "池州",
+    "type": "city",
+    "lng": 117.49,
+    "lat": 30.66,
+    "poems": [
+      {
+        "title": "秋浦歌",
+        "author": "李白",
+        "dynasty": "唐",
+        "content": "白发三千丈，缘愁似个长。\n不知明镜里，何处得秋霜。"
+      },
+      {
+        "title": "清明",
+        "author": "杜牧",
+        "dynasty": "唐",
+        "content": "清明时节雨纷纷，路上行人欲断魂。\n借问酒家何处有，牧童遥指杏花村。"
+      }
+    ]
+  },
+  {
+    "id": "anhui_chuzhou",
+    "name": "滁州",
+    "type": "city",
+    "lng": 118.32,
+    "lat": 32.23,
+    "poems": [
+      {
+        "title": "醉翁亭记（节选）",
+        "author": "欧阳修",
+        "dynasty": "宋",
+        "content": "环滁皆山也。其西南诸峰，林壑尤美，望之蔚然而深秀者，琅琊也。\n山行六七里，渐闻水声潺潺，而泻出于两峰之间者，酿泉也。\n峰回路转，有亭翼然临于泉上者，醉翁亭也。\n作亭者谁？山之僧智仙也。名之者谁？太守自谓也。"
+      }
+    ]
+  },
+  {
+    "id": "zhejiang_yinxian",
+    "name": "鄞县",
+    "type": "city",
+    "lng": 121.55,
+    "lat": 29.88,
+    "poems": [
+      {
+        "title": "鄞县",
+        "author": "王安石",
+        "dynasty": "宋",
+        "content": "鄞县东西旧有亭。"
+      }
+    ]
+  },
+  {
+    "id": "henan_anyang",
+    "name": "安阳",
+    "type": "city",
+    "lng": 114.35,
+    "lat": 36.1,
+    "poems": [
+      {
+        "title": "甲骨文",
+        "author": "刘鹗",
+        "dynasty": "清",
+        "content": "今人得古器，文字识殷商。"
+      }
+    ]
+  },
+  {
+    "id": "gansu_liangzhou",
+    "name": "凉州",
+    "type": "city",
+    "lng": 102.69,
+    "lat": 37.93,
+    "poems": [
+      {
+        "title": "凉州词",
+        "author": "王翰",
+        "dynasty": "唐",
+        "content": "葡萄美酒夜光杯。"
+      },
+      {
+        "title": "凉州词",
+        "author": "孟浩然",
+        "dynasty": "唐",
+        "content": "浑成紫檀金屑文，作得琵琶声入云。"
+      }
+    ]
+  },
+  {
+    "id": "xinjiang_turpan",
+    "name": "吐鲁番",
+    "type": "city",
+    "lng": 89.19,
+    "lat": 42.95,
+    "poems": [
+      {
+        "title": "走马川行奉送封大夫出师西征",
+        "author": "岑参",
+        "dynasty": "唐",
+        "content": "君不见走马川行雪海边，平沙莽莽黄入天。"
+      }
+    ]
+  },
+  {
+    "id": "ningxia_yinchuan",
+    "name": "银川",
+    "type": "city",
+    "lng": 106.23,
+    "lat": 38.49,
+    "poems": [
+      {
+        "title": "渔家傲·秋思",
+        "author": "范仲淹",
+        "dynasty": "宋",
+        "content": "塞下秋来风景异，衡阳雁去无留意。\n四面边声连角起，千嶂里，长烟落日孤城闭。\n浊酒一杯家万里，燕然未勒归无计。\n羌管悠悠霜满地，人不寐，将军白发征夫泪。"
+      }
+    ]
+  },
+  {
+    "id": "neimenggu_huhehaote",
+    "name": "呼和浩特",
+    "type": "city",
+    "lng": 111.75,
+    "lat": 40.84,
+    "poems": [
+      {
+        "title": "敕勒歌",
+        "author": "北朝民歌",
+        "dynasty": "南北朝",
+        "content": "敕勒川，阴山下。\n天似穹庐，笼盖四野。\n天苍苍，野茫茫，风吹草低见牛羊。"
+      }
+    ]
+  },
+  {
+    "id": "jilin_changchun",
+    "name": "长春",
+    "type": "city",
+    "lng": 125.32,
+    "lat": 43.88,
+    "poems": [
+      {
+        "title": "长春",
+        "author": "纳兰性德",
+        "dynasty": "清",
+        "content": "长白雪初霁。"
+      }
+    ]
+  },
+  {
+    "id": "guangdong_guangzhou",
+    "name": "广州",
+    "type": "city",
+    "lng": 113.26,
+    "lat": 23.13,
+    "poems": [
+      {
+        "title": "惠州一绝",
+        "author": "苏轼",
+        "dynasty": "宋",
+        "content": "日啖荔枝三百颗。"
+      },
+      {
+        "title": "广州试越台怀古",
+        "author": "许浑",
+        "dynasty": "唐",
+        "content": "南越千年事。"
+      }
+    ]
+  },
+  {
+    "id": "guangxi_guilin",
+    "name": "桂林",
+    "type": "city",
+    "lng": 110.18,
+    "lat": 25.23,
+    "poems": [
+      {
+        "title": "送桂州严大夫同用南字",
+        "author": "韩愈",
+        "dynasty": "唐",
+        "content": "苍苍森八桂。"
+      },
+      {
+        "title": "桂林山水",
+        "author": "金武祥",
+        "dynasty": "清",
+        "content": "未了山川瘁。"
+      }
+    ]
+  },
+  {
+    "id": "yunnan_kunming",
+    "name": "昆明",
+    "type": "city",
+    "lng": 102.73,
+    "lat": 25.04,
+    "poems": [
+      {
+        "title": "春城",
+        "author": "杨慎",
+        "dynasty": "明",
+        "content": "天气常如二三月。"
+      }
+    ]
   }
 ]
