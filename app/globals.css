@@ -371,6 +371,194 @@
   }
 }
 
+/* ========= 分享弹窗 ========= */
+
+.share-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: fadeIn 0.2s ease-out;
+}
+
+.share-modal {
+  width: 380px;
+  max-width: calc(100% - 40px);
+  background: #faf8f3;
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.2);
+  animation: fadeIn 0.3s ease-out;
+}
+
+.share-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.share-header h3 {
+  margin: 0;
+  font-size: 18px;
+  color: #3a2f1a;
+}
+
+.share-close {
+  width: 32px;
+  height: 32px;
+  border: none;
+  background: #f5f0e0;
+  border-radius: 50%;
+  cursor: pointer;
+  color: #8b6914;
+  font-size: 16px;
+}
+
+.template-list {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 20px;
+  overflow-x: auto;
+}
+
+.template-btn {
+  flex: 1;
+  min-width: 64px;
+  padding: 10px 4px;
+  border: 2px solid transparent;
+  border-radius: 8px;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.template-btn.active {
+  border-color: #c9a961;
+  box-shadow: 0 2px 8px rgba(201, 169, 97, 0.3);
+}
+
+.card-preview {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.share-card {
+  width: 240px;
+  min-height: 320px;
+  border-radius: 12px;
+  padding: 28px 24px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.card-border {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  right: 8px;
+  bottom: 8px;
+  border: 1px solid currentColor;
+  opacity: 0.2;
+  border-radius: 8px;
+  pointer-events: none;
+}
+
+.card-body {
+  position: relative;
+  z-index: 1;
+}
+
+.card-title {
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 8px;
+  letter-spacing: 0.05em;
+}
+
+.card-author {
+  font-size: 13px;
+  opacity: 0.7;
+  margin-bottom: 24px;
+}
+
+.card-content {
+  font-family: "Noto Serif SC", "Source Han Serif SC", "STSong", serif;
+  font-size: 16px;
+  line-height: 2;
+  white-space: pre-line;
+}
+
+.card-watermark {
+  position: absolute;
+  bottom: 16px;
+  right: 20px;
+  font-size: 11px;
+  opacity: 0.4;
+}
+
+.share-actions {
+  display: flex;
+  gap: 12px;
+}
+
+.share-download {
+  flex: 1;
+  padding: 12px 0;
+  border: none;
+  background: #8b6914;
+  color: #fff;
+  border-radius: 8px;
+  font-size: 15px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.share-download:hover:not(:disabled) {
+  background: #a07818;
+}
+
+.share-download:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* 移动端分享弹窗 */
+@media (max-width: 768px) {
+  .share-modal {
+    width: 100%;
+    max-width: 100%;
+    border-radius: 16px 16px 0 0;
+    position: absolute;
+    bottom: 0;
+    padding: 20px;
+  }
+
+  .card-preview {
+    margin-bottom: 16px;
+  }
+
+  .share-card {
+    width: 200px;
+    min-height: 280px;
+    padding: 20px 18px;
+  }
+
+  .card-title {
+    font-size: 18px;
+  }
+
+  .card-content {
+    font-size: 14px;
+  }
+}
+
 .action-btn span {
   font-size: 12px;
 }

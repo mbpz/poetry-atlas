@@ -2,6 +2,7 @@
 
 import { useState, useRef, useMemo } from "react";
 import { useSpeech } from "@/lib/useSpeech";
+import { ShareModal } from "@/components/ShareModal";
 
 type PoemProps = {
   id: string;
@@ -76,6 +77,7 @@ export function PoemCard({ poem }: { poem: PoemProps }) {
   const [expanded, setExpanded] = useState(false);
   const [liked, setLiked] = useState(false);
   const [activeNote, setActiveNote] = useState<"annotation" | "translation" | "appreciation">("annotation");
+  const [showShare, setShowShare] = useState(false);
   const contentRef = useRef<HTMLDivElement>(null);
   const { state, currentLine, speak, pause, resume, stop } = useSpeech();
 
@@ -189,7 +191,7 @@ export function PoemCard({ poem }: { poem: PoemProps }) {
                 ⏹️ <span>停止</span>
               </button>
             )}
-            <button className="action-btn" title="生成分享卡片" onClick={() => alert("分享功能敬请期待")}>
+            <button className="action-btn" title="生成分享卡片" onClick={() => setShowShare(true)}>
               📤 <span>分享</span>
             </button>
             <button
@@ -210,6 +212,11 @@ export function PoemCard({ poem }: { poem: PoemProps }) {
       >
         {expanded ? "收起 ▲" : "展开 ▼"}
       </button>
+
+      {/* 分享弹窗 */}
+      {showShare && (
+        <ShareModal poem={poem} onClose={() => setShowShare(false)} />
+      )}
     </div>
   );
 }
