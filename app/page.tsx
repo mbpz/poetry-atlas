@@ -10,6 +10,15 @@ import {
   PlaceWithPoems,
 } from "@/lib/supabase";
 
+type SearchResult = {
+  id: string;
+  title: string;
+  author: string;
+  dynasty: string;
+  content: string;
+  places: { id: string; name: string; type: string }[];
+};
+
 export default function Home() {
   const mapRef = useRef<maplibregl.Map | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -18,6 +27,66 @@ export default function Home() {
   const [loading, setLoading] = useState(true);
   const [poemLoading, setPoemLoading] = useState(false);
   const [activeType, setActiveType] = useState("all");
+  const [searchQuery, setSearchQuery] = useState("");
+  const [searchResults, setSearchResults] = useState<SearchResult[]>([]);
+  const [searchLoading, setSearchLoading] = useState(false);
+  const [showSearch, setShowSearch] = useState(false);
+  const searchTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const handleSearch = useCallback(async (q: string) => {
+    setSearchQuery(q);
+    if (q.trim().length < 1) {
+      setSearchResults([]);
+      setShowSearch(false);
+      return;
+    }
+    setShowSearch(true);
+    setSearchLoading(true);
+    try {
+      const res = await fetch(`/api/search?q=${encodeURIComponent(q)}`);
+      const data = await res.json();
+      setSearchResults(data.results ?? []);
+    } catch (err) {
+      console.error(err);
+      setSearchResults([]);
+    } finally {
+      setSearchLoading(false);
+    }
+  }, []);
+
+  const debouncedSearch = useCallback(
+    (q: string) => {
+      if (searchTimerRef.current) clearTimeout(searchTimerRef.current);
+      searchTimerRef.current = setTimeout(() => handleSearch(q), 300);
+    },
+    [handleSearch]
+  );
+
+  const handleSearchResultClick = useCallback(
+    async (placeId: string) => {
+      setShowSearch(false);
+      setSearchQuery("");
+      setSearchResults([]);
+      setPoemLoading(true);
+      setSelected(null);
+      try {
+        const data = await fetchPlaceWithPoems(placeId);
+        setSelected(data);
+        if (mapRef.current) {
+          mapRef.current.flyTo({
+            center: [data.lng, data.lat],
+            zoom: 8,
+            speed: 1.2,
+          });
+        }
+      } catch (err) {
+        console.error(err);
+      } finally {
+        setPoemLoading(false);
+      }
+    },
+    []
+  );
 
   // 初始化地图
   useEffect(() => {
@@ -149,6 +218,108 @@ export default function Home() {
           <span style={{ marginLeft: "auto", color: "#a09070", fontSize: "13px" }}>
             {places.length} 个地点
           </span>
+        </div>
+
+        {/* 搜索框 */}
+        <div
+          style={{
+            position: "absolute",
+            top: 60,
+            left: 20,
+            zIndex: 10,
+            width: 340,
+          }}
+        >
+          <div style={{
+            background: "rgba(255,255,255,0.97)",
+            borderRadius: 8,
+            boxShadow: "0 2px 16px rgba(0,0,0,0.12)",
+            overflow: "hidden",
+          }}>
+            <div style={{
+              display: "flex",
+              alignItems: "center",
+              padding: "10px 14px",
+              borderBottom: showSearch ? "1px solid #e8e0d0" : "none",
+            }}>
+              <span style={{ color: "#8b6914", marginRight: 8 }}>🔍</span>
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={(e) => debouncedSearch(e.target.value)}
+                placeholder="搜索诗名、作者、名句..."
+                style={{
+                  border: "none",
+                  outline: "none",
+                  flex: 1,
+                  fontSize: 14,
+                  color: "#3a2f1a",
+                  background: "transparent",
+                }}
+              />
+              {searchLoading && (
+                <span style={{ fontSize: 12, color: "#a09070" }}>...</span>
+              )}
+              {searchQuery && (
+                <button
+                  onClick={() => { setSearchQuery(""); setSearchResults([]); setShowSearch(false); }}
+                  style={{
+                    border: "none", background: "transparent",
+                    cursor: "pointer", color: "#a09070", fontSize: 16,
+                  }}
+                >✕</button>
+              )}
+            </div>
+            {showSearch && (
+              <div style={{ maxHeight: 400, overflowY: "auto" }}>
+                {searchResults.length === 0 && !searchLoading ? (
+                  <div style={{ padding: "16px 14px", color: "#a09070", fontSize: 13 }}>
+                    未找到相关诗词
+                  </div>
+                ) : (
+                  searchResults.map((r) => (
+                    <div
+                      key={r.id}
+                      style={{
+                        padding: "12px 14px",
+                        borderBottom: "1px solid #f0ebe0",
+                        cursor: "pointer",
+                      }}
+                      onClick={() => {
+                        if (r.places.length > 0) handleSearchResultClick(r.places[0].id);
+                      }}
+                    >
+                      <div style={{ fontSize: 14, color: "#3a2f1a", fontWeight: 500 }}>
+                        {r.title}
+                        <span style={{ color: "#8b6914", fontSize: 12, marginLeft: 8 }}>
+                          {r.author} · {r.dynasty}
+                        </span>
+                      </div>
+                      <div style={{
+                        fontSize: 12, color: "#6a5a3a", marginTop: 4,
+                        overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap",
+                      }}>
+                        {r.content.replace(/\n/g, " ")}
+                      </div>
+                      {r.places.length > 0 && (
+                        <div style={{ marginTop: 4 }}>
+                          {r.places.slice(0, 3).map((pl) => (
+                            <span key={pl.id} style={{
+                              fontSize: 11, color: "#8b6914",
+                              background: "#f5f0e0", padding: "2px 6px",
+                              borderRadius: 4, marginRight: 4,
+                            }}>
+                              {PLACE_TYPES[pl.type]?.icon || "📍"} {pl.name}
+                            </span>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  ))
+                )}
+              </div>
+            )}
+          </div>
         </div>
 
         {/* 地图 */}
