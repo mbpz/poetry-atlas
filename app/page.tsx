@@ -420,6 +420,11 @@ export default function Home() {
                 <h2 style={{ fontSize: "24px", color: "#3a2f1a", fontWeight: 600 }}>
                   {selected.name}
                 </h2>
+                {selected.ancient_names && selected.ancient_names.length > 0 && (
+                  <span style={{ fontSize: "12px", color: "#b8860b", marginLeft: "4px" }}>
+                    ({selected.ancient_names.join(" · ")})
+                  </span>
+                )}
                 <span
                   style={{
                     fontSize: "12px",

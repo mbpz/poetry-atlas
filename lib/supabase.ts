@@ -26,6 +26,7 @@ export type Place = {
   type: string;
   lng: number;
   lat: number;
+  ancient_names?: string[];
 };
 
 export type PlaceWithPoems = Place & {
@@ -44,7 +45,7 @@ export const PLACE_TYPES: Record<string, { label: string; icon: string }> = {
 export async function fetchPlaces(type?: string): Promise<Place[]> {
   let query = getSupabase()
     .from("places")
-    .select("id,name,type,lng,lat")
+    .select("id,name,type,lng,lat,ancient_names")
     .order("name");
   if (type && type !== "all") {
     query = query.eq("type", type);
@@ -57,7 +58,7 @@ export async function fetchPlaces(type?: string): Promise<Place[]> {
 export async function fetchPlaceWithPoems(placeId: string): Promise<PlaceWithPoems> {
   const { data: place, error: pErr } = await getSupabase()
     .from("places")
-    .select("id,name,type,lng,lat")
+    .select("id,name,type,lng,lat,ancient_names")
     .eq("id", placeId)
     .single();
   if (pErr) throw pErr;
