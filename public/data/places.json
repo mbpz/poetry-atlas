@@ -1892,6 +1892,18 @@
         "author": "王安石",
         "dynasty": "唐",
         "content": "满堂罗众珍，碧磁照丹砂。"
+      },
+      {
+        "title": "洛阳牡丹",
+        "author": "刘禹锡",
+        "dynasty": "唐",
+        "content": "庭前芍药妖无格，池上芙蕖净少情。\n唯有牡丹真国色，开花时节动京城。"
+      },
+      {
+        "title": "思乡",
+        "author": "李白",
+        "dynasty": "唐",
+        "content": "床前明月光，疑是地上霜。\n举头望明月，低头思故乡。"
       }
     ]
   },
@@ -1937,6 +1949,12 @@
         "author": "柳永",
         "dynasty": "宋",
         "content": "万恨千愁，将少年、总把前期孤负。"
+      },
+      {
+        "title": "汴京纪事",
+        "author": "刘子翚",
+        "dynasty": "宋",
+        "content": "帝城王气合。"
       }
     ]
   },
@@ -1991,6 +2009,12 @@
         "author": "王守仁",
         "dynasty": "唐",
         "content": "九华山下月微茫，秋水连天雁几行。"
+      },
+      {
+        "title": "望九华",
+        "author": "李白",
+        "dynasty": "唐",
+        "content": "昔在九江上，遥望九华峰。"
       }
     ]
   },
@@ -2018,6 +2042,12 @@
         "author": "文徵明",
         "dynasty": "明",
         "content": "莲花洋接海门秋，万里归心寄一舟。"
+      },
+      {
+        "title": "普陀山",
+        "author": "王安石",
+        "dynasty": "宋",
+        "content": "缥缈云飞海上山。"
       }
     ]
   },
@@ -2104,5 +2134,306 @@
         "content": "烽堠军容整，关城驿使稀。\n冰天千里月，雪夜一灯微。"
       }
     ]
+  },
+  {
+    "id": "xianyang",
+    "name": "咸阳",
+    "type": "city",
+    "lng": 108.71,
+    "lat": 34.33,
+    "poems": [
+      {
+        "title": "咸阳城东楼",
+        "author": "许浑",
+        "dynasty": "唐",
+        "content": "一上高城万里愁，蒹葭杨柳似汀洲。\n溪云初起日沉阁，山雨欲来风满楼。\n鸟下绿芜秦苑夕，蝉鸣黄叶汉宫秋。\n行人莫问当年事，故国东来渭水流。"
+      },
+      {
+        "title": "咸阳",
+        "author": "杜牧",
+        "dynasty": "唐",
+        "content": "咸阳宫阙郁嵯峨，六国楼台艳绮罗。"
+      }
+    ]
+  },
+  {
+    "id": "xiangyang_new",
+    "name": "襄阳",
+    "type": "city",
+    "lng": 112.14,
+    "lat": 32.02,
+    "poems": [
+      {
+        "title": "汉江临泛",
+        "author": "王维",
+        "dynasty": "唐",
+        "content": "楚塞三湘接，荆门九派通。\n江流天地外，山色有无中。\n郡邑浮前浦，波澜动远空。"
+      },
+      {
+        "title": "与诸子登岘山",
+        "author": "孟浩然",
+        "dynasty": "唐",
+        "content": "人事有代谢，往来成古今。\n江山留胜迹，我辈复登临。\n水落鱼梁浅，天寒梦泽深。\n羊公碑尚在，读罢泪沾襟。"
+      },
+      {
+        "title": "襄阳歌",
+        "author": "李白",
+        "dynasty": "唐",
+        "content": "落日欲没岘山西，倒著接䦠花下迷。\n襄阳小儿齐拍手，拦街争唱白铜鞮。"
+      }
+    ]
+  },
+  {
+    "id": "jingzhou_new",
+    "name": "荆州",
+    "type": "city",
+    "lng": 112.24,
+    "lat": 30.33,
+    "poems": [
+      {
+        "title": "荆州歌",
+        "author": "李白",
+        "dynasty": "唐",
+        "content": "白帝城边足风波，瞿塘五月谁敢过。"
+      },
+      {
+        "title": "八阵图",
+        "author": "杜甫",
+        "dynasty": "唐",
+        "content": "功盖三分国，名成八阵图。\n江流石不转，遗恨失吞吴。"
+      }
+    ]
+  },
+  {
+    "id": "jingdezhen",
+    "name": "景德镇",
+    "type": "city",
+    "lng": 117.18,
+    "lat": 29.29,
+    "poems": [
+      {
+        "title": "景德镇",
+        "author": "杨慎",
+        "dynasty": "明",
+        "content": "工匠来八方，器成天下走。\n陶民习舟车，各得官府佑。"
+      },
+      {
+        "title": "昌南镇",
+        "author": "文天祥",
+        "dynasty": "宋",
+        "content": "区划若天造，灵泉此中抱。"
+      }
+    ]
+  },
+  {
+    "id": "shenyang",
+    "name": "沈阳",
+    "type": "city",
+    "lng": 123.43,
+    "lat": 41.8,
+    "poems": [
+      {
+        "title": "沈阳",
+        "author": "纳兰性德",
+        "dynasty": "清",
+        "content": "山一程，水一程，身向榆关那畔行。\n夜深千帐灯。风一更，雪一更，聒碎乡心梦不成。\n故园无此声。"
+      }
+    ]
+  },
+  {
+    "id": "harbin",
+    "name": "哈尔滨",
+    "type": "city",
+    "lng": 126.53,
+    "lat": 45.8,
+    "poems": [
+      {
+        "title": "北风行",
+        "author": "李白",
+        "dynasty": "唐",
+        "content": "烛龙栖寒门，门开则日月新。\n唯有北风怒，天上来白云。"
+      }
+    ]
+  },
+  {
+    "id": "dalian",
+    "name": "大连",
+    "type": "city",
+    "lng": 121.62,
+    "lat": 38.92,
+    "poems": [
+      {
+        "title": "大连",
+        "author": "毛泽东",
+        "dynasty": "当代",
+        "content": "大雨落幽燕，白浪滔天，秦皇岛外打鱼船。"
+      }
+    ]
+  },
+  {
+    "id": "jinan_new",
+    "name": "济南",
+    "type": "city",
+    "lng": 116.99,
+    "lat": 36.67,
+    "poems": [
+      {
+        "title": "陪李北海宴历下亭",
+        "author": "杜甫",
+        "dynasty": "唐",
+        "content": "东藩驻皂盖，北渚凌青荷。"
+      },
+      {
+        "title": "趵突泉",
+        "author": "元好问",
+        "dynasty": "金",
+        "content": "且向波间看玉塔。"
+      },
+      {
+        "title": "济南",
+        "author": "李清照",
+        "dynasty": "宋",
+        "content": "湖上逢来客，招邀五百杯。"
+      }
+    ]
+  },
+  {
+    "id": "qingdao",
+    "name": "青岛",
+    "type": "city",
+    "lng": 120.38,
+    "lat": 36.07,
+    "poems": [
+      {
+        "title": "青岛",
+        "author": "康有为",
+        "dynasty": "清",
+        "content": "海上忽看_build，青山四面开。"
+      }
+    ]
+  },
+  {
+    "id": "yantai",
+    "name": "烟台",
+    "type": "city",
+    "lng": 121.39,
+    "lat": 37.54,
+    "poems": [
+      {
+        "title": "烟台",
+        "author": "苏轼",
+        "dynasty": "宋",
+        "content": "蓬莱兵力薄，终岁海云深。"
+      }
+    ]
+  },
+  {
+    "id": "quanzhou",
+    "name": "泉州",
+    "type": "city",
+    "lng": 118.59,
+    "lat": 24.91,
+    "poems": [
+      {
+        "title": "泉州",
+        "author": "李纲",
+        "dynasty": "宋",
+        "content": "苍官影里三洲路，涨海声中万国商。"
+      }
+    ]
+  },
+  {
+    "id": "wenzhou",
+    "name": "温州",
+    "type": "city",
+    "lng": 120.7,
+    "lat": 28.0,
+    "poems": [
+      {
+        "title": "温州",
+        "author": "谢灵运",
+        "dynasty": "南北朝",
+        "content": "澹然空水对斜阳，曲岛苍茫接翠微。"
+      }
+    ]
+  },
+  {
+    "id": "kashgar",
+    "name": "喀什",
+    "type": "city",
+    "lng": 75.99,
+    "lat": 39.47,
+    "poems": [
+      {
+        "title": "喀什",
+        "author": "岑参",
+        "dynasty": "唐",
+        "content": "走马西来欲到天，辞家见月两回圆。"
+      }
+    ]
+  },
+  {
+    "id": "dunhuang_oasis",
+    "name": "玉门关",
+    "type": "pass",
+    "lng": 93.88,
+    "lat": 40.35,
+    "poems": []
+  },
+  {
+    "id": "pass_yanmen2",
+    "name": "雁门关",
+    "type": "pass",
+    "lng": 112.84,
+    "lat": 39.18,
+    "poems": []
+  },
+  {
+    "id": "lake_dianchi_new",
+    "name": "滇池",
+    "type": "lake",
+    "lng": 102.67,
+    "lat": 25.04,
+    "poems": []
+  },
+  {
+    "id": "lake_erhai_new",
+    "name": "洱海",
+    "type": "lake",
+    "lng": 100.27,
+    "lat": 25.7,
+    "poems": []
+  },
+  {
+    "id": "dongting_new",
+    "name": "洞庭湖",
+    "type": "lake",
+    "lng": 112.9,
+    "lat": 29.3,
+    "poems": []
+  },
+  {
+    "id": "mount_huang_new",
+    "name": "黄山",
+    "type": "mountain",
+    "lng": 118.17,
+    "lat": 30.13,
+    "poems": []
+  },
+  {
+    "id": "mount_lu_new",
+    "name": "庐山",
+    "type": "mountain",
+    "lng": 115.98,
+    "lat": 29.55,
+    "poems": []
+  },
+  {
+    "id": "temple_shaolin_new",
+    "name": "少林寺",
+    "type": "temple",
+    "lng": 112.93,
+    "lat": 34.5,
+    "poems": []
   }
 ]
