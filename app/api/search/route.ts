@@ -35,6 +35,9 @@ export async function GET(request: NextRequest) {
     dynasty: row.dynasty,
     dynasty_id: row.dynasty_id,
     content: row.content,
+    annotation: row.annotation,
+    translation: row.translation,
+    appreciation: row.appreciation,
     places: row.places ?? [],
   }));
 

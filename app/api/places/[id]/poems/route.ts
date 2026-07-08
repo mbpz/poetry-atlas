@@ -24,7 +24,7 @@ export async function GET(
 
   const { data: rows, error: ppErr } = await supabase
     .from("poem_places")
-    .select("poems(id,title,author,dynasty,dynasty_id,content)")
+    .select("poems(id,title,author,dynasty,dynasty_id,content,annotation,translation,appreciation)")
     .eq("place_id", id);
 
   if (ppErr) {

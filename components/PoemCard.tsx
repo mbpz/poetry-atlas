@@ -9,6 +9,9 @@ type PoemProps = {
   author: string;
   dynasty: string;
   content: string;
+  annotation?: string | null;
+  translation?: string | null;
+  appreciation?: string | null;
 };
 
 // 名句高亮
@@ -72,6 +75,7 @@ function isFamousLine(line: string): boolean {
 export function PoemCard({ poem }: { poem: PoemProps }) {
   const [expanded, setExpanded] = useState(false);
   const [liked, setLiked] = useState(false);
+  const [activeNote, setActiveNote] = useState<"annotation" | "translation" | "appreciation">("annotation");
   const contentRef = useRef<HTMLDivElement>(null);
   const { state, currentLine, speak, pause, resume, stop } = useSpeech();
 
@@ -134,6 +138,43 @@ export function PoemCard({ poem }: { poem: PoemProps }) {
             </div>
           )}
 
+          {/* 注释区域（有此诗词数据时展示） */}
+          {(poem.annotation || poem.translation || poem.appreciation) && (
+            <div className="poem-notes">
+              <div className="notes-tabs">
+                {poem.annotation && (
+                  <button
+                    className={`note-tab ${activeNote === "annotation" ? "active" : ""}`}
+                    onClick={() => setActiveNote("annotation")}
+                  >
+                    注释
+                  </button>
+                )}
+                {poem.translation && (
+                  <button
+                    className={`note-tab ${activeNote === "translation" ? "active" : ""}`}
+                    onClick={() => setActiveNote("translation")}
+                  >
+                    译文
+                  </button>
+                )}
+                {poem.appreciation && (
+                  <button
+                    className={`note-tab ${activeNote === "appreciation" ? "active" : ""}`}
+                    onClick={() => setActiveNote("appreciation")}
+                  >
+                    赏析
+                  </button>
+                )}
+              </div>
+              <div className="note-content">
+                {(activeNote === "annotation" && poem.annotation) ||
+                  (activeNote === "translation" && poem.translation) ||
+                  (activeNote === "appreciation" && poem.appreciation)}
+              </div>
+            </div>
+          )}
+
           {/* 明确操作按钮 */}
           <div className="poem-actions">
             <button
@@ -148,9 +189,6 @@ export function PoemCard({ poem }: { poem: PoemProps }) {
                 ⏹️ <span>停止</span>
               </button>
             )}
-            <button className="action-btn" title="查看注释" onClick={() => alert("注释功能敬请期待")}>
-              📖 <span>注释</span>
-            </button>
             <button className="action-btn" title="生成分享卡片" onClick={() => alert("分享功能敬请期待")}>
               📤 <span>分享</span>
             </button>

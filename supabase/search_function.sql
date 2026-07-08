@@ -13,6 +13,9 @@ RETURNS TABLE (
   dynasty TEXT,
   dynasty_id TEXT,
   content TEXT,
+  annotation TEXT,
+  translation TEXT,
+  appreciation TEXT,
   places JSONB
 )
 LANGUAGE plpgsql
@@ -33,6 +36,9 @@ BEGIN
     p.dynasty,
     p.dynasty_id,
     p.content,
+    p.annotation,
+    p.translation,
+    p.appreciation,
     COALESCE(
       (SELECT jsonb_agg(jsonb_build_object('id', pl.id, 'name', pl.name, 'type', pl.type))
        FROM poem_places pp2

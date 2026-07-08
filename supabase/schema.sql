@@ -17,6 +17,9 @@ CREATE TABLE poems (
   author TEXT NOT NULL,
   dynasty TEXT NOT NULL,
   content TEXT NOT NULL,
+  annotation TEXT,
+  translation TEXT,
+  appreciation TEXT,
   created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
