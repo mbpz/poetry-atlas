@@ -5,6 +5,7 @@ import maplibregl from "maplibre-gl";
 import {
   fetchPlaces,
   fetchPlaceWithPoems,
+  PLACE_TYPES,
   Place,
   PlaceWithPoems,
 } from "@/lib/supabase";
@@ -16,6 +17,7 @@ export default function Home() {
   const [selected, setSelected] = useState<PlaceWithPoems | null>(null);
   const [loading, setLoading] = useState(true);
   const [poemLoading, setPoemLoading] = useState(false);
+  const [activeType, setActiveType] = useState("all");
 
   // 初始化地图
   useEffect(() => {
@@ -55,59 +57,109 @@ export default function Home() {
 
   // 加载地点列表
   useEffect(() => {
-    fetchPlaces()
+    setLoading(true);
+    fetchPlaces(activeType)
       .then(setPlaces)
       .catch(console.error)
       .finally(() => setLoading(false));
-  }, []);
+  }, [activeType]);
 
   // 渲染标记
-  const handleMarkerClick = useCallback(
-    async (place: Place) => {
-      setPoemLoading(true);
-      setSelected(null);
-      try {
-        const data = await fetchPlaceWithPoems(place.id);
-        setSelected(data);
-      } catch (err) {
-        console.error(err);
-      } finally {
-        setPoemLoading(false);
-      }
-    },
-    []
-  );
+  const handleMarkerClick = useCallback(async (place: Place) => {
+    setPoemLoading(true);
+    setSelected(null);
+    try {
+      const data = await fetchPlaceWithPoems(place.id);
+      setSelected(data);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setPoemLoading(false);
+    }
+  }, []);
 
   useEffect(() => {
     if (!mapRef.current || places.length === 0) return;
 
-    const markers: maplibregl.Marker[] = [];
+    // 清除现有标记
+    document.querySelectorAll(".marker").forEach((el) => el.remove());
 
     places.forEach((place) => {
       const el = document.createElement("div");
       el.className = "marker";
-      el.innerHTML = `${place.name}`;
+      const icon = PLACE_TYPES[place.type]?.icon || "📍";
+      el.innerHTML = `${icon}<br><b>${place.name}</b>`;
       el.addEventListener("click", () => handleMarkerClick(place));
 
-      const marker = new maplibregl.Marker({ element: el })
+      new maplibregl.Marker({ element: el })
         .setLngLat([place.lng, place.lat])
         .addTo(mapRef.current!);
-      markers.push(marker);
     });
-
-    return () => markers.forEach((m) => m.remove());
   }, [places, handleMarkerClick]);
 
   return (
     <div style={{ display: "flex", height: "100vh", width: "100vw" }}>
       {/* 地图区域 */}
-      <div ref={containerRef} style={{ flex: 1, height: "100%" }} />
+      <div style={{ flex: 1, display: "flex", flexDirection: "column" }}>
+        {/* 维度筛选栏 */}
+        <div
+          style={{
+            padding: "12px 20px",
+            background: "#faf8f3",
+            borderBottom: "1px solid #e0d8c8",
+            display: "flex",
+            gap: "8px",
+            alignItems: "center",
+          }}
+        >
+          <span style={{ color: "#8b6914", fontSize: "14px", marginRight: "8px" }}>
+            维度：
+          </span>
+          <button
+            onClick={() => setActiveType("all")}
+            style={{
+              padding: "5px 14px",
+              border: "1px solid #8b6914",
+              borderRadius: "4px",
+              background: activeType === "all" ? "#8b6914" : "transparent",
+              color: activeType === "all" ? "#fff" : "#8b6914",
+              cursor: "pointer",
+              fontSize: "13px",
+            }}
+          >
+            全部
+          </button>
+          {Object.entries(PLACE_TYPES).map(([key, val]) => (
+            <button
+              key={key}
+              onClick={() => setActiveType(key)}
+              style={{
+                padding: "5px 14px",
+                border: "1px solid #8b6914",
+                borderRadius: "4px",
+                background: activeType === key ? "#8b6914" : "transparent",
+                color: activeType === key ? "#fff" : "#8b6914",
+                cursor: "pointer",
+                fontSize: "13px",
+              }}
+            >
+              {val.icon} {val.label}
+            </button>
+          ))}
+          <span style={{ marginLeft: "auto", color: "#a09070", fontSize: "13px" }}>
+            {places.length} 个地点
+          </span>
+        </div>
 
-      {/* 右侧面板 */}
+        {/* 地图 */}
+        <div ref={containerRef} style={{ flex: 1 }} />
+      </div>
+
+      {/* 右侧诗词面板 */}
       <div
         className="poem-panel"
         style={{
-          width: 400,
+          width: 420,
           height: "100%",
           background: "#faf8f3",
           borderLeft: "1px solid #e0d8c8",
@@ -128,9 +180,25 @@ export default function Home() {
                 marginBottom: "20px",
               }}
             >
-              <h2 style={{ fontSize: "24px", color: "#3a2f1a", fontWeight: 600 }}>
-                {selected.name}
-              </h2>
+              <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                <span style={{ fontSize: "22px" }}>
+                  {PLACE_TYPES[selected.type]?.icon || "📍"}
+                </span>
+                <h2 style={{ fontSize: "24px", color: "#3a2f1a", fontWeight: 600 }}>
+                  {selected.name}
+                </h2>
+                <span
+                  style={{
+                    fontSize: "12px",
+                    color: "#8b6914",
+                    background: "#f5f0e0",
+                    padding: "2px 8px",
+                    borderRadius: "10px",
+                  }}
+                >
+                  {PLACE_TYPES[selected.type]?.label}
+                </span>
+              </div>
               <button
                 onClick={() => setSelected(null)}
                 style={{
@@ -169,7 +237,8 @@ export default function Home() {
                     lineHeight: 1.9,
                     color: "#4a3f2a",
                     whiteSpace: "pre-line",
-                    fontFamily: '"Noto Serif SC", "Source Han Serif SC", "SimSun", serif',
+                    fontFamily:
+                      '"Noto Serif SC", "Source Han Serif SC", "SimSun", serif',
                   }}
                 >
                   {poem.content}
@@ -193,10 +262,16 @@ export default function Home() {
               🗺️ 中国古诗词地图
             </h2>
             <p style={{ fontSize: "15px", lineHeight: 1.8, color: "#6a5a3a" }}>
-              点击地图上的任意标记，探索这片土地上的诗词
+              点击地图上的任意标记
+              <br />
+              {activeType === "all"
+                ? "探索各地诗词文化"
+                : `浏览${PLACE_TYPES[activeType]?.label || ""}诗词`}
             </p>
-            <div style={{ marginTop: "32px", fontSize: "13px", color: "#a09070" }}>
-              <p>共收录 {places.length} 个城市</p>
+            <div
+              style={{ marginTop: "32px", fontSize: "13px", color: "#a09070" }}
+            >
+              <p>共收录 {places.length} 个地点</p>
             </div>
           </div>
         )}

@@ -2,275 +2,961 @@
   {
     "id": "hangzhou",
     "name": "杭州",
+    "type": "city",
     "lng": 120.15,
     "lat": 30.25,
     "poems": [
-      { "title": "饮湖上初晴后雨", "author": "苏轼", "dynasty": "宋", "content": "水光潋滟晴方好，山色空蒙雨亦奇。\n欲把西湖比西子，淡妆浓抹总相宜。" },
-      { "title": "题临安邸", "author": "林升", "dynasty": "宋", "content": "山外青山楼外楼，西湖歌舞几时休。\n暖风熏得游人醉，直把杭州作汴州。" },
-      { "title": "晓出净慈寺送林子方", "author": "杨万里", "dynasty": "宋", "content": "毕竟西湖六月中，风光不与四时同。\n接天莲叶无穷碧，映日荷花别样红。" },
-      { "title": "钱塘湖春行", "author": "白居易", "dynasty": "唐", "content": "孤山寺北贾亭西，水面初平云脚低。\n几处早莺争暖树，谁家新燕啄春泥。\n乱花渐欲迷人眼，浅草才能没马蹄。\n最爱湖东行不足，绿杨阴里白沙堤。" },
-      { "title": "忆江南", "author": "白居易", "dynasty": "唐", "content": "江南好，风景旧曾谙。\n日出江花红胜火，春来江水绿如蓝。\n能不忆江南？" },
-      { "title": "望海潮", "author": "柳永", "dynasty": "宋", "content": "东南形胜，三吴都会，钱塘自古繁华。\n烟柳画桥，风帘翠幕，参差十万人家。\n云树绕堤沙，怒涛卷霜雪，天堑无涯。" }
+      {
+        "title": "饮湖上初晴后雨",
+        "author": "苏轼",
+        "dynasty": "宋",
+        "content": "水光潋滟晴方好，山色空蒙雨亦奇。\n欲把西湖比西子，淡妆浓抹总相宜。"
+      },
+      {
+        "title": "题临安邸",
+        "author": "林升",
+        "dynasty": "宋",
+        "content": "山外青山楼外楼，西湖歌舞几时休。\n暖风熏得游人醉，直把杭州作汴州。"
+      },
+      {
+        "title": "晓出净慈寺送林子方",
+        "author": "杨万里",
+        "dynasty": "宋",
+        "content": "毕竟西湖六月中，风光不与四时同。\n接天莲叶无穷碧，映日荷花别样红。"
+      },
+      {
+        "title": "钱塘湖春行",
+        "author": "白居易",
+        "dynasty": "唐",
+        "content": "孤山寺北贾亭西，水面初平云脚低。\n几处早莺争暖树，谁家新燕啄春泥。\n乱花渐欲迷人眼，浅草才能没马蹄。\n最爱湖东行不足，绿杨阴里白沙堤。"
+      },
+      {
+        "title": "忆江南",
+        "author": "白居易",
+        "dynasty": "唐",
+        "content": "江南好，风景旧曾谙。\n日出江花红胜火，春来江水绿如蓝。\n能不忆江南？"
+      },
+      {
+        "title": "望海潮",
+        "author": "柳永",
+        "dynasty": "宋",
+        "content": "东南形胜，三吴都会，钱塘自古繁华。\n烟柳画桥，风帘翠幕，参差十万人家。"
+      },
+      {
+        "title": "山园小梅",
+        "author": "林逋",
+        "dynasty": "宋",
+        "content": "众芳摇落独暄妍，占尽风情向小园。\n疏影横斜水清浅，暗香浮动月黄昏。"
+      },
+      {
+        "title": "临安春雨初霁",
+        "author": "陆游",
+        "dynasty": "宋",
+        "content": "世味年来薄似纱，谁令骑马客京华。\n小楼一夜听春雨，深巷明朝卖杏花。"
+      }
     ]
   },
   {
     "id": "xian",
     "name": "西安",
+    "type": "city",
     "lng": 108.94,
     "lat": 34.26,
     "poems": [
-      { "title": "过华清宫绝句", "author": "杜牧", "dynasty": "唐", "content": "长安回望绣成堆，山顶千门次第开。\n一骑红尘妃子笑，无人知是荔枝来。" },
-      { "title": "子夜吴歌·秋歌", "author": "李白", "dynasty": "唐", "content": "长安一片月，万户捣衣声。\n秋风吹不尽，总是玉关情。" },
-      { "title": "登科后", "author": "孟郊", "dynasty": "唐", "content": "春风得意马蹄疾，一日看尽长安花。" },
-      { "title": "送元二使安西", "author": "王维", "dynasty": "唐", "content": "渭城朝雨浥轻尘，客舍青青柳色新。\n劝君更尽一杯酒，西出阳关无故人。" },
-      { "title": "曲江二首·其一", "author": "杜甫", "dynasty": "唐", "content": "一片花飞减却春，风飘万点正愁人。\n且看欲尽花经眼，莫厌伤多酒入唇。" }
+      {
+        "title": "过华清宫绝句",
+        "author": "杜牧",
+        "dynasty": "唐",
+        "content": "长安回望绣成堆，山顶千门次第开。\n一骑红尘妃子笑，无人知是荔枝来。"
+      },
+      {
+        "title": "子夜吴歌·秋歌",
+        "author": "李白",
+        "dynasty": "唐",
+        "content": "长安一片月，万户捣衣声。\n秋风吹不尽，总是玉关情。"
+      },
+      {
+        "title": "登科后",
+        "author": "孟郊",
+        "dynasty": "唐",
+        "content": "春风得意马蹄疾，一日看尽长安花。"
+      },
+      {
+        "title": "长相思",
+        "author": "李白",
+        "dynasty": "唐",
+        "content": "长相思，在长安。\n络纬秋啼金井阑，微霜凄凄簟色寒。\n孤灯不明思欲绝，卷帷望月空长叹。"
+      },
+      {
+        "title": "玄都观看花",
+        "author": "刘禹锡",
+        "dynasty": "唐",
+        "content": "紫陌红尘拂面来，无人不道看花回。\n玄都观里桃千树，尽是刘郎去后栽。"
+      },
+      {
+        "title": "丽人行",
+        "author": "杜甫",
+        "dynasty": "唐",
+        "content": "三月三日天气新，长安水边多丽人。"
+      },
+      {
+        "title": "送元二使安西",
+        "author": "王维",
+        "dynasty": "唐",
+        "content": "渭城朝雨浥轻尘，客舍青青柳色新。\n劝君更尽一杯酒，西出阳关无故人。"
+      }
     ]
   },
   {
     "id": "nanjing",
     "name": "南京",
-    "lng": 118.80,
+    "type": "city",
+    "lng": 118.8,
     "lat": 32.06,
     "poems": [
-      { "title": "乌衣巷", "author": "刘禹锡", "dynasty": "唐", "content": "朱雀桥边野草花，乌衣巷口夕阳斜。\n旧时王谢堂前燕，飞入寻常百姓家。" },
-      { "title": "泊秦淮", "author": "杜牧", "dynasty": "唐", "content": "烟笼寒水月笼沙，夜泊秦淮近酒家。\n商女不知亡国恨，隔江犹唱后庭花。" },
-      { "title": "江南春", "author": "杜牧", "dynasty": "唐", "content": "千里莺啼绿映红，水村山郭酒旗风。\n南朝四百八十寺，多少楼台烟雨中。" },
-      { "title": "桂枝香·金陵怀古", "author": "王安石", "dynasty": "宋", "content": "登临送目，正故国晚秋，天气初肃。\n千里澄江似练，翠峰如簇。" },
-      { "title": "西塞山怀古", "author": "刘禹锡", "dynasty": "唐", "content": "王濬楼船下益州，金陵王气黯然收。" }
-    ]
-  },
-  {
-    "id": "wuchang",
-    "name": "武汉",
-    "lng": 114.30,
-    "lat": 30.59,
-    "poems": [
-      { "title": "黄鹤楼送孟浩然之广陵", "author": "李白", "dynasty": "唐", "content": "故人西辞黄鹤楼，烟花三月下扬州。\n孤帆远影碧空尽，唯见长江天际流。" },
-      { "title": "黄鹤楼", "author": "崔颢", "dynasty": "唐", "content": "昔人已乘黄鹤去，此地空余黄鹤楼。\n黄鹤一去不复返，白云千载空悠悠。\n晴川历历汉阳树，芳草萋萋鹦鹉洲。\n日暮乡关何处是？烟波江上使人愁。" },
-      { "title": "与史郎中钦听黄鹤楼上吹笛", "author": "李白", "dynasty": "唐", "content": "一为迁客去长沙，西望长安不见家。\n黄鹤楼中吹玉笛，江城五月落梅花。" }
+      {
+        "title": "泊秦淮",
+        "author": "杜牧",
+        "dynasty": "唐",
+        "content": "烟笼寒水月笼沙，夜泊秦淮近酒家。\n商女不知亡国恨，隔江犹唱后庭花。"
+      },
+      {
+        "title": "乌衣巷",
+        "author": "刘禹锡",
+        "dynasty": "唐",
+        "content": "朱雀桥边野草花，乌衣巷口夕阳斜。\n旧时王谢堂前燕，飞入寻常百姓家。"
+      },
+      {
+        "title": "江南春",
+        "author": "杜牧",
+        "dynasty": "唐",
+        "content": "千里莺啼绿映红，水村山郭酒旗风。\n南朝四百八十寺，多少楼台烟雨中。"
+      },
+      {
+        "title": "桂枝香·金陵怀古",
+        "author": "王安石",
+        "dynasty": "宋",
+        "content": "登临送目，正故国晚秋，天气初肃。\n千里澄江似练，翠峰如簇。\n彩舟云淡，星河鹭起，画图难足。"
+      },
+      {
+        "title": "台城",
+        "author": "韦庄",
+        "dynasty": "唐",
+        "content": "江雨霏霏江草齐，六朝如梦鸟空啼。\n无情最是台城柳，依旧烟笼十里堤。"
+      },
+      {
+        "title": "石头城",
+        "author": "刘禹锡",
+        "dynasty": "唐",
+        "content": "山围故国周遭在，潮打空城寂寞回。\n淮水东边旧时月，夜深还过女墙来。"
+      }
     ]
   },
   {
     "id": "chengdu",
     "name": "成都",
+    "type": "city",
     "lng": 104.07,
     "lat": 30.65,
     "poems": [
-      { "title": "春夜喜雨", "author": "杜甫", "dynasty": "唐", "content": "好雨知时节，当春乃发生。\n随风潜入夜，润物细无声。\n野径云俱黑，江船火独明。\n晓看红湿处，花重锦官城。" },
-      { "title": "蜀相", "author": "杜甫", "dynasty": "唐", "content": "丞相祠堂何处寻，锦官城外柏森森。\n映阶碧草自春色，隔叶黄鹂空好音。\n三顾频烦天下计，两朝开济老臣心。\n出师未捷身先死，长使英雄泪满襟。" },
-      { "title": "成都曲", "author": "张籍", "dynasty": "唐", "content": "锦江近西烟水绿，新雨山头荔枝熟。\n万里桥边多酒家，游人爱向谁家宿？" }
+      {
+        "title": "春夜喜雨",
+        "author": "杜甫",
+        "dynasty": "唐",
+        "content": "好雨知时节，当春乃发生。\n随风潜入夜，润物细无声。\n野径云俱黑，江船火独明。\n晓看红湿处，花重锦官城。"
+      },
+      {
+        "title": "蜀相",
+        "author": "杜甫",
+        "dynasty": "唐",
+        "content": "丞相祠堂何处寻，锦官城外柏森森。\n映阶碧草自春色，隔叶黄鹂空好音。\n三顾频烦天下计，两朝开济老臣心。\n出师未捷身先死，长使英雄泪满襟。"
+      },
+      {
+        "title": "上皇西巡南京歌",
+        "author": "李白",
+        "dynasty": "唐",
+        "content": "九天开出一成都，万户千门入画图。"
+      },
+      {
+        "title": "成都曲",
+        "author": "张籍",
+        "dynasty": "唐",
+        "content": "锦江近西烟水绿，新雨山头荔枝熟。"
+      }
     ]
   },
   {
     "id": "suzhou",
     "name": "苏州",
+    "type": "city",
     "lng": 120.62,
     "lat": 31.32,
     "poems": [
-      { "title": "枫桥夜泊", "author": "张继", "dynasty": "唐", "content": "月落乌啼霜满天，江枫渔火对愁眠。\n姑苏城外寒山寺，夜半钟声到客船。" },
-      { "title": "送人游吴", "author": "杜荀鹤", "dynasty": "唐", "content": "君到姑苏见，人家尽枕河。\n古宫闲地少，水港小桥多。" },
-      { "title": "青玉案", "author": "贺铸", "dynasty": "宋", "content": "凌波不过横塘路，但目送、芳尘去。\n锦瑟华年谁与度？" }
+      {
+        "title": "枫桥夜泊",
+        "author": "张继",
+        "dynasty": "唐",
+        "content": "月落乌啼霜满天，江枫渔火对愁眠。\n姑苏城外寒山寺，夜半钟声到客船。"
+      },
+      {
+        "title": "送人游吴",
+        "author": "杜荀鹤",
+        "dynasty": "唐",
+        "content": "君到姑苏见，人家尽枕河。\n古宫闲地少，水港小桥多。"
+      },
+      {
+        "title": "青玉案",
+        "author": "贺铸",
+        "dynasty": "宋",
+        "content": "凌波不过横塘路，但目送、芳尘去。"
+      }
     ]
   },
   {
     "id": "yangzhou",
     "name": "扬州",
+    "type": "city",
     "lng": 119.42,
     "lat": 32.39,
     "poems": [
-      { "title": "遣怀", "author": "杜牧", "dynasty": "唐", "content": "落魄江湖载酒行，楚腰纤细掌中轻。\n十年一觉扬州梦，赢得青楼薄幸名。" },
-      { "title": "寄扬州韩绰判官", "author": "杜牧", "dynasty": "唐", "content": "青山隐隐水迢迢，秋尽江南草未凋。\n二十四桥明月夜，玉人何处教吹箫？" },
-      { "title": "忆扬州", "author": "徐凝", "dynasty": "唐", "content": "萧娘脸薄难胜泪，桃叶眉长易觉愁。\n天下三分明月夜，二分无赖是扬州。" },
-      { "title": "扬州慢", "author": "姜夔", "dynasty": "宋", "content": "淮左名都，竹西佳处，解鞍少驻初程。\n过春风十里，尽荠麦青青。\n自胡马窥江去后，废池乔木，犹厌言兵。" }
+      {
+        "title": "遣怀",
+        "author": "杜牧",
+        "dynasty": "唐",
+        "content": "落魄江湖载酒行，楚腰纤细掌中轻。\n十年一觉扬州梦，赢得青楼薄幸名。"
+      },
+      {
+        "title": "寄扬州韩绰判官",
+        "author": "杜牧",
+        "dynasty": "唐",
+        "content": "青山隐隐水迢迢，秋尽江南草未凋。\n二十四桥明月夜，玉人何处教吹箫？"
+      },
+      {
+        "title": "忆扬州",
+        "author": "徐凝",
+        "dynasty": "唐",
+        "content": "萧娘脸薄难胜泪，桃叶眉长易觉愁。\n天下三分明月夜，二分无赖是扬州。"
+      },
+      {
+        "title": "扬州慢",
+        "author": "姜夔",
+        "dynasty": "宋",
+        "content": "淮左名都，竹西佳处，解鞍少驻初程。\n过春风十里，尽荠麦青青。"
+      }
     ]
   },
   {
     "id": "beijing",
     "name": "北京",
+    "type": "city",
     "lng": 116.41,
-    "lat": 39.90,
+    "lat": 39.9,
     "poems": [
-      { "title": "登幽州台歌", "author": "陈子昂", "dynasty": "唐", "content": "前不见古人，后不见来者。\n念天地之悠悠，独怆然而涕下。" },
-      { "title": "蓟丘览古", "author": "陈子昂", "dynasty": "唐", "content": "南登碣石馆，遥望黄金台。\n丘陵尽乔木，昭王安在哉？" },
-      { "title": "燕山春暮", "author": "张羽", "dynasty": "明", "content": "金水桥边蜀鸟啼，玉泉山下柳花飞。\n江南江北三千里，愁绝春归客未归。" }
-    ]
-  },
-  {
-    "id": "chongqing",
-    "name": "重庆",
-    "lng": 106.55,
-    "lat": 29.56,
-    "poems": [
-      { "title": "早发白帝城", "author": "李白", "dynasty": "唐", "content": "朝辞白帝彩云间，千里江陵一日还。\n两岸猿声啼不住，轻舟已过万重山。" },
-      { "title": "离思五首·其四", "author": "元稹", "dynasty": "唐", "content": "曾经沧海难为水，除却巫山不是云。\n取次花丛懒回顾，半缘修道半缘君。" }
-    ]
-  },
-  {
-    "id": "guangzhou",
-    "name": "广州",
-    "lng": 113.26,
-    "lat": 23.13,
-    "poems": [
-      { "title": "惠州一绝", "author": "苏轼", "dynasty": "宋", "content": "罗浮山下四时春，卢橘杨梅次第新。\n日啖荔枝三百颗，不辞长作岭南人。" },
-      { "title": "广州试越台怀古", "author": "许浑", "dynasty": "唐", "content": "南越千年事，兴怀一旦来。" }
-    ]
-  },
-  {
-    "id": "guilin",
-    "name": "桂林",
-    "lng": 110.18,
-    "lat": 25.23,
-    "poems": [
-      { "title": "送桂州严大夫同用南字", "author": "韩愈", "dynasty": "唐", "content": "苍苍森八桂，兹地在湘南。\n江作青罗带，山如碧玉篸。" },
-      { "title": "桂林山水", "author": "金武祥", "dynasty": "清", "content": "未了山川瘁，何当岁月闲。\n桂林奇八桂，不乏小巫山。" }
-    ]
-  },
-  {
-    "id": "kaifeng",
-    "name": "开封",
-    "lng": 114.35,
-    "lat": 34.79,
-    "poems": [
-      { "title": "雨霖铃", "author": "柳永", "dynasty": "宋", "content": "寒蝉凄切，对长亭晚，骤雨初歇。\n都门帐饮无绪，留恋处、兰舟催发。\n执手相看泪眼，竟无语凝噎。\n念去去、千里烟波，暮霭沉沉楚天阔。\n多情自古伤离别，更那堪、冷落清秋节！" }
+      {
+        "title": "登幽州台歌",
+        "author": "陈子昂",
+        "dynasty": "唐",
+        "content": "前不见古人，后不见来者。\n念天地之悠悠，独怆然而涕下。"
+      },
+      {
+        "title": "蓟丘览古",
+        "author": "陈子昂",
+        "dynasty": "唐",
+        "content": "南登碣石馆，遥望黄金台。\n丘陵尽乔木，昭王安在哉？"
+      }
     ]
   },
   {
     "id": "luoyang",
     "name": "洛阳",
+    "type": "city",
     "lng": 112.45,
     "lat": 34.62,
     "poems": [
-      { "title": "春夜洛城闻笛", "author": "李白", "dynasty": "唐", "content": "谁家玉笛暗飞声，散入春风满洛城。\n此夜曲中闻折柳，何人不起故园情。" },
-      { "title": "洛阳女儿行", "author": "王维", "dynasty": "唐", "content": "洛阳女儿对门居，才可容颜十五余。" },
-      { "title": "浪淘沙", "author": "欧阳修", "dynasty": "宋", "content": "把酒祝东风，且共从容。\n垂杨紫陌洛城东。" }
-    ]
-  },
-  {
-    "id": "jiujiang",
-    "name": "九江",
-    "lng": 115.99,
-    "lat": 29.71,
-    "poems": [
-      { "title": "琵琶行（节选）", "author": "白居易", "dynasty": "唐", "content": "浔阳江头夜送客，枫叶荻花秋瑟瑟。\n主人下马客在船，举酒欲饮无管弦。\n醉不成欢惨将别，别时茫茫江浸月。" },
-      { "title": "题西林壁", "author": "苏轼", "dynasty": "宋", "content": "横看成岭侧成峰，远近高低各不同。\n不识庐山真面目，只缘身在此山中。" },
-      { "title": "望庐山瀑布", "author": "李白", "dynasty": "唐", "content": "日照香炉生紫烟，遥看瀑布挂前川。\n飞流直下三千尺，疑是银河落九天。" }
-    ]
-  },
-  {
-    "id": "yueyang",
-    "name": "岳阳",
-    "lng": 113.13,
-    "lat": 29.37,
-    "poems": [
-      { "title": "登岳阳楼", "author": "杜甫", "dynasty": "唐", "content": "昔闻洞庭水，今上岳阳楼。\n吴楚东南坼，乾坤日夜浮。\n亲朋无一字，老病有孤舟。\n戎马关山北，凭轩涕泗流。" },
-      { "title": "岳阳楼记（节选）", "author": "范仲淹", "dynasty": "宋", "content": "先天下之忧而忧，后天下之乐而乐。\n不以物喜，不以己悲。" }
+      {
+        "title": "春夜洛城闻笛",
+        "author": "李白",
+        "dynasty": "唐",
+        "content": "谁家玉笛暗飞声，散入春风满洛城。\n此夜曲中闻折柳，何人不起故园情。"
+      },
+      {
+        "title": "洛阳女儿行",
+        "author": "王维",
+        "dynasty": "唐",
+        "content": "洛阳女儿对门居，才可容颜十五余。"
+      },
+      {
+        "title": "浪淘沙",
+        "author": "欧阳修",
+        "dynasty": "宋",
+        "content": "把酒祝东风，且共从容。\n垂杨紫陌洛城东。"
+      }
     ]
   },
   {
     "id": "nanchang",
     "name": "南昌",
+    "type": "city",
     "lng": 115.86,
     "lat": 28.68,
     "poems": [
-      { "title": "滕王阁序（名句）", "author": "王勃", "dynasty": "唐", "content": "落霞与孤鹜齐飞，秋水共长天一色。" },
-      { "title": "滕王阁诗", "author": "王勃", "dynasty": "唐", "content": "滕王高阁临江渚，佩玉鸣鸾罢歌舞。\n画栋朝飞南浦云，珠帘暮卷西山雨。" }
+      {
+        "title": "滕王阁序",
+        "author": "王勃",
+        "dynasty": "唐",
+        "content": "落霞与孤鹜齐飞，秋水共长天一色。"
+      },
+      {
+        "title": "滕王阁诗",
+        "author": "王勃",
+        "dynasty": "唐",
+        "content": "滕王高阁临江渚，佩玉鸣鸾罢歌舞。\n画栋朝飞南浦云，珠帘暮卷西山雨。"
+      }
     ]
   },
   {
-    "id": "jinan",
-    "name": "济南",
-    "lng": 116.99,
-    "lat": 36.67,
+    "id": "yueyang",
+    "name": "岳阳",
+    "type": "city",
+    "lng": 113.13,
+    "lat": 29.37,
     "poems": [
-      { "title": "陪李北海宴历下亭", "author": "杜甫", "dynasty": "唐", "content": "东藩驻皂盖，北渚凌青荷。\n此地试一眺，诸山青嵯峨。" }
-    ]
-  },
-  {
-    "id": "taian",
-    "name": "泰安",
-    "lng": 117.12,
-    "lat": 36.20,
-    "poems": [
-      { "title": "望岳", "author": "杜甫", "dynasty": "唐", "content": "岱宗夫如何，齐鲁青未了。\n造化钟神秀，阴阳割昏晓。\n荡胸生曾云，决眦入归鸟。\n会当凌绝顶，一览众山小。" }
-    ]
-  },
-  {
-    "id": "shaoxing",
-    "name": "绍兴",
-    "lng": 120.58,
-    "lat": 30.01,
-    "poems": [
-      { "title": "兰亭集序（节选）", "author": "王羲之", "dynasty": "晋", "content": "群贤毕至，少长咸集。\n此地有崇山峻岭，茂林修竹，又有清流激湍，映带左右。" },
-      { "title": "钗头凤", "author": "陆游", "dynasty": "宋", "content": "红酥手，黄縢酒，满城春色宫墙柳。\n东风恶，欢情薄。一怀愁绪，几年离索。\n错、错、错。" },
-      { "title": "游山西村", "author": "陆游", "dynasty": "宋", "content": "山重水复疑无路，柳暗花明又一村。" }
-    ]
-  },
-  {
-    "id": "huangshan",
-    "name": "黄山",
-    "lng": 118.32,
-    "lat": 30.14,
-    "poems": [
-      { "title": "黄山四千仞", "author": "李白", "dynasty": "唐", "content": "黄山四千仞，三十二莲峰。" },
-      { "title": "题黄山", "author": "吴龙翰", "dynasty": "宋", "content": "九十九峰秀色新，峰峰峭削玉嶙峋。" }
-    ]
-  },
-  {
-    "id": "leshan",
-    "name": "乐山",
-    "lng": 103.77,
-    "lat": 29.56,
-    "poems": [
-      { "title": "登峨眉山", "author": "李白", "dynasty": "唐", "content": "蜀国多仙山，峨眉邈难匹。" },
-      { "title": "峨眉山月歌", "author": "李白", "dynasty": "唐", "content": "峨眉山月半轮秋，影入平羌江水流。\n夜发清溪向三峡，思君不见下渝州。" }
+      {
+        "title": "登岳阳楼",
+        "author": "杜甫",
+        "dynasty": "唐",
+        "content": "昔闻洞庭水，今上岳阳楼。\n吴楚东南坼，乾坤日夜浮。\n亲朋无一字，老病有孤舟。\n戎马关山北，凭轩涕泗流。"
+      },
+      {
+        "title": "岳阳楼记",
+        "author": "范仲淹",
+        "dynasty": "宋",
+        "content": "先天下之忧而忧，后天下之乐而乐。\n不以物喜，不以己悲。"
+      }
     ]
   },
   {
     "id": "dunhuang",
     "name": "敦煌",
+    "type": "city",
     "lng": 94.66,
     "lat": 40.14,
     "poems": [
-      { "title": "凉州词", "author": "王之涣", "dynasty": "唐", "content": "黄河远上白云间，一片孤城万仞山。\n羌笛何须怨杨柳，春风不度玉门关。" },
-      { "title": "使至塞上", "author": "王维", "dynasty": "唐", "content": "大漠孤烟直，长河落日圆。" },
-      { "title": "出塞", "author": "王昌龄", "dynasty": "唐", "content": "秦时明月汉时关，万里长征人未还。\n但使龙城飞将在，不教胡马度阴山。" }
+      {
+        "title": "凉州词",
+        "author": "王之涣",
+        "dynasty": "唐",
+        "content": "黄河远上白云间，一片孤城万仞山。\n羌笛何须怨杨柳，春风不度玉门关。"
+      },
+      {
+        "title": "使至塞上",
+        "author": "王维",
+        "dynasty": "唐",
+        "content": "大漠孤烟直，长河落日圆。"
+      },
+      {
+        "title": "出塞",
+        "author": "王昌龄",
+        "dynasty": "唐",
+        "content": "秦时明月汉时关，万里长征人未还。\n但使龙城飞将在，不教胡马度阴山。"
+      }
     ]
   },
   {
-    "id": "kunming",
-    "name": "昆明",
-    "lng": 102.73,
+    "id": "chongqing",
+    "name": "重庆",
+    "type": "city",
+    "lng": 106.55,
+    "lat": 29.56,
+    "poems": [
+      {
+        "title": "早发白帝城",
+        "author": "李白",
+        "dynasty": "唐",
+        "content": "朝辞白帝彩云间，千里江陵一日还。\n两岸猿声啼不住，轻舟已过万重山。"
+      },
+      {
+        "title": "离思五首·其四",
+        "author": "元稹",
+        "dynasty": "唐",
+        "content": "曾经沧海难为水，除却巫山不是云。"
+      }
+    ]
+  },
+  {
+    "id": "changsha",
+    "name": "长沙",
+    "type": "city",
+    "lng": 112.94,
+    "lat": 28.23,
+    "poems": [
+      {
+        "title": "沁园春·长沙",
+        "author": "毛泽东",
+        "dynasty": "当代",
+        "content": "独立寒秋，湘江北去，橘子洲头。\n看万山红遍，层林尽染；漫江碧透，百舸争流。\n鹰击长空，鱼翔浅底，万类霜天竞自由。\n怅寥廓，问苍茫大地，谁主沉浮？"
+      }
+    ]
+  },
+  {
+    "id": "yellow_crane_tower",
+    "name": "黄鹤楼",
+    "type": "tower",
+    "lng": 114.3,
+    "lat": 30.5,
+    "poems": [
+      {
+        "title": "黄鹤楼送孟浩然之广陵",
+        "author": "李白",
+        "dynasty": "唐",
+        "content": "故人西辞黄鹤楼，烟花三月下扬州。\n孤帆远影碧空尽，唯见长江天际流。"
+      },
+      {
+        "title": "黄鹤楼",
+        "author": "崔颢",
+        "dynasty": "唐",
+        "content": "昔人已乘黄鹤去，此地空余黄鹤楼。\n黄鹤一去不复返，白云千载空悠悠。\n晴川历历汉阳树，芳草萋萋鹦鹉洲。\n日暮乡关何处是？烟波江上使人愁。"
+      },
+      {
+        "title": "与史郎中钦听黄鹤楼上吹笛",
+        "author": "李白",
+        "dynasty": "唐",
+        "content": "一为迁客去长沙，西望长安不见家。\n黄鹤楼中吹玉笛，江城五月落梅花。"
+      }
+    ]
+  },
+  {
+    "id": "yueyang_tower",
+    "name": "岳阳楼",
+    "type": "tower",
+    "lng": 113.1,
+    "lat": 29.37,
+    "poems": [
+      {
+        "title": "登岳阳楼",
+        "author": "杜甫",
+        "dynasty": "唐",
+        "content": "昔闻洞庭水，今上岳阳楼。\n吴楚东南坼，乾坤日夜浮。"
+      },
+      {
+        "title": "岳阳楼记",
+        "author": "范仲淹",
+        "dynasty": "宋",
+        "content": "先天下之忧而忧，后天下之乐而乐。\n不以物喜，不以己悲。"
+      }
+    ]
+  },
+  {
+    "id": "tengwang_tower",
+    "name": "滕王阁",
+    "type": "tower",
+    "lng": 115.88,
+    "lat": 28.68,
+    "poems": [
+      {
+        "title": "滕王阁序",
+        "author": "王勃",
+        "dynasty": "唐",
+        "content": "落霞与孤鹜齐飞，秋水共长天一色。"
+      },
+      {
+        "title": "滕王阁诗",
+        "author": "王勃",
+        "dynasty": "唐",
+        "content": "滕王高阁临江渚，佩玉鸣鸾罢歌舞。\n画栋朝飞南浦云，珠帘暮卷西山雨。"
+      }
+    ]
+  },
+  {
+    "id": "guanque_tower",
+    "name": "鹳雀楼",
+    "type": "tower",
+    "lng": 110.27,
+    "lat": 34.83,
+    "poems": [
+      {
+        "title": "登鹳雀楼",
+        "author": "王之涣",
+        "dynasty": "唐",
+        "content": "白日依山尽，黄河入海流。\n欲穷千里目，更上一层楼。"
+      }
+    ]
+  },
+  {
+    "id": "yuejiang_tower",
+    "name": "阅江楼",
+    "type": "tower",
+    "lng": 118.74,
+    "lat": 32.08,
+    "poems": [
+      {
+        "title": "临江仙",
+        "author": "杨慎",
+        "dynasty": "明",
+        "content": "滚滚长江东逝水，浪花淘尽英雄。\n是非成败转头空，青山依旧在，几度夕阳红。"
+      }
+    ]
+  },
+  {
+    "id": "mount_tai",
+    "name": "泰山",
+    "type": "mountain",
+    "lng": 117.12,
+    "lat": 36.2,
+    "poems": [
+      {
+        "title": "望岳",
+        "author": "杜甫",
+        "dynasty": "唐",
+        "content": "岱宗夫如何，齐鲁青未了。\n造化钟神秀，阴阳割昏晓。\n荡胸生曾云，决眦入归鸟。\n会当凌绝顶，一览众山小。"
+      }
+    ]
+  },
+  {
+    "id": "mount_hua",
+    "name": "华山",
+    "type": "mountain",
+    "lng": 110.09,
+    "lat": 34.48,
+    "poems": [
+      {
+        "title": "西岳云台歌送丹丘子",
+        "author": "李白",
+        "dynasty": "唐",
+        "content": "西岳峥嵘何壮哉！黄河如丝天际来。\n黄河万里触山动，盘涡毂转秦地雷。"
+      }
+    ]
+  },
+  {
+    "id": "mount_huang",
+    "name": "黄山",
+    "type": "mountain",
+    "lng": 118.17,
+    "lat": 30.13,
+    "poems": [
+      {
+        "title": "黄山四千仞",
+        "author": "李白",
+        "dynasty": "唐",
+        "content": "黄山四千仞，三十二莲峰。"
+      },
+      {
+        "title": "题黄山",
+        "author": "吴龙翰",
+        "dynasty": "宋",
+        "content": "九十九峰秀色新，峰峰峭削玉嶙峋。"
+      }
+    ]
+  },
+  {
+    "id": "mount_lu",
+    "name": "庐山",
+    "type": "mountain",
+    "lng": 115.98,
+    "lat": 29.55,
+    "poems": [
+      {
+        "title": "题西林壁",
+        "author": "苏轼",
+        "dynasty": "宋",
+        "content": "横看成岭侧成峰，远近高低各不同。\n不识庐山真面目，只缘身在此山中。"
+      },
+      {
+        "title": "望庐山瀑布",
+        "author": "李白",
+        "dynasty": "唐",
+        "content": "日照香炉生紫烟，遥看瀑布挂前川。\n飞流直下三千尺，疑是银河落九天。"
+      },
+      {
+        "title": "登庐山",
+        "author": "李白",
+        "dynasty": "唐",
+        "content": "庐山秀出南斗傍，屏风九叠云锦张。"
+      }
+    ]
+  },
+  {
+    "id": "mount_emei",
+    "name": "峨眉山",
+    "type": "mountain",
+    "lng": 103.35,
+    "lat": 29.52,
+    "poems": [
+      {
+        "title": "登峨眉山",
+        "author": "李白",
+        "dynasty": "唐",
+        "content": "蜀国多仙山，峨眉邈难匹。"
+      },
+      {
+        "title": "峨眉山月歌",
+        "author": "李白",
+        "dynasty": "唐",
+        "content": "峨眉山月半轮秋，影入平羌江水流。\n夜发清溪向三峡，思君不见下渝州。"
+      }
+    ]
+  },
+  {
+    "id": "mount_qingcheng",
+    "name": "青城山",
+    "type": "mountain",
+    "lng": 103.55,
+    "lat": 30.9,
+    "poems": [
+      {
+        "title": "青城山",
+        "author": "杜甫",
+        "dynasty": "唐",
+        "content": "自为青城客，不唾青城地。\n为爱丈人山，丹梯近幽意。"
+      }
+    ]
+  },
+  {
+    "id": "mount_wuyi",
+    "name": "武夷山",
+    "type": "mountain",
+    "lng": 117.93,
+    "lat": 27.67,
+    "poems": [
+      {
+        "title": "游武夷",
+        "author": "辛弃疾",
+        "dynasty": "宋",
+        "content": "蓬莱枉觅瑶池路，不道人间有武夷。"
+      }
+    ]
+  },
+  {
+    "id": "mount_zhongnan",
+    "name": "终南山",
+    "type": "mountain",
+    "lng": 108.92,
+    "lat": 34.02,
+    "poems": [
+      {
+        "title": "终南山",
+        "author": "王维",
+        "dynasty": "唐",
+        "content": "太乙近天都，连山接海隅。\n白云回望合，青霭入看无。\n分野中峰变，阴晴众壑殊。"
+      },
+      {
+        "title": "终南别业",
+        "author": "王维",
+        "dynasty": "唐",
+        "content": "中岁颇好道，晚家南山陲。\n兴来每独往，胜事空自知。\n行到水穷处，坐看云起时。"
+      }
+    ]
+  },
+  {
+    "id": "mount_heng_north",
+    "name": "恒山",
+    "type": "mountain",
+    "lng": 113.73,
+    "lat": 39.67,
+    "poems": [
+      {
+        "title": "登恒山",
+        "author": "贾岛",
+        "dynasty": "唐",
+        "content": "天地有五岳，恒岳居其北。\n岩峦叠万重，诡怪浩难测。"
+      }
+    ]
+  },
+  {
+    "id": "mount_heng_south",
+    "name": "衡山",
+    "type": "mountain",
+    "lng": 112.7,
+    "lat": 27.25,
+    "poems": [
+      {
+        "title": "望衡山",
+        "author": "朱熹",
+        "dynasty": "宋",
+        "content": "岌嶪湘江上，青青衡山麓。"
+      }
+    ]
+  },
+  {
+    "id": "mount_tai_hang",
+    "name": "太行山",
+    "type": "mountain",
+    "lng": 113.6,
+    "lat": 36.0,
+    "poems": [
+      {
+        "title": "行路难",
+        "author": "李白",
+        "dynasty": "唐",
+        "content": "欲渡黄河冰塞川，将登太行雪满山。"
+      }
+    ]
+  },
+  {
+    "id": "west_lake",
+    "name": "西湖",
+    "type": "lake",
+    "lng": 120.14,
+    "lat": 30.24,
+    "poems": [
+      {
+        "title": "饮湖上初晴后雨",
+        "author": "苏轼",
+        "dynasty": "宋",
+        "content": "水光潋滟晴方好，山色空蒙雨亦奇。\n欲把西湖比西子，淡妆浓抹总相宜。"
+      },
+      {
+        "title": "晓出净慈寺送林子方",
+        "author": "杨万里",
+        "dynasty": "宋",
+        "content": "毕竟西湖六月中，风光不与四时同。\n接天莲叶无穷碧，映日荷花别样红。"
+      },
+      {
+        "title": "题临安邸",
+        "author": "林升",
+        "dynasty": "宋",
+        "content": "山外青山楼外楼，西湖歌舞几时休。\n暖风熏得游人醉，直把杭州作汴州。"
+      },
+      {
+        "title": "钱塘湖春行",
+        "author": "白居易",
+        "dynasty": "唐",
+        "content": "孤山寺北贾亭西，水面初平云脚低。\n几处早莺争暖树，谁家新燕啄春泥。\n乱花渐欲迷人眼，浅草才能没马蹄。\n最爱湖东行不足，绿杨阴里白沙堤。"
+      }
+    ]
+  },
+  {
+    "id": "dongting_lake",
+    "name": "洞庭湖",
+    "type": "lake",
+    "lng": 112.9,
+    "lat": 29.3,
+    "poems": [
+      {
+        "title": "望洞庭",
+        "author": "刘禹锡",
+        "dynasty": "唐",
+        "content": "湖光秋月两相和，潭面无风镜未磨。\n遥望洞庭山水翠，白银盘里一青螺。"
+      },
+      {
+        "title": "登岳阳楼",
+        "author": "杜甫",
+        "dynasty": "唐",
+        "content": "昔闻洞庭水，今上岳阳楼。\n吴楚东南坼，乾坤日夜浮。"
+      },
+      {
+        "title": "岳阳楼记",
+        "author": "范仲淹",
+        "dynasty": "宋",
+        "content": "衔远山，吞长江，浩浩汤汤，横无际涯。\n朝晖夕阴，气象万千。"
+      }
+    ]
+  },
+  {
+    "id": "poyang_lake",
+    "name": "鄱阳湖",
+    "type": "lake",
+    "lng": 116.3,
+    "lat": 29.1,
+    "poems": [
+      {
+        "title": "彭蠡湖中望庐山",
+        "author": "孟浩然",
+        "dynasty": "唐",
+        "content": "太虚生月晕，舟子知天风。\n挂席候明发，渺漫平湖中。\n中流见匡阜，势压九江雄。"
+      }
+    ]
+  },
+  {
+    "id": "tai_lake",
+    "name": "太湖",
+    "type": "lake",
+    "lng": 120.2,
+    "lat": 31.2,
+    "poems": [
+      {
+        "title": "太湖",
+        "author": "范仲淹",
+        "dynasty": "宋",
+        "content": "有浪即山高，无风还练静。"
+      }
+    ]
+  },
+  {
+    "id": "dian_lake",
+    "name": "滇池",
+    "type": "lake",
+    "lng": 102.67,
     "lat": 25.04,
     "poems": [
-      { "title": "春城风物", "author": "杨慎", "dynasty": "明", "content": "天气常如二三月，花枝不断四时春。" },
-      { "title": "大观楼", "author": "孙髯翁", "dynasty": "清", "content": "五百里滇池，奔来眼底，披襟岸帻，喜茫茫空阔无边。" }
+      {
+        "title": "大观楼",
+        "author": "孙髯翁",
+        "dynasty": "清",
+        "content": "五百里滇池，奔来眼底，披襟岸帻，喜茫茫空阔无边。\n看：东骧神骏，西翥灵仪，北走蜿蜒，南翔缟素。"
+      }
     ]
   },
   {
-    "id": "dali",
-    "name": "大理",
+    "id": "er_lake",
+    "name": "洱海",
+    "type": "lake",
     "lng": 100.27,
-    "lat": 25.60,
+    "lat": 25.7,
     "poems": [
-      { "title": "云南歌", "author": "杨慎", "dynasty": "明", "content": "天气常如二三月，花枝不断四时春。" }
+      {
+        "title": "洱海",
+        "author": "杨慎",
+        "dynasty": "明",
+        "content": "风静浪平洱海秋，几回升载几回留。"
+      }
     ]
   },
   {
-    "id": "datong",
-    "name": "大同",
-    "lng": 113.30,
-    "lat": 40.08,
+    "id": "hanshan_temple",
+    "name": "寒山寺",
+    "type": "temple",
+    "lng": 120.57,
+    "lat": 31.31,
     "poems": [
-      { "title": "雁门太守行", "author": "李贺", "dynasty": "唐", "content": "黑云压城城欲摧，甲光向日金鳞开。\n角声满天秋色里，塞上燕脂凝夜紫。" }
+      {
+        "title": "枫桥夜泊",
+        "author": "张继",
+        "dynasty": "唐",
+        "content": "月落乌啼霜满天，江枫渔火对愁眠。\n姑苏城外寒山寺，夜半钟声到客船。"
+      }
     ]
   },
   {
-    "id": "fuzhou",
-    "name": "福州",
-    "lng": 119.30,
-    "lat": 26.08,
+    "id": "lingyin_temple",
+    "name": "灵隐寺",
+    "type": "temple",
+    "lng": 120.1,
+    "lat": 30.24,
     "poems": [
-      { "title": "福州道中", "author": "林鸿", "dynasty": "明", "content": "洞长幽意少人行，苔藓斑驳满地生。" }
+      {
+        "title": "灵隐寺",
+        "author": "宋之问",
+        "dynasty": "唐",
+        "content": "鹫岭郁岧峣，龙宫锁寂寥。\n沧海飞白雨，江上喷红潮。"
+      }
+    ]
+  },
+  {
+    "id": "shaolin_temple",
+    "name": "少林寺",
+    "type": "temple",
+    "lng": 112.93,
+    "lat": 34.5,
+    "poems": [
+      {
+        "title": "少林寺",
+        "author": "白居易",
+        "dynasty": "唐",
+        "content": "山青青兮水潺潺，石磊磊兮松盘盘。"
+      }
+    ]
+  },
+  {
+    "id": "yang_pass",
+    "name": "阳关",
+    "type": "pass",
+    "lng": 94.28,
+    "lat": 39.9,
+    "poems": [
+      {
+        "title": "送元二使安西",
+        "author": "王维",
+        "dynasty": "唐",
+        "content": "渭城朝雨浥轻尘，客舍青青柳色新。\n劝君更尽一杯酒，西出阳关无故人。"
+      }
+    ]
+  },
+  {
+    "id": "yumen_pass",
+    "name": "玉门关",
+    "type": "pass",
+    "lng": 93.88,
+    "lat": 40.35,
+    "poems": [
+      {
+        "title": "凉州词",
+        "author": "王之涣",
+        "dynasty": "唐",
+        "content": "黄河远上白云间，一片孤城万仞山。\n羌笛何须怨杨柳，春风不度玉门关。"
+      },
+      {
+        "title": "从军行",
+        "author": "王昌龄",
+        "dynasty": "唐",
+        "content": "青海长云暗雪山，孤城遥望玉门关。"
+      }
+    ]
+  },
+  {
+    "id": "tong_pass",
+    "name": "潼关",
+    "type": "pass",
+    "lng": 110.24,
+    "lat": 34.55,
+    "poems": [
+      {
+        "title": "潼关",
+        "author": "谭嗣同",
+        "dynasty": "清",
+        "content": "终古高云簇此城，秋风吹散马蹄声。\n河流大野犹嫌束，山入潼关不解平。"
+      },
+      {
+        "title": "山坡羊·潼关怀古",
+        "author": "张养浩",
+        "dynasty": "元",
+        "content": "峰峦如聚，波涛如怒，山河表里潼关路。\n望西都，意踌躇。\n伤心秦汉经行处，宫阙万间都做了土。\n兴，百姓苦；亡，百姓苦。"
+      }
+    ]
+  },
+  {
+    "id": "shankou_pass",
+    "name": "山海关",
+    "type": "pass",
+    "lng": 119.76,
+    "lat": 40.0,
+    "poems": [
+      {
+        "title": "山海关",
+        "author": "纳兰性德",
+        "dynasty": "清",
+        "content": "雄关阻塞戴萧森，风起云飞万木阴。"
+      }
+    ]
+  },
+  {
+    "id": "sword_gate",
+    "name": "剑门关",
+    "type": "pass",
+    "lng": 105.53,
+    "lat": 32.28,
+    "poems": [
+      {
+        "title": "蜀道难",
+        "author": "李白",
+        "dynasty": "唐",
+        "content": "剑阁峥嵘而崔嵬，一夫当关，万夫莫开。\n所守或匪亲，化为狼与豺。\n朝避猛虎，夕避长蛇，磨牙吮血，杀人如麻。"
+      }
+    ]
+  },
+  {
+    "id": "hangou_pass",
+    "name": "函谷关",
+    "type": "pass",
+    "lng": 110.43,
+    "lat": 34.63,
+    "poems": [
+      {
+        "title": "过函谷关",
+        "author": "李白",
+        "dynasty": "唐",
+        "content": "万里入中原，芒芒河洛间。"
+      }
     ]
   }
 ]
