@@ -15,6 +15,93 @@
   to { opacity: 1; transform: translateY(0); }
 }
 
+@keyframes slideUp {
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
+}
+
+/* 手机端样式 */
+@media (max-width: 768px) {
+  .poem-panel {
+    position: fixed !important;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100% !important;
+    height: 60vh;
+    border-radius: 16px 16px 0 0;
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.15);
+    transform: translateY(100%);
+    transition: transform 0.3s ease;
+    z-index: 20;
+  }
+
+  .poem-panel.open {
+    transform: translateY(0);
+  }
+
+  .filter-bar {
+    overflow-x: auto !important;
+    flex-wrap: nowrap !important;
+    -webkit-overflow-scrolling: touch;
+    padding: 10px 12px !important;
+  }
+
+  .dynasty-bar {
+    overflow-x: auto !important;
+    flex-wrap: nowrap !important;
+    -webkit-overflow-scrolling: touch;
+    padding: 8px 12px !important;
+  }
+
+  .filter-btn, .dynasty-btn {
+    flex-shrink: 0;
+    min-width: 44px;
+    min-height: 36px;
+    padding: 8px 12px !important;
+  }
+
+  .search-panel {
+    width: calc(100% - 40px) !important;
+  }
+
+  .author-panel {
+    width: calc(100% - 40px) !important;
+    left: 20px !important;
+    transform: none !important;
+  }
+
+  /* 安全区域 */
+  .safe-top {
+    padding-top: env(safe-area-inset-top, 0);
+  }
+
+  .safe-bottom {
+    padding-bottom: env(safe-area-inset-bottom, 0);
+  }
+
+  /* 抽屉拖拽指示器 */
+  .drawer-handle {
+    width: 40px;
+    height: 4px;
+    background: #d0c8b0;
+    border-radius: 2px;
+    margin: 8px auto;
+  }
+}
+
+/* 隐藏滚动条 */
+.filter-bar::-webkit-scrollbar,
+.dynasty-bar::-webkit-scrollbar {
+  display: none;
+}
+
+.filter-bar,
+.dynasty-bar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
 * {
   margin: 0;
   padding: 0;

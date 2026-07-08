@@ -3,6 +3,8 @@
 import { useEffect, useRef, useState, useCallback } from "react";
 import { PLACE_TYPES, type Place } from "@/lib/supabase";
 import { MapSkeleton, PoemCardSkeleton, AuthorPanelSkeleton } from "@/components/Skeleton";
+import { BottomDrawer } from "@/components/BottomDrawer";
+import { useIsMobile } from "@/lib/useMediaQuery";
 import dynamic from "next/dynamic";
 
 // 懒加载地图组件，避免阻塞首屏
@@ -21,7 +23,7 @@ type SearchResult = {
 };
 
 export default function Home() {
-  const mapContainerRef = useRef<HTMLDivElement>(null);
+  const isMobile = useIsMobile();
   const [places, setPlaces] = useState<Place[]>([]);
   const [selected, setSelected] = useState<any>(null);
   const [loading, setLoading] = useState(true);
@@ -266,44 +268,91 @@ export default function Home() {
         </div>
       </div>
 
-      {/* 右侧诗词面板 */}
-      <div style={styles.poemPanel}>
-        <div style={{ padding: "24px" }}>
-          {selected ? (
-            <>
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 20 }}>
-                <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                  <span style={{ fontSize: 22 }}>{PLACE_TYPES[selected.place?.type]?.icon || "📍"}</span>
-                  <h2 style={{ fontSize: 24, color: "#3a2f1a", fontWeight: 600 }}>{selected.place?.name}</h2>
-                  {selected.place?.ancient_names?.length > 0 && (
-                    <span style={{ fontSize: 12, color: "#b8860b" }}>({selected.place.ancient_names.join(" · ")})</span>
-                  )}
+      {/* 右侧诗词面板 - 桌面端 */}
+      {!isMobile && (
+        <div style={styles.poemPanel}>
+          <div style={{ padding: "24px" }}>
+            {selected ? (
+              <>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 20 }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                    <span style={{ fontSize: 22 }}>{PLACE_TYPES[selected.place?.type]?.icon || "📍"}</span>
+                    <h2 style={{ fontSize: 24, color: "#3a2f1a", fontWeight: 600 }}>{selected.place?.name}</h2>
+                    {selected.place?.ancient_names?.length > 0 && (
+                      <span style={{ fontSize: 12, color: "#b8860b" }}>({selected.place.ancient_names.join(" · ")})</span>
+                    )}
+                  </div>
+                  <button onClick={() => setSelected(null)} style={styles.clearBtn}>✕</button>
                 </div>
-                <button onClick={() => setSelected(null)} style={styles.clearBtn}>✕</button>
+                <p style={{ color: "#8b6914", fontSize: "14px", marginBottom: "24px" }}>
+                  共 {selected.poems?.length || 0} 首诗词
+                </p>
+                {selected.poems?.map((poem: any, i: number) => (
+                  <div key={poem.id || i} style={{ marginBottom: 28, paddingBottom: 20, borderBottom: "1px solid #e8e0d0" }}>
+                    <h3 style={{ fontSize: 17, color: "#3a2f1a", marginBottom: 6 }}>{poem.title}</h3>
+                    <p style={{ color: "#8b6914", fontSize: 13, marginBottom: 12 }}>{poem.author} · {poem.dynasty}</p>
+                    <p style={{ fontSize: 15, lineHeight: 1.9, color: "#4a3f2a", whiteSpace: "pre-line", fontFamily: '"Noto Serif SC", "SimSun", serif' }}>
+                      {poem.content}
+                    </p>
+                  </div>
+                ))}
+              </>
+            ) : (
+              <div style={{ padding: "40px 0", textAlign: "center", color: "#8b6914" }}>
+                <h2 style={{ fontSize: 22, marginBottom: 16 }}>🗺️ 中国古诗词地图</h2>
+                <p style={{ fontSize: 15, lineHeight: 1.8, color: "#6a5a3a" }}>
+                  点击地图上的任意标记，探索各地诗词文化
+                </p>
               </div>
-              <p style={{ color: "#8b6914", fontSize: "14px", marginBottom: "24px" }}>
-                共 {selected.poems?.length || 0} 首诗词
-              </p>
-              {selected.poems?.map((poem: any, i: number) => (
-                <div key={poem.id || i} style={{ marginBottom: 28, paddingBottom: 20, borderBottom: "1px solid #e8e0d0" }}>
-                  <h3 style={{ fontSize: 17, color: "#3a2f1a", marginBottom: 6 }}>{poem.title}</h3>
-                  <p style={{ color: "#8b6914", fontSize: 13, marginBottom: 12 }}>{poem.author} · {poem.dynasty}</p>
-                  <p style={{ fontSize: 15, lineHeight: 1.9, color: "#4a3f2a", whiteSpace: "pre-line", fontFamily: '"Noto Serif SC", "SimSun", serif' }}>
-                    {poem.content}
-                  </p>
-                </div>
-              ))}
-            </>
-          ) : (
-            <div style={{ padding: "40px 0", textAlign: "center", color: "#8b6914" }}>
-              <h2 style={{ fontSize: 22, marginBottom: 16 }}>🗺️ 中国古诗词地图</h2>
-              <p style={{ fontSize: 15, lineHeight: 1.8, color: "#6a5a3a" }}>
-                点击地图上的任意标记，探索各地诗词文化
-              </p>
-            </div>
-          )}
+            )}
+          </div>
         </div>
-      </div>
+      )}
+
+      {/* 移动端底部抽屉 */}
+      {isMobile && (
+        <BottomDrawer
+          isOpen={!!selected}
+          onClose={() => setSelected(null)}
+          title={selected?.place?.name}
+        >
+          <div style={{ padding: "0 24px 24px" }}>
+            {selected ? (
+              <>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 20 }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                    <span style={{ fontSize: 22 }}>{PLACE_TYPES[selected.place?.type]?.icon || "📍"}</span>
+                    <h2 style={{ fontSize: 24, color: "#3a2f1a", fontWeight: 600 }}>{selected.place?.name}</h2>
+                    {selected.place?.ancient_names?.length > 0 && (
+                      <span style={{ fontSize: 12, color: "#b8860b" }}>({selected.place.ancient_names.join(" · ")})</span>
+                    )}
+                  </div>
+                  <button onClick={() => setSelected(null)} style={styles.clearBtn}>✕</button>
+                </div>
+                <p style={{ color: "#8b6914", fontSize: "14px", marginBottom: "24px" }}>
+                  共 {selected.poems?.length || 0} 首诗词
+                </p>
+                {selected.poems?.map((poem: any, i: number) => (
+                  <div key={poem.id || i} style={{ marginBottom: 28, paddingBottom: 20, borderBottom: "1px solid #e8e0d0" }}>
+                    <h3 style={{ fontSize: 17, color: "#3a2f1a", marginBottom: 6 }}>{poem.title}</h3>
+                    <p style={{ color: "#8b6914", fontSize: 13, marginBottom: 12 }}>{poem.author} · {poem.dynasty}</p>
+                    <p style={{ fontSize: 15, lineHeight: 1.9, color: "#4a3f2a", whiteSpace: "pre-line", fontFamily: '"Noto Serif SC", "SimSun", serif' }}>
+                      {poem.content}
+                    </p>
+                  </div>
+                ))}
+              </>
+            ) : (
+              <div style={{ padding: "40px 0", textAlign: "center", color: "#8b6914" }}>
+                <h2 style={{ fontSize: 22, marginBottom: 16 }}>🗺️ 中国古诗词地图</h2>
+                <p style={{ fontSize: 15, lineHeight: 1.8, color: "#6a5a3a" }}>
+                  点击地图上的任意标记，探索各地诗词文化
+                </p>
+              </div>
+            )}
+          </div>
+        </BottomDrawer>
+      )}
     </div>
   );
 
