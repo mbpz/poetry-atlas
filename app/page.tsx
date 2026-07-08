@@ -19,6 +19,23 @@ type SearchResult = {
   places: { id: string; name: string; type: string }[];
 };
 
+type Author = {
+  id: string;
+  name: string;
+  dynasty: string;
+  poem_count: number;
+  place_count: number;
+};
+
+type AuthorRoute = {
+  place_id: string;
+  place_name: string;
+  place_type: string;
+  lng: number;
+  lat: number;
+  poem_count_at_place: number;
+};
+
 export default function Home() {
   const mapRef = useRef<maplibregl.Map | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -32,34 +49,49 @@ export default function Home() {
   const [searchLoading, setSearchLoading] = useState(false);
   const [showSearch, setShowSearch] = useState(false);
   const searchTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const searchAbortRef = useRef<AbortController | null>(null);
   const [activeDynasty, setActiveDynasty] = useState<string>("all");
   const [dynasties, setDynasties] = useState<{ id: string; name: string }[]>([]);
+  const [authors, setAuthors] = useState<Author[]>([]);
+  const [selectedAuthor, setSelectedAuthor] = useState<Author | null>(null);
+  const [authorRoute, setAuthorRoute] = useState<AuthorRoute[]>([]);
+  const [showAuthorPanel, setShowAuthorPanel] = useState(false);
 
   const handleSearch = useCallback(async (q: string) => {
     setSearchQuery(q);
-    if (q.trim().length < 1) {
+    if (q.trim().length < 2) {
       setSearchResults([]);
       setShowSearch(false);
       return;
     }
+    // 取消上一个未完成的请求（幂等）
+    if (searchAbortRef.current) searchAbortRef.current.abort();
+    const ac = new AbortController();
+    searchAbortRef.current = ac;
+
     setShowSearch(true);
     setSearchLoading(true);
     try {
-      const res = await fetch(`/api/search?q=${encodeURIComponent(q)}`);
+      const res = await fetch(`/api/search?q=${encodeURIComponent(q)}`, {
+        signal: ac.signal,
+      });
+      if (!res.ok) throw new Error("search failed");
       const data = await res.json();
-      setSearchResults(data.results ?? []);
-    } catch (err) {
-      console.error(err);
-      setSearchResults([]);
+      if (!ac.signal.aborted) setSearchResults(data.results ?? []);
+    } catch (err: any) {
+      if (err?.name !== "AbortError") {
+        console.error(err);
+        setSearchResults([]);
+      }
     } finally {
-      setSearchLoading(false);
+      if (!ac.signal.aborted) setSearchLoading(false);
     }
   }, []);
 
   const debouncedSearch = useCallback(
     (q: string) => {
       if (searchTimerRef.current) clearTimeout(searchTimerRef.current);
-      searchTimerRef.current = setTimeout(() => handleSearch(q), 300);
+      searchTimerRef.current = setTimeout(() => handleSearch(q), 400);
     },
     [handleSearch]
   );
@@ -136,6 +168,33 @@ export default function Home() {
       .catch(console.error);
   }, []);
 
+  // 加载作者列表
+  useEffect(() => {
+    fetch("/api/authors?minPoems=5")
+      .then((r) => r.json())
+      .then((d) => setAuthors(d.authors ?? []))
+      .catch(console.error);
+  }, []);
+
+  // 加载作者旅行路线
+  const loadAuthorRoute = useCallback(async (authorId: string) => {
+    try {
+      const res = await fetch(`/api/authors/${authorId}`);
+      const data = await res.json();
+      setAuthorRoute(data.route ?? []);
+      setSelectedAuthor(data.author);
+      setShowAuthorPanel(true);
+      // 飞到路线中心
+      if (data.route && data.route.length > 0 && mapRef.current) {
+        const avgLng = data.route.reduce((s: number, r: AuthorRoute) => s + r.lng, 0) / data.route.length;
+        const avgLat = data.route.reduce((s: number, r: AuthorRoute) => s + r.lat, 0) / data.route.length;
+        mapRef.current.flyTo({ center: [avgLng, avgLat], zoom: 5, speed: 1.5 });
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  }, []);
+
   // 加载地点列表
   useEffect(() => {
     setLoading(true);
@@ -144,6 +203,73 @@ export default function Home() {
       .catch(console.error)
       .finally(() => setLoading(false));
   }, [activeType]);
+
+  // 渲染作者路线标记
+  useEffect(() => {
+    if (!mapRef.current) return;
+    // 清除旧路线
+    document.querySelectorAll(".author-marker").forEach((el) => el.remove());
+    document.querySelectorAll(".route-line").forEach((el) => el.remove());
+
+    if (authorRoute.length === 0) return;
+
+    // 添加连线（SVG 覆盖层）
+    const svgNS = "http://www.w3.org/2000/svg";
+    const svg = document.createElementNS(svgNS, "svg");
+    svg.setAttribute("class", "route-line");
+    svg.style.position = "absolute";
+    svg.style.top = "0";
+    svg.style.left = "0";
+    svg.style.width = "100%";
+    svg.style.height = "100%";
+    svg.style.pointerEvents = "none";
+    svg.style.zIndex = "5";
+
+    for (let i = 0; i < authorRoute.length - 1; i++) {
+      const from = mapRef.current.project([authorRoute[i].lng, authorRoute[i].lat]);
+      const to = mapRef.current.project([authorRoute[i + 1].lng, authorRoute[i + 1].lat]);
+      const line = document.createElementNS(svgNS, "line");
+      line.setAttribute("x1", String(from.x));
+      line.setAttribute("y1", String(from.y));
+      line.setAttribute("x2", String(to.x));
+      line.setAttribute("y2", String(to.y));
+      line.setAttribute("stroke", "#c9a961");
+      line.setAttribute("stroke-width", "2");
+      line.setAttribute("stroke-dasharray", "4,4");
+      line.setAttribute("opacity", "0.6");
+      svg.appendChild(line);
+    }
+    containerRef.current?.appendChild(svg);
+
+    // 作者足迹点
+    authorRoute.forEach((r, idx) => {
+      const el = document.createElement("div");
+      el.className = "author-marker";
+      el.style.cssText = `
+        background: #8b6914; color: white; border-radius: 50%;
+        width: 28px; height: 28px; display: flex; align-items: center;
+        justify-content: center; font-size: 12px; font-weight: bold;
+        cursor: pointer; box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        border: 2px solid white;
+      `;
+      el.textContent = String(idx + 1);
+      el.addEventListener("click", async () => {
+        setPoemLoading(true);
+        setSelected(null);
+        try {
+          const data = await fetchPlaceWithPoems(r.place_id);
+          setSelected(data);
+        } catch (err) {
+          console.error(err);
+        } finally {
+          setPoemLoading(false);
+        }
+      });
+      new maplibregl.Marker({ element: el, anchor: "center" })
+        .setLngLat([r.lng, r.lat])
+        .addTo(mapRef.current!);
+    });
+  }, [authorRoute, places]);
 
   // 渲染标记
   const handleMarkerClick = useCallback(async (place: Place) => {
@@ -193,6 +319,21 @@ export default function Home() {
             alignItems: "center",
           }}
         >
+          <span
+            onClick={() => setShowAuthorPanel(!showAuthorPanel)}
+            style={{
+              cursor: "pointer",
+              padding: "4px 10px",
+              background: showAuthorPanel ? "#8b6914" : "transparent",
+              color: showAuthorPanel ? "#fff" : "#8b6914",
+              borderRadius: "4px",
+              fontSize: "13px",
+              border: "1px solid #8b6914",
+              marginRight: "12px",
+            }}
+          >
+            🧑‍🎤 作者
+          </span>
           <span style={{ color: "#8b6914", fontSize: "14px", marginRight: "8px" }}>
             维度：
           </span>
@@ -282,47 +423,125 @@ export default function Home() {
           ))}
         </div>
 
-        {/* 搜索框 */}
-        <div
-          style={{
-            position: "absolute",
-            top: 60,
-            left: 20,
-            zIndex: 10,
-            width: 340,
-          }}
-        >
-          <div style={{
-            background: "rgba(255,255,255,0.97)",
-            borderRadius: 8,
-            boxShadow: "0 2px 16px rgba(0,0,0,0.12)",
-            overflow: "hidden",
-          }}>
+        {/* 作者选择器（下拉） */}
+        {showAuthorPanel && (
+          <div
+            style={{
+              position: "absolute",
+              top: 92,
+              left: 20,
+              zIndex: 11,
+              width: 280,
+              background: "rgba(255,255,255,0.97)",
+              borderRadius: 8,
+              boxShadow: "0 2px 16px rgba(0,0,0,0.12)",
+              padding: "12px",
+            }}
+          >
+            <div style={{ fontSize: 13, color: "#8b6914", marginBottom: 8, fontWeight: 600 }}>
+              选择作者查看足迹路线
+            </div>
+            <div style={{ maxHeight: 250, overflowY: "auto" }}>
+              {authors.slice(0, 15).map((a) => (
+                <div
+                  key={a.id}
+                  onClick={() => loadAuthorRoute(a.id)}
+                  style={{
+                    padding: "6px 8px",
+                    cursor: "pointer",
+                    borderRadius: 4,
+                    fontSize: 13,
+                    color: "#3a2f1a",
+                    display: "flex",
+                    justifyContent: "space-between",
+                    background: selectedAuthor?.id === a.id ? "#f5f0e0" : "transparent",
+                  }}
+                >
+                  <span>{a.name} · {a.dynasty}</span>
+                  <span style={{ color: "#a09070", fontSize: 11 }}>
+                    {a.poem_count}首/{a.place_count}地
+                  </span>
+                </div>
+              ))}
+            </div>
+            {selectedAuthor && (
+              <div style={{
+                marginTop: 8,
+                paddingTop: 8,
+                borderTop: "1px solid #e8e0d0",
+                fontSize: 12,
+                color: "#6a5a3a",
+              }}>
+                <b>{selectedAuthor.name}</b>：{authorRoute.length} 个足迹点
+                <button
+                  onClick={() => { setSelectedAuthor(null); setAuthorRoute([]); setShowAuthorPanel(false); }}
+                  style={{
+                    float: "right",
+                    border: "none", background: "transparent",
+                    color: "#8b6914", cursor: "pointer", fontSize: 12,
+                  }}
+                >清除</button>
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* 搜索按钮（折叠式，不遮挡朝代轴） */}
+        <div style={{ position: "absolute", top: 92, left: 20, zIndex: 10 }}>
+          <button
+            onClick={() => setShowSearch(!showSearch)}
+            style={{
+              width: 36, height: 36, borderRadius: 8, border: "none",
+              background: "rgba(255,255,255,0.95)",
+              boxShadow: "0 2px 8px rgba(0,0,0,0.12)",
+              cursor: "pointer", fontSize: 18,
+              display: "flex", alignItems: "center", justifyContent: "center",
+            }}
+          >🔍</button>
+        </div>
+
+        {/* 搜索面板（展开时浮层显示） */}
+        {showSearch && (
+          <div
+            style={{
+              position: "absolute",
+              top: 136,
+              left: 20,
+              zIndex: 10,
+              width: 340,
+            }}
+          >
             <div style={{
-              display: "flex",
-              alignItems: "center",
-              padding: "10px 14px",
-              borderBottom: showSearch ? "1px solid #e8e0d0" : "none",
+              background: "rgba(255,255,255,0.97)",
+              borderRadius: 8,
+              boxShadow: "0 2px 16px rgba(0,0,0,0.12)",
+              overflow: "hidden",
             }}>
-              <span style={{ color: "#8b6914", marginRight: 8 }}>🔍</span>
-              <input
-                type="text"
-                value={searchQuery}
-                onChange={(e) => debouncedSearch(e.target.value)}
-                placeholder="搜索诗名、作者、名句..."
-                style={{
-                  border: "none",
-                  outline: "none",
-                  flex: 1,
-                  fontSize: 14,
-                  color: "#3a2f1a",
-                  background: "transparent",
-                }}
-              />
-              {searchLoading && (
-                <span style={{ fontSize: 12, color: "#a09070" }}>...</span>
-              )}
-              {searchQuery && (
+              <div style={{
+                display: "flex",
+                alignItems: "center",
+                padding: "10px 14px",
+                borderBottom: "1px solid #e8e0d0",
+              }}>
+                <span style={{ color: "#8b6914", marginRight: 8 }}>🔍</span>
+                <input
+                  autoFocus
+                  type="text"
+                  value={searchQuery}
+                  onChange={(e) => debouncedSearch(e.target.value)}
+                  placeholder="搜索诗名、作者、名句..."
+                  style={{
+                    border: "none",
+                    outline: "none",
+                    flex: 1,
+                    fontSize: 14,
+                    color: "#3a2f1a",
+                    background: "transparent",
+                  }}
+                />
+                {searchLoading && (
+                  <span style={{ fontSize: 12, color: "#a09070" }}>...</span>
+                )}
                 <button
                   onClick={() => { setSearchQuery(""); setSearchResults([]); setShowSearch(false); }}
                   style={{
@@ -330,14 +549,18 @@ export default function Home() {
                     cursor: "pointer", color: "#a09070", fontSize: 16,
                   }}
                 >✕</button>
-              )}
-            </div>
-            {showSearch && (
+              </div>
               <div style={{ maxHeight: 400, overflowY: "auto" }}>
                 {searchResults.length === 0 && !searchLoading ? (
-                  <div style={{ padding: "16px 14px", color: "#a09070", fontSize: 13 }}>
-                    未找到相关诗词
-                  </div>
+                  searchQuery.length < 2 ? (
+                    <div style={{ padding: "16px 14px", color: "#a09070", fontSize: 13 }}>
+                      请输入至少 2 个字符
+                    </div>
+                  ) : (
+                    <div style={{ padding: "16px 14px", color: "#a09070", fontSize: 13 }}>
+                      未找到相关诗词
+                    </div>
+                  )
                 ) : (
                   searchResults.map((r) => (
                     <div
@@ -349,6 +572,7 @@ export default function Home() {
                       }}
                       onClick={() => {
                         if (r.places.length > 0) handleSearchResultClick(r.places[0].id);
+                        setShowSearch(false);
                       }}
                     >
                       <div style={{ fontSize: 14, color: "#3a2f1a", fontWeight: 500 }}>
@@ -380,9 +604,9 @@ export default function Home() {
                   ))
                 )}
               </div>
-            )}
+            </div>
           </div>
-        </div>
+        )}
 
         {/* 地图 */}
         <div ref={containerRef} style={{ flex: 1 }} />
@@ -436,6 +660,11 @@ export default function Home() {
                 >
                   {PLACE_TYPES[selected.type]?.label}
                 </span>
+                {activeType !== "all" && activeType !== selected.type && (
+                  <span style={{ fontSize: 11, color: "#c9a961", marginLeft: 8 }}>
+                    （当前筛选：{PLACE_TYPES[activeType]?.label}）
+                  </span>
+                )}
               </div>
               <button
                 onClick={() => setSelected(null)}
