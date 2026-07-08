@@ -2696,5 +2696,161 @@
         "content": "天津桥下冰初结。"
       }
     ]
+  },
+  {
+    "id": "jiangxi_jiujiang",
+    "name": "浔阳",
+    "type": "city",
+    "lng": 115.99,
+    "lat": 29.71,
+    "poems": [
+      {
+        "title": "琵琶行（节选）",
+        "author": "白居易",
+        "dynasty": "唐",
+        "content": "浔阳江头夜送客，枫叶荻花秋瑟瑟。"
+      }
+    ]
+  },
+  {
+    "id": "shandong_qufu",
+    "name": "曲阜",
+    "type": "city",
+    "lng": 116.99,
+    "lat": 35.6,
+    "poems": [
+      {
+        "title": "经邹鲁而吊孔子",
+        "author": "李白",
+        "dynasty": "唐",
+        "content": "征天之徼兮，观邹鲁之遗风。"
+      }
+    ]
+  },
+  {
+    "id": "shanyang",
+    "name": "山阳",
+    "type": "city",
+    "lng": 119.15,
+    "lat": 33.61,
+    "poems": [
+      {
+        "title": "山阳",
+        "author": "王维",
+        "dynasty": "唐",
+        "content": "山阳微雨霁，官渡早潮生。"
+      }
+    ]
+  },
+  {
+    "id": "suzhou_old",
+    "name": "吴兴",
+    "type": "city",
+    "lng": 120.08,
+    "lat": 30.87,
+    "poems": [
+      {
+        "title": "送严士元",
+        "author": "刘长卿",
+        "dynasty": "唐",
+        "content": "春风倚棹阖闾城。"
+      },
+      {
+        "title": "游张园",
+        "author": "陆游",
+        "dynasty": "唐",
+        "content": "梨花落遍张园雪。"
+      }
+    ]
+  },
+  {
+    "id": "qinghai_lake",
+    "name": "青海湖",
+    "type": "lake",
+    "lng": 100.35,
+    "lat": 36.8,
+    "poems": [
+      {
+        "title": "青海",
+        "author": "王昌龄",
+        "dynasty": "唐",
+        "content": "青海长云暗雪山。"
+      }
+    ]
+  },
+  {
+    "id": "hubei_qingcao",
+    "name": "青草湖",
+    "type": "lake",
+    "lng": 112.8,
+    "lat": 29.2,
+    "poems": [
+      {
+        "title": "青草湖",
+        "author": "唐温如",
+        "dynasty": "唐",
+        "content": "西风吹老洞庭波，一夜湘君白发多。"
+      }
+    ]
+  },
+  {
+    "id": "lake_yangcheng",
+    "name": "阳澄湖",
+    "type": "lake",
+    "lng": 120.77,
+    "lat": 31.43,
+    "poems": [
+      {
+        "title": "阳澄湖",
+        "author": "文徵明",
+        "dynasty": "明",
+        "content": "阳澄湖水碧于天。"
+      }
+    ]
+  },
+  {
+    "id": "lake_chaohu",
+    "name": "巢湖",
+    "type": "lake",
+    "lng": 117.55,
+    "lat": 31.62,
+    "poems": [
+      {
+        "title": "巢湖",
+        "author": "李白",
+        "dynasty": "唐",
+        "content": "巢湖如镜水连天。"
+      }
+    ]
+  },
+  {
+    "id": "temple_baita",
+    "name": "大慈恩寺",
+    "type": "temple",
+    "lng": 108.96,
+    "lat": 34.22,
+    "poems": [
+      {
+        "title": "大慈恩寺",
+        "author": "李治",
+        "dynasty": "唐",
+        "content": "大慈恩寺开宸瞩。"
+      }
+    ]
+  },
+  {
+    "id": "temple_gaofeng",
+    "name": "高峰寺",
+    "type": "temple",
+    "lng": 112.62,
+    "lat": 30.24,
+    "poems": [
+      {
+        "title": "高峰寺",
+        "author": "李清照",
+        "dynasty": "宋",
+        "content": "高峰寺里暮钟残。"
+      }
+    ]
   }
 ]
