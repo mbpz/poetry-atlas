@@ -9,6 +9,7 @@ const supabase = createClient(
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
   const keyword = searchParams.get("q")?.trim();
+  const typeFilter = searchParams.get("type"); // 维度过滤
 
   if (!keyword || keyword.length < 1) {
     return NextResponse.json({ results: [] });
@@ -79,10 +80,15 @@ export async function GET(request: NextRequest) {
 
   const allPoems = [...(poems ?? []), ...extraPoems];
 
-  const results = allPoems.map((p) => ({
+  // 维度过滤
+  let results = allPoems.map((p) => ({
     ...p,
     places: placeMap.get(p.id) ?? [],
   }));
+
+  if (typeFilter && typeFilter !== "all") {
+    results = results.filter((r) => r.places.some((pl: { type: string }) => pl.type === typeFilter));
+  }
 
   return NextResponse.json({ results });
 }

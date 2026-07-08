@@ -73,7 +73,8 @@ export default function Home() {
     setShowSearch(true);
     setSearchLoading(true);
     try {
-      const res = await fetch(`/api/search?q=${encodeURIComponent(q)}`, {
+      const typeParam = activeType !== "all" ? `&type=${activeType}` : "";
+      const res = await fetch(`/api/search?q=${encodeURIComponent(q)}${typeParam}`, {
         signal: ac.signal,
       });
       if (!res.ok) throw new Error("search failed");
@@ -87,7 +88,7 @@ export default function Home() {
     } finally {
       if (!ac.signal.aborted) setSearchLoading(false);
     }
-  }, []);
+  }, [activeType]);
 
   const debouncedSearch = useCallback(
     (q: string) => {
