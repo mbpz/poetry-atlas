@@ -22,7 +22,7 @@ export async function GET(request: NextRequest) {
   }
 
   if (dynasty && dynasty !== "all") {
-    // 按朝代过滤：只返回该朝代有诗词的地点
+    // 先获取朝代中文名
     const { data: dynRow } = await supabase
       .from("dynasties")
       .select("name")
@@ -30,11 +30,43 @@ export async function GET(request: NextRequest) {
       .single();
 
     if (dynRow?.name) {
-      const { data } = await supabase
+      // 用 inner join 过滤该朝代有诗词的地点
+      const { data, error } = await supabase
         .from("poem_places")
-        .select("places(id,name,type,lng,lat)")
+        .select("places(id,name,type,lng,lat),poems!inner(dynasty_id)")
         .eq("poems.dynasty", dynRow.name)
         .limit(500);
+
+      if (error) {
+        // 备用方案：直接查 poems 表
+        const { data: poemData } = await supabase
+          .from("poems")
+          .select("id")
+          .eq("dynasty", dynRow.name)
+          .limit(200);
+
+        const poemIds = (poemData ?? []).map((p: any) => p.id);
+        if (poemIds.length === 0) {
+          return NextResponse.json({ places: [] });
+        }
+
+        const { data: ppData } = await supabase
+          .from("poem_places")
+          .select("place_id")
+          .in("poem_id", poemIds);
+
+        const placeIds = [...new Set((ppData ?? []).map((p: any) => p.place_id))];
+        if (placeIds.length === 0) {
+          return NextResponse.json({ places: [] });
+        }
+
+        const { data: placesData } = await supabase
+          .from("places")
+          .select("id,name,type,lng,lat")
+          .in("id", placeIds);
+
+        return NextResponse.json({ places: placesData ?? [] });
+      }
 
       const places = (data ?? [])
         .map((r: any) => r.places)
@@ -42,13 +74,13 @@ export async function GET(request: NextRequest) {
 
       // dedup
       const seen = new Set<string>();
-      const unique = places.filter((p: any) => {
-        if (seen.has(p.id)) return false;
-        seen.add(p.id);
-        return true;
+      return NextResponse.json({
+        places: places.filter((p: any) => {
+          if (seen.has(p.id)) return false;
+          seen.add(p.id);
+          return true;
+        }),
       });
-
-      return NextResponse.json({ places: unique });
     }
   }
 
