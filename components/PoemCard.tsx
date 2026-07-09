@@ -3,6 +3,7 @@
 import { useState, useRef, useMemo } from "react";
 import { useSpeech } from "@/lib/useSpeech";
 import { ShareModal } from "@/components/ShareModal";
+import { useFavorites } from "@/lib/useFavorites";
 
 type PoemProps = {
   id: string;
@@ -75,11 +76,13 @@ function isFamousLine(line: string): boolean {
 
 export function PoemCard({ poem }: { poem: PoemProps }) {
   const [expanded, setExpanded] = useState(false);
-  const [liked, setLiked] = useState(false);
   const [activeNote, setActiveNote] = useState<"annotation" | "translation" | "appreciation">("annotation");
   const [showShare, setShowShare] = useState(false);
   const contentRef = useRef<HTMLDivElement>(null);
   const { state, currentLine, speak, pause, resume, stop } = useSpeech();
+  const { isFavorite, toggleFavorite } = useFavorites();
+
+  const liked = isFavorite(poem.id);
 
   const imagery = useMemo(() => getImagery(poem.content), [poem.content]);
   const lines = poem.content.split("\n");
@@ -196,8 +199,8 @@ export function PoemCard({ poem }: { poem: PoemProps }) {
             </button>
             <button
               className={`action-btn ${liked ? "active" : ""}`}
-              title="收藏"
-              onClick={() => setLiked(!liked)}
+              title={liked ? "取消收藏" : "收藏"}
+              onClick={() => toggleFavorite(poem)}
             >
               {liked ? "❤️" : "🤍"} <span>{liked ? "已收藏" : "收藏"}</span>
             </button>

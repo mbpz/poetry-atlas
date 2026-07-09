@@ -1,11 +1,13 @@
 "use client";
 
 import { useEffect, useRef, useState, useCallback } from "react";
+import Link from "next/link";
 import { PLACE_TYPES, type Place } from "@/lib/supabase";
 import { MapSkeleton, PoemCardSkeleton, AuthorPanelSkeleton } from "@/components/Skeleton";
 import { BottomDrawer } from "@/components/BottomDrawer";
 import { PoemCard } from "@/components/PoemCard";
 import { useIsMobile } from "@/lib/useMediaQuery";
+import { useFavorites } from "@/lib/useFavorites";
 import dynamic from "next/dynamic";
 
 // 懒加载地图组件，避免阻塞首屏
@@ -25,6 +27,7 @@ type SearchResult = {
 
 export default function Home() {
   const isMobile = useIsMobile();
+  const { count: favCount } = useFavorites();
   const [places, setPlaces] = useState<Place[]>([]);
   const [selected, setSelected] = useState<any>(null);
   const [loading, setLoading] = useState(true);
@@ -173,9 +176,25 @@ export default function Home() {
           ))}
         </div>
 
-        {/* 搜索按钮 + 面板 */}
-        <div style={{ position: "absolute", top: 92, left: 20, zIndex: 10 }}>
+        {/* 搜索 + 收藏按钮 */}
+        <div style={{ position: "absolute", top: 92, left: 20, zIndex: 10, display: "flex", gap: 8 }}>
           <button onClick={() => setShowSearch(!showSearch)} style={styles.searchBtn}>🔍</button>
+          <Link href="/favorites" style={{ textDecoration: "none" }}>
+            <button style={{ ...styles.searchBtn, background: favCount > 0 ? "#fff0f0" : "rgba(255,255,255,0.95)", position: "relative" }}>
+              ❤️
+              {favCount > 0 && (
+                <span style={{
+                  position: "absolute", top: -4, right: -4,
+                  background: "#e8a0a0", color: "#fff",
+                  fontSize: 10, width: 16, height: 16,
+                  borderRadius: "50%", display: "flex",
+                  alignItems: "center", justifyContent: "center",
+                }}>
+                  {favCount > 9 ? "9+" : favCount}
+                </span>
+              )}
+            </button>
+          </Link>
         </div>
 
         {showSearch && (
