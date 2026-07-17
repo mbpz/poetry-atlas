@@ -34,6 +34,46 @@
 | Wikisource | HTML | 万级 | CC-BY-SA | API |
 | 国家公共文化数据 | 开放数据 | 万级 | 政府开放 | API |
 
+### 当前规范数据与修复流程
+
+`public/data/places.json` 是前端展示和 Supabase seed 共同使用的规范数据。
+正文补全使用 MIT 许可的
+[`chinese-poetry@2.0.1`](https://github.com/chinese-poetry/chinese-poetry-npm)
+作为初始校对语料，并通过繁简转换、作者/标题匹配和现有正文相似度进行筛选。
+自动流程只接受高置信匹配；歧义项不会猜测正文。无法可靠补全且正文过短或含乱码的记录会从规范数据中移除。
+
+```bash
+# 获取固定版本的外部校对语料（不要提交解压后的 350 MB 数据包）
+npm pack chinese-poetry@2.0.1 --pack-destination /tmp
+mkdir -p /tmp/chinese-poetry
+tar -xzf /tmp/chinese-poetry-2.0.1.tgz -C /tmp/chinese-poetry
+
+# 先预览匹配报告，再显式写入
+npm run repair:data -- --corpus /tmp/chinese-poetry/package/dist --drop-unmatched
+npm run repair:data -- --corpus /tmp/chinese-poetry/package/dist --drop-unmatched --write
+
+# 每次数据改动后必须通过
+npm run check:data
+```
+
+`check:data` 会拒绝未显式标记的过短正文、乱码、同诗异文、空地点，以及几首已知回归样本的残缺正文。
+确需收录节选时，标题必须含“（节选）”，或将记录的 `contentStatus` 设为 `excerpt`。
+
+使用服务端密钥同步 Supabase；已有诗词会更新正文，不再只复用旧 ID：
+
+```bash
+npm run seed:data
+```
+
+完全由该 seed 数据集管理的数据库可执行以下命令，删除已经撤出规范数据的诗词和空地点：
+
+```bash
+npm run seed:data -- --prune
+```
+
+> **警告：** `--prune` 会删除数据库中不在 `places.json` 内的诗词和地点，
+> 仅可用于没有额外人工录入内容的 seed-managed 数据库。运行前应备份数据库。
+
 ## 2.2 地名数据
 
 | 数据源 | 说明 |

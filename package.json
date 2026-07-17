@@ -6,7 +6,10 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "check:data": "node scripts/check_poem_data.mjs",
+    "repair:data": "node scripts/repair_poem_content.mjs",
+    "seed:data": "tsx supabase/seed.ts"
   },
   "dependencies": {
     "@supabase/ssr": "^0.12.0",
@@ -19,9 +22,12 @@
     "react-dom": "^19.0.0"
   },
   "devDependencies": {
+    "@next/env": "^16.2.10",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "opencc-js": "^1.4.1",
+    "tsx": "^4.23.1",
     "typescript": "^5"
   }
 }
