@@ -1,12 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
-import { createClient } from "@supabase/supabase-js";
-
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-);
+import { createServerSupabase } from "@/lib/supabase-server";
 
 export async function GET(request: NextRequest) {
+  const supabase = createServerSupabase();
   const { searchParams } = new URL(request.url);
   const minPoems = parseInt(searchParams.get("minPoems") || "5");
 

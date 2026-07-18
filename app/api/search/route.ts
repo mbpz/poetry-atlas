@@ -1,10 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { createClient } from "@supabase/supabase-js";
-
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-);
+import { createServerSupabase } from "@/lib/supabase-server";
 
 type SearchRow = {
   id: string;
@@ -17,6 +12,7 @@ type SearchRow = {
 };
 
 export async function GET(request: NextRequest) {
+  const supabase = createServerSupabase();
   const { searchParams } = new URL(request.url);
   const keyword = searchParams.get("q")?.trim() || "";
   const typeFilter = searchParams.get("type") || "all";

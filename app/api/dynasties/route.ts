@@ -1,12 +1,8 @@
 import { NextResponse } from "next/server";
-import { createClient } from "@supabase/supabase-js";
-
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-);
+import { createServerSupabase } from "@/lib/supabase-server";
 
 export async function GET() {
+  const supabase = createServerSupabase();
   const { data, error } = await supabase
     .from("dynasties")
     .select("id,name")
