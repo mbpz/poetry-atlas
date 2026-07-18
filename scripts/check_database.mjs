@@ -113,6 +113,248 @@ function recordFailure(message) {
   failures.push(message);
 }
 
+function isWriteBlocked(error) {
+  return Boolean(
+    error &&
+      (error.code === "42501" ||
+        /permission denied|row-level security|violates row-level security/i.test(
+          error.message,
+        )),
+  );
+}
+
+async function cleanupRow(table, match) {
+  const { error } = await service.from(table).delete().match(match);
+  if (error) throw new Error(`cleanup ${table}: ${error.message}`);
+}
+
+async function checkAnonymousWritesBlocked() {
+  const suffix = `${Date.now()}-${crypto.randomUUID().slice(0, 8)}`;
+  const servicePlaceId = `security-service-place-${suffix}`;
+  const servicePoemId = crypto.randomUUID();
+  const serviceDynastyId = `security-service-dynasty-${suffix}`;
+  const serviceAuthorId = crypto.randomUUID();
+  const serviceAuthorName = `安全检查作者-${suffix}`;
+  const sortOrder = 2_000_000_000 - (Date.now() % 1_000_000);
+
+  const serviceRows = [
+    {
+      table: "places",
+      row: {
+        id: servicePlaceId,
+        name: "安全检查服务端地点",
+        type: "city",
+        lng: 0,
+        lat: 0,
+        ancient_names: [],
+      },
+      match: { id: servicePlaceId },
+      update: { name: "匿名更新不应成功" },
+      verifyColumn: "name",
+      originalValue: "安全检查服务端地点",
+    },
+    {
+      table: "dynasties",
+      row: {
+        id: serviceDynastyId,
+        name: `安全检查朝代-${suffix}`,
+        name_en: "Security check",
+        sort_order: sortOrder,
+      },
+      match: { id: serviceDynastyId },
+      update: { name_en: "Anonymous update must fail" },
+      verifyColumn: "name_en",
+      originalValue: "Security check",
+    },
+    {
+      table: "authors",
+      row: {
+        id: serviceAuthorId,
+        name: serviceAuthorName,
+        dynasty: "测试",
+        poem_count: 0,
+        place_count: 0,
+      },
+      match: { id: serviceAuthorId },
+      update: { dynasty: "匿名更新不应成功" },
+      verifyColumn: "dynasty",
+      originalValue: "测试",
+    },
+    {
+      table: "poems",
+      row: {
+        id: servicePoemId,
+        title: `安全检查诗-${suffix}`,
+        author: serviceAuthorName,
+        dynasty: "唐",
+        dynasty_id: "tang",
+        content: "安全检查服务端临时正文。",
+      },
+      match: { id: servicePoemId },
+      update: { content: "匿名更新不应成功。" },
+      verifyColumn: "content",
+      originalValue: "安全检查服务端临时正文。",
+    },
+  ];
+
+  const anonymousInsertRows = [
+    {
+      table: "places",
+      row: {
+        id: `security-anon-place-${suffix}`,
+        name: "匿名插入不应成功",
+        type: "city",
+        lng: 0,
+        lat: 0,
+        ancient_names: [],
+      },
+      match: { id: `security-anon-place-${suffix}` },
+    },
+    {
+      table: "dynasties",
+      row: {
+        id: `security-anon-dynasty-${suffix}`,
+        name: `匿名插入朝代-${suffix}`,
+        name_en: "Anonymous insert must fail",
+        sort_order: sortOrder - 1,
+      },
+      match: { id: `security-anon-dynasty-${suffix}` },
+    },
+    {
+      table: "authors",
+      row: {
+        id: crypto.randomUUID(),
+        name: `匿名插入作者-${suffix}`,
+        dynasty: "测试",
+        poem_count: 0,
+        place_count: 0,
+      },
+      match: { name: `匿名插入作者-${suffix}` },
+    },
+    {
+      table: "poems",
+      row: {
+        id: crypto.randomUUID(),
+        title: `匿名插入诗-${suffix}`,
+        author: `匿名插入作者-${suffix}`,
+        dynasty: "唐",
+        dynasty_id: "tang",
+        content: "匿名插入不应成功。",
+      },
+      match: {
+        title: `匿名插入诗-${suffix}`,
+        author: `匿名插入作者-${suffix}`,
+      },
+    },
+  ];
+
+  try {
+    for (const item of serviceRows) {
+      const { error } = await service.from(item.table).insert(item.row);
+      if (error) throw new Error(`prepare ${item.table}: ${error.message}`);
+    }
+
+    for (const item of anonymousInsertRows) {
+      const { error } = await anonymous.from(item.table).insert(item.row);
+      if (!error) {
+        await cleanupRow(item.table, item.match);
+        recordFailure(`anonymous INSERT on ${item.table} unexpectedly succeeded`);
+      } else if (!isWriteBlocked(error)) {
+        recordFailure(`anonymous INSERT on ${item.table} failed unexpectedly: ${error.message}`);
+      }
+    }
+
+    const relationMatch = { poem_id: servicePoemId, place_id: servicePlaceId };
+    const { error: relationInsertError } = await anonymous.from("poem_places").insert({
+      ...relationMatch,
+      relation_type: "description",
+    });
+    if (!relationInsertError) {
+      await cleanupRow("poem_places", relationMatch);
+      recordFailure("anonymous INSERT on poem_places unexpectedly succeeded");
+    } else if (!isWriteBlocked(relationInsertError)) {
+      recordFailure(
+        `anonymous INSERT on poem_places failed unexpectedly: ${relationInsertError.message}`,
+      );
+    }
+
+    const { error: prepareRelationError } = await service.from("poem_places").insert({
+      ...relationMatch,
+      relation_type: "description",
+    });
+    if (prepareRelationError) {
+      throw new Error(`prepare poem_places: ${prepareRelationError.message}`);
+    }
+
+    const mutationRows = [
+      ...serviceRows,
+      {
+        table: "poem_places",
+        match: relationMatch,
+        update: { relation_type: "anonymous-update-must-fail" },
+        verifyColumn: "relation_type",
+        originalValue: "description",
+      },
+    ];
+
+    for (const item of mutationRows) {
+      const { data: updated, error: updateError } = await anonymous
+        .from(item.table)
+        .update(item.update)
+        .match(item.match)
+        .select(item.verifyColumn);
+      if (updated?.length) {
+        recordFailure(`anonymous UPDATE on ${item.table} unexpectedly succeeded`);
+      } else if (updateError && !isWriteBlocked(updateError)) {
+        recordFailure(
+          `anonymous UPDATE on ${item.table} failed unexpectedly: ${updateError.message}`,
+        );
+      }
+
+      const { data: stored, error: verifyError } = await service
+        .from(item.table)
+        .select(item.verifyColumn)
+        .match(item.match)
+        .maybeSingle();
+      if (verifyError) throw new Error(`verify ${item.table}: ${verifyError.message}`);
+      if (!stored || stored[item.verifyColumn] !== item.originalValue) {
+        recordFailure(`anonymous UPDATE changed ${item.table}`);
+      }
+    }
+
+    for (const item of [...mutationRows].reverse()) {
+      const { data: deleted, error: deleteError } = await anonymous
+        .from(item.table)
+        .delete()
+        .match(item.match)
+        .select(item.verifyColumn);
+      if (deleted?.length) {
+        recordFailure(`anonymous DELETE on ${item.table} unexpectedly succeeded`);
+      } else if (deleteError && !isWriteBlocked(deleteError)) {
+        recordFailure(
+          `anonymous DELETE on ${item.table} failed unexpectedly: ${deleteError.message}`,
+        );
+      }
+
+      const { count, error: verifyError } = await service
+        .from(item.table)
+        .select("*", { count: "exact", head: true })
+        .match(item.match);
+      if (verifyError) throw new Error(`verify ${item.table}: ${verifyError.message}`);
+      if (count !== 1) recordFailure(`anonymous DELETE changed ${item.table}`);
+    }
+  } finally {
+    await cleanupRow("poem_places", {
+      poem_id: servicePoemId,
+      place_id: servicePlaceId,
+    });
+    await cleanupRow("poems", { id: servicePoemId });
+    await cleanupRow("places", { id: servicePlaceId });
+    await cleanupRow("authors", { id: serviceAuthorId });
+    await cleanupRow("dynasties", { id: serviceDynastyId });
+  }
+}
+
 async function fetchAll(client, table, columns) {
   const rows = [];
   for (let from = 0; ; from += PAGE_SIZE) {
@@ -338,19 +580,7 @@ async function checkPublicContract() {
     }
   }
 
-  const sentinelId = `security-check-${Date.now()}`;
-  const { error: writeError } = await anonymous.from("places").insert({
-    id: sentinelId,
-    name: "安全检查临时记录",
-    type: "city",
-    lng: 0,
-    lat: 0,
-    ancient_names: [],
-  });
-  if (!writeError) {
-    await service.from("places").delete().eq("id", sentinelId);
-    recordFailure("anonymous INSERT unexpectedly succeeded");
-  }
+  await checkAnonymousWritesBlocked();
 }
 
 try {
