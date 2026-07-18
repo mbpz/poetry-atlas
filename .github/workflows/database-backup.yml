@@ -1,0 +1,74 @@
+name: Database Backup
+
+on:
+  schedule:
+    - cron: "17 19 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: database-backup
+  cancel-in-progress: false
+
+jobs:
+  backup:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+      NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+      SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Require backup credentials
+        run: |
+          if [[ -z "$NEXT_PUBLIC_SUPABASE_URL" || -z "$NEXT_PUBLIC_SUPABASE_ANON_KEY" || -z "$SUPABASE_SERVICE_ROLE_KEY" ]]; then
+            echo "Missing required Supabase backup secrets" >&2
+            exit 1
+          fi
+
+      - run: npm ci
+      - run: npm run check:database
+      - name: Export stable snapshot
+        run: npm run backup:database -- --output /tmp/poetry-atlas-backup --git-sha "$GITHUB_SHA"
+      - name: Verify checksums, relations, and migration version
+        run: npm run backup:verify -- --input /tmp/poetry-atlas-backup --check-migrations --max-age-hours 1
+      - name: Rehearse restore without database writes
+        run: npm run restore:database -- --input /tmp/poetry-atlas-backup
+
+      - uses: actions/upload-artifact@v7
+        with:
+          name: database-backup-${{ github.run_id }}
+          path: /tmp/poetry-atlas-backup
+          if-no-files-found: error
+          retention-days: 90
+          compression-level: 9
+
+      - name: Check out durable backup history
+        uses: actions/checkout@v6
+        with:
+          ref: database-backups
+          path: database-backups-history
+          fetch-depth: 0
+
+      - name: Publish latest snapshot to database-backups branch
+        run: |
+          rm -rf database-backups-history/latest
+          mkdir -p database-backups-history/latest
+          cp -R /tmp/poetry-atlas-backup/. database-backups-history/latest/
+          git -C database-backups-history config user.name "github-actions[bot]"
+          git -C database-backups-history config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git -C database-backups-history add latest
+          if git -C database-backups-history diff --cached --quiet; then
+            echo "Snapshot is unchanged"
+            exit 0
+          fi
+          git -C database-backups-history commit -m "backup: Supabase snapshot ${GITHUB_RUN_ID}"
+          git -C database-backups-history push origin HEAD:database-backups

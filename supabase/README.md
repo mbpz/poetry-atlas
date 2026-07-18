@@ -37,3 +37,17 @@ npm run check:database
 ```
 
 `--prune` makes Supabase match `public/data/places.json`, including removal of stale poems, places, relations, and derived authors. Back up production before using it.
+
+## Disaster recovery
+
+The implemented backup schedule, retention policy, integrity checks, and restore runbook are documented in [`../DISASTER_RECOVERY.md`](../DISASTER_RECOVERY.md).
+
+Manual commands:
+
+```bash
+npm run backup:database
+npm run backup:verify -- --input <backup-directory> --check-migrations
+npm run restore:database -- --input <backup-directory>
+```
+
+Restore is dry-run by default. Database writes require both `--apply` and an exact `--confirm-project-ref` value.

@@ -10,6 +10,10 @@
     "typecheck": "tsc --noEmit",
     "check:data": "node scripts/check_poem_data.mjs",
     "check:database": "node scripts/check_database.mjs",
+    "backup:database": "node scripts/backup_database.mjs",
+    "backup:verify": "node scripts/verify_database_backup.mjs",
+    "restore:database": "node scripts/restore_database.mjs",
+    "test:backup": "node scripts/test_database_backup.mjs",
     "repair:data": "node scripts/repair_poem_content.mjs",
     "seed:data": "tsx supabase/seed.ts"
   },
