@@ -2,7 +2,7 @@
 
 import { useState, useMemo } from "react";
 import Link from "next/link";
-import { useFavorites, FavoritePoem } from "@/lib/useFavorites";
+import { useFavorites } from "@/lib/useFavorites";
 import { PoemCard } from "@/components/PoemCard";
 
 export default function FavoritesPage() {

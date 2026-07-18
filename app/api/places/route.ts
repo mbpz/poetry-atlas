@@ -6,6 +6,14 @@ const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
 );
 
+type PlaceRow = {
+  id: string;
+  name: string;
+  type: string;
+  lng: number;
+  lat: number;
+};
+
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
   const type = searchParams.get("type");
@@ -45,7 +53,7 @@ export async function GET(request: NextRequest) {
           .eq("dynasty", dynRow.name)
           .limit(200);
 
-        const poemIds = (poemData ?? []).map((p: any) => p.id);
+        const poemIds = (poemData ?? []).map((poem) => poem.id);
         if (poemIds.length === 0) {
           return NextResponse.json({ places: [] });
         }
@@ -55,7 +63,7 @@ export async function GET(request: NextRequest) {
           .select("place_id")
           .in("poem_id", poemIds);
 
-        const placeIds = [...new Set((ppData ?? []).map((p: any) => p.place_id))];
+        const placeIds = [...new Set((ppData ?? []).map((row) => row.place_id))];
         if (placeIds.length === 0) {
           return NextResponse.json({ places: [] });
         }
@@ -68,16 +76,18 @@ export async function GET(request: NextRequest) {
         return NextResponse.json({ places: placesData ?? [] });
       }
 
-      const places = (data ?? [])
-        .map((r: any) => r.places)
+      const places = (
+        (data ?? []) as unknown as Array<{ places: PlaceRow | null }>
+      )
+        .map((row) => row.places)
         .filter(Boolean);
 
       // dedup
       const seen = new Set<string>();
       return NextResponse.json({
-        places: places.filter((p: any) => {
-          if (seen.has(p.id)) return false;
-          seen.add(p.id);
+        places: places.filter((place): place is PlaceRow => {
+          if (!place || seen.has(place.id)) return false;
+          seen.add(place.id);
           return true;
         }),
       });

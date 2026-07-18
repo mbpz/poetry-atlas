@@ -1,540 +1,126 @@
-# 数据采集与清洗流程（DATA_PIPELINE.md）
+# 数据流水线
 
-> Poetry Atlas of China — 数据从获取到入库的全链路设计
+当前数据流水线以仓库中的 `public/data/places.json` 为规范数据，以 Supabase 为唯一运行时数据库。本文只描述已经存在、可执行的流程；本地数据库与 Docker 不在范围内。
 
----
+## 数据流
 
-# 一、整体流程
-
+```text
+places.json
+    │
+    ├── npm run check:data
+    │
+    ├── npm run seed:data -- --prune
+    │       └── Supabase: places / poems / poem_places / authors
+    │
+    └── npm run check:database
+            ├── OpenAPI 结构与 RPC 合约
+            ├── 本地与远端逐字段一致性
+            ├── 作者派生统计
+            └── 匿名只读权限
 ```
-┌──────────┐    ┌──────────┐    ┌──────────┐    ┌──────────┐    ┌──────────┐
-│  数据源   │───▶│  采集     │───▶│  清洗     │───▶│  关联     │───▶│  入库     │
-│  (古籍网/ │    │  (爬虫/   │    │  (规则+   │    │  (LLM +  │    │  (PG/     │
-│   数据库) │    │   API)   │    │   人工)   │    │   规则)   │    │   OS)    │
-└──────────┘    └──────────┘    └──────────┘    └──────────┘    └──────────┘
-                                                                      │
-                                                                      ▼
-                                                               ┌──────────┐
-                                                               │  质量     │
-                                                               │  监控     │
-                                                               └──────────┘
-```
 
----
+## 规范数据格式
 
-# 二、数据源
+每个地点包含：
 
-## 2.1 诗词数据
+- `id`：稳定、唯一的文本 ID
+- `name`、`type`、`lng`、`lat`
+- `ancient_names`：可选古地名数组；seed 会把缺省值写为空数组
+- `poems`：与该地点关联的诗词数组
 
-| 数据源 | 类型 | 规模 | 许可证 | 采集方式 |
-| ------ | ---- | ---- | ------ | -------- |
-| 古诗文网 (gushiwen.cn) | 网页 | 10 万+ | 爬虫友好（合规速率） | 爬虫 |
-| 中国哲学书电子化计划 (ctext.org) | 网页/API | 万级 | CC | API/Open Data |
-| 全唐诗 / 全宋词数据库 | 数据库 | 5 万+ | 开放 | 数据库开放接口 |
-| Wikisource | HTML | 万级 | CC-BY-SA | API |
-| 国家公共文化数据 | 开放数据 | 万级 | 政府开放 | API |
+每首诗包含 `title`、`author`、`dynasty`、`content`。同标题、同作者视为同一首诗；它可以关联多个地点，但不同地点中的正文和朝代必须一致。
 
-### 当前规范数据与修复流程
+当前基线：
 
-`public/data/places.json` 是前端展示和 Supabase seed 共同使用的规范数据。
-正文补全使用 MIT 许可的
-[`chinese-poetry@2.0.1`](https://github.com/chinese-poetry/chinese-poetry-npm)
-作为初始校对语料，并通过繁简转换、作者/标题匹配和现有正文相似度进行筛选。
-自动流程只接受高置信匹配；歧义项不会猜测正文。无法可靠补全且正文过短或含乱码的记录会从规范数据中移除。
+| 数据 | 数量 |
+| --- | ---: |
+| 地点 | 89 |
+| 唯一诗词 | 323 |
+| 诗词地点关系 | 340 |
+
+## 本地质量检查
 
 ```bash
-# 获取固定版本的外部校对语料（不要提交解压后的 350 MB 数据包）
+npm run check:data
+```
+
+该命令检查：
+
+- 地点 ID、类型、坐标、古地名和空地点
+- 诗词朝代是否可映射
+- 未明确标记的过短正文、乱码和同诗异文
+- 重点完整正文回归样本
+- 89/323/340 基线数量
+
+确需收录节选时，标题应包含“（节选）”，或设置 `contentStatus: "excerpt"`。
+
+## 正文修复
+
+`scripts/repair_poem_content.mjs` 可使用固定版本的外部语料生成匹配报告。先预览，确认后再写入：
+
+```bash
 npm pack chinese-poetry@2.0.1 --pack-destination /tmp
 mkdir -p /tmp/chinese-poetry
 tar -xzf /tmp/chinese-poetry-2.0.1.tgz -C /tmp/chinese-poetry
 
-# 先预览匹配报告，再显式写入
 npm run repair:data -- --corpus /tmp/chinese-poetry/package/dist --drop-unmatched
 npm run repair:data -- --corpus /tmp/chinese-poetry/package/dist --drop-unmatched --write
-
-# 每次数据改动后必须通过
 npm run check:data
 ```
 
-`check:data` 会拒绝未显式标记的过短正文、乱码、同诗异文、空地点，以及几首已知回归样本的残缺正文。
-确需收录节选时，标题必须含“（节选）”，或将记录的 `contentStatus` 设为 `excerpt`。
+自动修复只接受高置信匹配；不能可靠补全的内容不得猜测。
 
-使用服务端密钥同步 Supabase；已有诗词会更新正文，不再只复用旧 ID：
+## 同步 Supabase
 
-```bash
-npm run seed:data
+先在 Supabase SQL Editor 执行 `supabase/migrations/` 中尚未应用的迁移。然后在未跟踪的 `.env.local` 或 `.env` 中配置：
+
+```env
+NEXT_PUBLIC_SUPABASE_URL=https://PROJECT.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=sb_publishable_xxx
+SUPABASE_SERVICE_ROLE_KEY=sb_secret_xxx
 ```
 
-完全由该 seed 数据集管理的数据库可执行以下命令，删除已经撤出规范数据的诗词、空地点和旧关联：
+执行全量规范同步：
 
 ```bash
 npm run seed:data -- --prune
 ```
 
-> **警告：** `--prune` 会删除数据库中不在 `places.json` 内的诗词和地点，
-> 仅可用于没有额外人工录入内容的 seed-managed 数据库。运行前应备份数据库。
+seed 会：
 
-## 2.2 地名数据
+1. 写入所有地点字段，包括类型与古地名。
+2. 按 `(title, author)` upsert 唯一诗词，并写入 `dynasty_id`。
+3. upsert 诗词地点关系。
+4. `--prune` 时删除规范数据外的关系、诗词和地点。
+5. 从同步后的数据库重建至少有 3 首诗的作者统计，并清除过期作者。
 
-| 数据源 | 说明 |
-| ------ | ---- |
-| **CHGIS** | 中国历史地理信息系统，含历代政区边界 |
-| **GeoNames** | 全球地名库（含中国） |
-| **高德/天地图 API** | 现代地名坐标、古地名 → 现代地名映射 |
-| **读秀/知网** | 历史地名考据 |
+`--prune` 面向完全由该仓库管理的数据集。生产执行前应先保留 Supabase 备份。
 
-## 2.3 作者数据
+## 远端一致性检查
 
-| 数据源 | 说明 |
-| ------ | ---- |
-| 古诗文网作者页 | 基本信息 |
-| 维基百科 / WikiData | 生平、生卒年 |
-| 《唐诗纪事》《宋诗纪事》 | 作者事迹 |
-| CBDB（中国历代人物传记数据库） | 结构化传记 |
-
-## 2.4 历史事件数据
-
-| 数据源 | 说明 |
-| ------ | ---- |
-| 《资治通鉴》 | 编年史 |
-| 维基百科事件列表 | 结构化 |
-| 自定义事件库 | 团队维护 |
-
----
-
-# 三、采集层设计
-
-## 3.1 采集架构
-
-> **约束**：遵循 `ARCHITECTURE.md` 中的 **Zero-Ops First** 原则。**不在 Vercel 上运行任何爬虫任务**，全部通过 **GitHub Actions** 离线执行。
-
-```
-┌────────────────────────────────────────────────────────────┐
-│                    GitHub Actions (定时 / 手动)              │
-│                                                            │
-│   ┌─────────────────────────────────────────────────────┐  │
-│   │  Cron: 每天 22:00 UTC (北京时间 06:00)              │  │
-│   │  workflow_dispatch: 支持手动触发                     │  │
-│   └───────────────────────┬─────────────────────────────┘  │
-│                           │                                │
-│        ┌──────────────────┼──────────────────┐             │
-│        ▼                  ▼                  ▼             │
-│   ┌─────────┐       ┌─────────┐       ┌─────────┐         │
-│   │ Scrapy  │       │ HTTP    │       │ 开放数据 │         │
-│   │ Spider  │       │ Client  │       │ 文件下载 │         │
-│   │ (Python)│       │ (API)   │       │         │         │
-│   └────┬────┘       └────┬────┘       └────┬────┘         │
-│        │                  │                  │              │
-│        └──────────────────┼──────────────────┘              │
-│                           ▼                                │
-│                    ┌─────────────┐                         │
-│                    │ Raw Storage │                         │
-│                    │ (Cloudflare │                         │
-│                    │  R2 免费)   │                         │
-│                    └─────────────┘                         │
-└────────────────────────────────────────────────────────────┘
-                           │
-                           ▼
-                 清洗 + LLM 地点抽取 + 关联
-                           │
-                           ▼
-                 写入 Supabase + 生成静态 JSON
-                           │
-                           ▼
-                  git commit + push → Vercel 自动部署
+```bash
+npm run check:database
 ```
 
-## 3.2 采集代码示例（Python）
+该命令使用 Secret key 读取 Supabase OpenAPI 与数据，并使用 anon key 验证公开合约。它会在以下任一情况返回非零退出码：
 
-```python
-# pipelines/poem_scraper.py
-import scrapy
-from scrapy.http import Request
+- 表字段或 `search_poems` RPC 与迁移合约不一致
+- 地点、诗词、关系或古地名与 `places.json` 不一致
+- `dynasty_id`、作者数量或作者统计错误
+- 匿名读取失败、搜索古地名失败，或匿名写入未被阻止
 
-class GushiwenSpider(scrapy.Spider):
-    name = 'gushiwen'
-    allowed_domains = ['gushiwen.cn']
-    start_urls = ['https://so.gushiwen.cn/gushi/']
-    custom_settings = {
-        'DOWNLOAD_DELAY': 1.5,          # 礼貌爬取
-        'CONCURRENT_REQUESTS': 2,
-        'ROBOTSTXT_OBEY': True,
-        'USER_AGENT': 'PoetryAtlas/1.0 (+https://poetryatlas.cn)',
-    }
+检查不会输出密钥；匿名写入测试使用应被 RLS 拒绝的临时 ID，若异常成功会立即用服务端权限清理并报告失败。
 
-    def parse(self, response):
-        for poem in response.css('.left .sons'):
-            yield {
-                'title': poem.css('p a b::text').get(),
-                'content': '\n'.join(poem.css('p:nth-child(2)::text').getall()),
-                'author': poem.css('p.source a::text').get(),
-                'dynasty': poem.css('p.source a::text').getall()[1] if len(response.css('p.source a::text').getall()) > 1 else '',
-                'url': poem.css('p a::attr(href)').get(),
-            }
+## 发布顺序
 
-        # 翻页
-        next_page = response.css('a.amore::attr(href)').get()
-        if next_page:
-            yield Request(response.urljoin(next_page), callback=self.parse)
-
-    def parse_detail(self, response):
-        """解析诗词详情页：注释、译文、赏析"""
-        yield {
-            'title': response.css('.main3 .shileft .cont h1::text').get(),
-            'content': '\n'.join(response.css('.main3 .shileft .cont p:nth-child(2)::text').getall()),
-            'annotation': '\n'.join(response.css('.main3 .shileft .cont .contson::text').getall()),
-            'translation': response.css('#contson.translation::text').get(),
-            'appreciation': response.css('#contson.appreciation::text').get(),
-        }
+```bash
+npm run check:data
+npm run typecheck
+npm run lint
+npm run build
+# 在 Supabase SQL Editor 应用迁移
+npm run seed:data -- --prune
+npm run check:database
 ```
 
-## 3.3 采集规范
-
-| 规则 | 说明 |
-| ---- | ---- |
-| 限速 | 单域名 ≤ 2 req/s |
-| 重试 | 3 次指数退避 |
-| 去重 | URL + MD5 内容指纹 |
-| 增量 | 仅抓取新增/变更数据 |
-| 断点续传 | 使用 Scrapy 的 JOBDIR |
-| 礼貌池 | 代理 IP 池 + User-Agent 轮换 |
-| 法律合规 | 遵守 robots.txt，仅采集公开数据 |
-
----
-
-# 四、清洗层设计
-
-## 4.1 清洗流程
-
-```
-Raw JSON ──▶ 格式标准化 ──▶ 去重 ──▶ 字段补全 ──▶ 验证 ──▶ Clean Data
-```
-
-## 4.2 清洗规则
-
-### 文本清洗
-
-```python
-# cleaners/text_cleaner.py
-import re
-import unicodedata
-
-def clean_text(text: str) -> str:
-    """诗词正文清洗"""
-    # 1. Unicode 标准化
-    text = unicodedata.normalize('NFKC', text)
-    
-    # 2. 去除网页残留标签
-    text = re.sub(r'<[^>]+>', '', text)
-    
-    # 3. 去除控制字符
-    text = re.sub(r'[\x00-\x08\x0b\x0c\x0e-\x1f]', '', text)
-    
-    # 4. 统一标点
-    text = text.replace('﹔', '；').replace('﹖', '？')
-    
-    # 5. 去除多余空白
-    text = re.sub(r'\s+', '\n', text).strip()
-    
-    # 6. 去除网页页码/引用号
-    text = re.sub(r'\[\d+\]', '', text)
-    
-    return text
-```
-
-### 作者名归一化
-
-```python
-# 姓名变体映射
-AUTHOR_ALIASES = {
-    '太白': '李白',
-    '子美': '杜甫',
-    '东坡居士': '苏轼',
-    '易安居士': '李清照',
-}
-
-def normalize_author(name: str) -> str:
-    name = name.strip()
-    return AUTHOR_ALIASES.get(name, name)
-```
-
-### 朝代标准化
-
-```python
-DYNASTY_MAPPING = {
-    '唐代': '唐',
-    '唐朝': '唐',
-    '宋代': '宋',
-    '宋代（北宋）': '宋',
-    '宋代（南宋）': '宋',
-    '先秦': '先秦',
-}
-
-def normalize_dynasty(dynasty: str) -> str:
-    dynasty = dynasty.strip().replace('朝', '').replace('代', '')
-    return DYNASTY_MAPPING.get(dynasty, dynasty)
-```
-
-### 去重策略
-
-```python
-import hashlib
-
-def poem_fingerprint(title: str, author: str, content: str) -> str:
-    """生成诗词唯一指纹：作者+标题+正文前20字"""
-    key = f"{author}::{title}::{content[:20]}"
-    return hashlib.md5(key.encode('utf-8')).hexdigest()
-```
-
----
-
-# 五、关联层设计
-
-## 5.1 诗词-地点关联
-
-这是最核心也是最困难的环节：
-
-```
-                   ┌──────────────┐
-                   │   地点词典    │
-                   │  (古地名 +   │
-                   │   现代地名)   │
-                   └──────┬───────┘
-                          │
-   ┌──────────┐           │           ┌──────────────┐
-   │ 规则匹配  │───────────┼──────────▶│  高置信度     │
-   │ (诗中直接 │           │           │  (>0.9)      │
-   │  出现地名)│           │           └──────────────┘
-   └──────────┘           │
-                          │           ┌──────────────┐
-                   ┌──────┴───────┐   │  中置信度     │
-                   │  LLM 判定     ├──▶│  (0.5-0.9)   │
-                   │  (注释+背景    │   │  待人工审核   │
-                   │   分析)       │   └──────────────┘
-                   └──────────────┘
-```
-
-## 5.2 LLM 地点抽取 Prompt
-
-```python
-PLACE_EXTRACTION_PROMPT = """
-你是一位中国古代文学专家。请从以下诗词文本中提取所有涉及的地点信息。
-
-诗词标题：{title}
-正文：{content}
-注释：{annotation}
-
-请以 JSON 格式返回：
-{
-  "places": [
-    {
-      "name": "地点名称（原始词）",
-      "relation": "creation/description/passing/farewell/destination/origin/reference",
-      "confidence": 0.0-1.0,
-      "note": "判断依据"
-    }
-  ]
-}
-
-关系类型说明：
-- creation: 创作地
-- description: 描写地
-- passing: 途经地
-- farewell: 送别地
-- destination: 目的地
-- origin: 出发地
-- reference: 典故引用
-- residence: 居住地
-
-只提取有明确地理意义的地点，不要提取隐喻、比喻性词语。
-"""
-```
-
-## 5.3 地点映射表
-
-```python
-# 古地名 → 现代地名 映射
-ANCIENT_PLACE_MAPPING = {
-    '长安': {'modern': '西安', 'lng': 108.94, 'lat': 34.26, 'period': '唐'},
-    '金陵': {'modern': '南京', 'lng': 118.80, 'lat': 32.06, 'period': '六朝'},
-    '建康': {'modern': '南京', 'lng': 118.80, 'lat': 32.06, 'period': '六朝'},
-    '临安': {'modern': '杭州', 'lng': 120.15, 'lat': 30.25, 'period': '宋'},
-    '姑苏': {'modern': '苏州', 'lng': 120.62, 'lat': 31.32, 'period': '隋唐'},
-    '汴京': {'modern': '开封', 'lng': 114.35, 'lat': 34.79, 'period': '宋'},
-    '幽州': {'modern': '北京', 'lng': 116.40, 'lat': 39.90, 'period': '唐'},
-    '益州': {'modern': '成都', 'lng': 104.07, 'lat': 30.65, 'period': '汉'},
-    '广陵': {'modern': '扬州', 'lng': 119.42, 'lat': 32.39, 'period': '唐'},
-    '锦官城': {'modern': '成都', 'lng': 104.07, 'lat': 30.65, 'period': '唐'},
-}
-```
-
----
-
-# 六、入库层设计
-
-## 6.1 ETL 流程
-
-```python
-# scripts/etl/transform_and_load.py
-# 在 GitHub Actions 中为独立 Python 进程执行
-def run_etl(batch_size: int = 100):
-    """主 ETL 流程（在 GitHub Actions Runner 中执行，无 Serverless 超时限制）"""
-    raw_poems = storage.list_raw('poems/')   # 从 Cloudflare R2 读取原始数据
-    
-    for batch in chunked(raw_poems, batch_size):
-        cleaned = [clean_poem(p) for p in batch]
-        deduped = deduplicate(cleaned)
-        
-        for poem in deduped:
-            # 1. 写入 Supabase
-            poem_id = supabase.table('poem').insert(poem).execute()
-            
-            # 2. 地点关联（通过 OpenRouter 调用 LLM 抽取）
-            extract_places_for_poem(poem_id)   # 同步调用，Actions Runner 无时间限制
-            
-            # 3. 标签提取
-            extract_tags_for_poem(poem_id)
-    
-    # 4. 重新生成静态 JSON（写入 public/data/，供下次部署使用）
-    generate_static_json()
-    
-    # 5. 刷新 Supabase 物化视图
-    supabase.rpc('refresh_place_poem_stats')
-```
-
-## 6.2 增量更新
-
-```python
-# scripts/etl/incremental.py
-def incremental_update():
-    """增量更新：仅处理新增/变更数据（在 GitHub Actions 中执行）"""
-    last_sync = supabase.table('sync_metadata').select('last_sync').execute()
-    
-    new_sources = source.scan(since=last_sync)
-    
-    for src in new_sources:
-        if src.is_deleted:
-            supabase.table('poem').update({'deleted_at': 'now()'}).eq('id', src.id).execute()
-        elif src.is_modified:
-            supabase.table('poem').update(src.data).eq('id', src.id).execute()
-        else:
-            supabase.table('poem').insert(src.data).execute()
-    
-    supabase.table('sync_metadata').update({'last_sync': 'now()'}).execute()
-```
-
----
-
-# 七、质量监控
-
-## 7.1 数据质量维度
-
-| 维度 | 指标 | 目标 |
-| ---- | ---- | ---- |
-| 完整性 | 必填字段缺失率 | < 1% |
-| 准确性 | 人工抽检正确率 | > 95% |
-| 一致性 | 作者-朝代-作品匹配率 | > 99% |
-| 时效性 | 新增数据入库延迟 | < 24h |
-| 唯一性 | 去重后重复率 | < 0.1% |
-| 关联性 | 地点关联覆盖率（有明确地点的诗） | > 60% |
-
-## 7.2 质量检查脚本
-
-```python
-# quality/check.py
-async def run_quality_checks():
-    checks = [
-        check_required_fields(),
-        check_dynasty_year_consistency(),
-        check_author_poem_count(),
-        check_place_coordinates(),
-        check_duplicate_poems(),
-        check_orphan_relations(),
-    ]
-    
-    results = await asyncio.gather(*checks)
-    
-    # 推送告警
-    for result in results:
-        if not result.passed:
-            await alert.send(result)
-```
-
-## 7.3 数据仪表板
-
-- 整体数据量趋势图
-- 各朝代诗词分布
-- 各地点诗词 Top 100
-- 数据质量周报
-- 任务执行日志
-
----
-
-# 八、人工审核平台
-
-对于 LLM 抽取的低置信度结果，需要人工审核：
-
-```
-┌──────────────────────────────────────────────────────┐
-│                  审核工作台                           │
-│                                                      │
-│  ┌────────────────────┐  ┌────────────────────────┐  │
-│  │ 原始诗词           │  │ LLM 抽取结果            │  │
-│  │                    │  │                        │  │
-│  │ 《黄鹤楼送孟浩然》  │  │ ✓ 黄鹤楼 (送别地) 0.95 │  │
-│  │  故人西辞黄鹤楼    │  │ ✓ 扬州   (目的地)   0.90 │  │
-│  │  烟花三月下扬州    │  │ ✗ 金陵   (描写地)   0.40 │  │
-│  │                    │  │ ? 长江   (描写地)   0.65 │  │
-│  └────────────────────┘  └────────────────────────┘  │
-│                                                      │
-│  [✓ 确认] [✗ 拒绝] [✏️ 编辑] [⏭️ 下一条]            │
-└──────────────────────────────────────────────────────┘
-```
-
----
-
-# 九、数据安全
-
-| 层面 | 措施 |
-| ---- | ---- |
-| 采集合规 | 遵守 robots.txt，不采集版权受保护内容 |
-| 存储加密 | Supabase 静态加密（免费内置） |
-| 访问控制 | Supabase RLS（行级安全策略） |
-| 备份策略 | Supabase 每日自动备份（免费） |
-| 审计日志 | Supabase Audit Log + 触发器记录变更 |
-| 敏感配置 | GitHub Secrets（API Key 等） |
-
----
-
-# 十、技术栈
-
-> **约束**：技术选型遵循 `ARCHITECTURE.md` 中的 **Zero-Ops First** 原则。
-
-| 模块 | 技术 | 理由 |
-| ---- | ---- | ---- |
-| 定时调度 | **GitHub Actions Cron** | 零成本、零运维 |
-| 爬虫框架 | **Scrapy (Python)** | 成熟、兼容 GitHub Actions |
-| 数据处理 | **Polars** | 比 Pandas 快、内存占用低 |
-| ETL 编排 | **GitHub Actions Steps** | 无需额外调度器 |
-| AI 调用 | **OpenRouter API** | 统一网关、按调用付费 |
-| 质量监控 | **自定义脚本** | 轻量、足够 |
-| 原始存储 | **Cloudflare R2**（免费出口） | 备份爬取数据 |
-| 主数据库 | **Supabase PostgreSQL** | 内置 Auth/Storage/RLS |
-| ORM | **Drizzle** | Serverless 友好 |
-| 部署触发 | **GitHub Push → Vercel** | 全自动 |
-
----
-
-# 十一、Milestone
-
-> **所有数据任务通过 GitHub Actions 完成，不占用 Vercel 资源**。
-
-| 阶段 | 时间 | 任务 | 产出 | 执行方式 |
-| ---- | ---- | ---- | ---- | -------- |
-| DP-1 | M1 | 采集脚本 + 清洗 | 5 万首诗词入库 | GitHub Actions |
-| DP-2 | M2 | 作者/地名库 | 5000 作者 + 3000 地点 | GitHub Actions |
-| DP-3 | M2 | 地点关联（规则） | 8 万条关联（高置信度） | GitHub Actions |
-| DP-4 | M3 | LLM 地点抽取（OpenRouter） | 15 万条关联 | GitHub Actions |
-| DP-5 | M3 | 人工审核平台（Next.js Admin） | 审核通过率 > 90% | Supabase + Admin UI |
-| DP-6 | M4 | 知识图谱自动构建 | 图谱节点 10 万+ | GitHub Actions |
-| DP-7 | M5 | 增量更新 + 质量监控 | 自动化流水线（Cron + Push） | GitHub Actions |
+CI 运行不依赖数据库密钥的前四项。远端迁移、seed 和一致性检查由有权限的维护者执行。

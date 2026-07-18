@@ -6,8 +6,10 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit",
     "check:data": "node scripts/check_poem_data.mjs",
+    "check:database": "node scripts/check_database.mjs",
     "repair:data": "node scripts/repair_poem_content.mjs",
     "seed:data": "tsx supabase/seed.ts"
   },
@@ -26,6 +28,8 @@
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "eslint": "^9.39.5",
+    "eslint-config-next": "^16.2.10",
     "opencc-js": "^1.4.1",
     "tsx": "^4.23.1",
     "typescript": "^5"

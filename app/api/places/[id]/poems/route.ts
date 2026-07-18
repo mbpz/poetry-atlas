@@ -31,8 +31,19 @@ export async function GET(
     return NextResponse.json({ error: ppErr.message }, { status: 500 });
   }
 
-  const poems = (rows ?? [])
-    .map((r: any) => r.poems)
+  const poems = (
+    (rows ?? []) as unknown as Array<{
+      poems: {
+        id: string;
+        title: string;
+        author: string;
+        dynasty: string;
+        dynasty_id: string;
+        content: string;
+      } | null;
+    }>
+  )
+    .map((row) => row.poems)
     .filter(Boolean);
 
   return NextResponse.json({ place, poems });

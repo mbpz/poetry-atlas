@@ -6,6 +6,16 @@ const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
 );
 
+type SearchRow = {
+  id: string;
+  title: string;
+  author: string;
+  dynasty: string;
+  dynasty_id: string;
+  content: string;
+  places: Array<{ id: string; name: string; type: string }> | null;
+};
+
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
   const keyword = searchParams.get("q")?.trim() || "";
@@ -28,16 +38,13 @@ export async function GET(request: NextRequest) {
   }
 
   // 格式化输出
-  const results = (data ?? []).map((row: any) => ({
+  const results = ((data ?? []) as SearchRow[]).map((row) => ({
     id: row.id,
     title: row.title,
     author: row.author,
     dynasty: row.dynasty,
     dynasty_id: row.dynasty_id,
     content: row.content,
-    annotation: row.annotation,
-    translation: row.translation,
-    appreciation: row.appreciation,
     places: row.places ?? [],
   }));
 

@@ -8,9 +8,6 @@ export type FavoritePoem = {
   author: string;
   dynasty: string;
   content: string;
-  annotation?: string | null;
-  translation?: string | null;
-  appreciation?: string | null;
   created_at?: string;
 };
 
@@ -36,7 +33,8 @@ export function useFavorites() {
 
   // 初始化加载
   useEffect(() => {
-    setFavorites(loadFavorites());
+    const timeout = window.setTimeout(() => setFavorites(loadFavorites()), 0);
+    return () => window.clearTimeout(timeout);
   }, []);
 
   // 检查是否已收藏

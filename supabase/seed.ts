@@ -1,222 +1,372 @@
 /**
- * Seed script: migrate data from places.json to Supabase
- * Run with: npm run seed:data
- * Remove poems that are no longer in the canonical dataset with:
- * npm run seed:data -- --prune
+ * Synchronize the canonical places.json dataset to Supabase.
  *
- * Requires .env.local with:
- *   NEXT_PUBLIC_SUPABASE_URL=
- *   SUPABASE_SERVICE_ROLE_KEY=
+ * Run:
+ *   npm run seed:data
+ *   npm run seed:data -- --prune
+ *
+ * `--prune` removes rows outside the canonical dataset. The authors table is
+ * always rebuilt as derived data from the poems and poem_places currently in
+ * Supabase.
  */
 
 import { createClient } from "@supabase/supabase-js";
 import { loadEnvConfig } from "@next/env";
-import placesData from "../public/data/places.json";
+import placesJson from "../public/data/places.json";
 
 loadEnvConfig(process.cwd());
 
-const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-const SUPABASE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY!;
+const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL;
+const SUPABASE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
+const ANON_KEY = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 const SHOULD_PRUNE = process.argv.includes("--prune");
+const PAGE_SIZE = 1000;
+const BATCH_SIZE = 500;
 
 if (!SUPABASE_URL || !SUPABASE_KEY) {
-  console.error(
-    "Missing env vars. Set NEXT_PUBLIC_SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY in .env.local",
+  throw new Error(
+    "Missing NEXT_PUBLIC_SUPABASE_URL or SUPABASE_SERVICE_ROLE_KEY in .env.local/.env",
   );
-  process.exit(1);
 }
 
-const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+if (ANON_KEY && SUPABASE_KEY === ANON_KEY) {
+  throw new Error("SUPABASE_SERVICE_ROLE_KEY must not be the public anon key");
+}
 
-async function seed() {
-  console.log(`Starting migration: ${placesData.length} places from places.json`);
-  const seededPoemIds = new Set<string>();
-  const seededPlaceIds = new Set<string>();
-  const seededRelationKeys = new Set<string>();
-  let insertedPoems = 0;
-  let updatedPoems = 0;
-  let failedOperations = 0;
+const supabase = createClient(SUPABASE_URL, SUPABASE_KEY, {
+  auth: { persistSession: false, autoRefreshToken: false },
+});
 
-  for (const place of placesData) {
-    // 1. Upsert place
-    const { error: placeErr } = await supabase.from("places").upsert(
-      {
-        id: place.id,
-        name: place.name,
-        lng: place.lng,
-        lat: place.lat,
-      },
-      { onConflict: "id" },
-    );
-    if (placeErr) {
-      console.error(`  ✗ place ${place.name}: ${placeErr.message}`);
-      failedOperations += 1;
-      continue;
-    }
-    seededPlaceIds.add(place.id);
+type CanonicalPoem = {
+  title: string;
+  author: string;
+  dynasty: string;
+  content: string;
+};
 
-    // 2. Insert poems + join table
+type CanonicalPlace = {
+  id: string;
+  name: string;
+  type: string;
+  lng: number;
+  lat: number;
+  ancient_names?: string[];
+  poems: CanonicalPoem[];
+};
+
+type DatabasePoem = {
+  id: string;
+  title: string;
+  author: string;
+  dynasty: string;
+};
+
+type DatabaseRelation = {
+  poem_id: string;
+  place_id: string;
+};
+
+const places = placesJson as CanonicalPlace[];
+
+const DYNASTY_IDS: Record<string, string> = {
+  先秦: "pre_qin",
+  汉: "han",
+  三国: "wei_jin",
+  晋: "wei_jin",
+  魏晋: "wei_jin",
+  南北朝: "nanbei",
+  隋: "sui",
+  唐: "tang",
+  五代: "wudai",
+  宋: "song",
+  金: "jin",
+  元: "yuan",
+  明: "ming",
+  清: "qing",
+  近现代: "modern",
+  当代: "contemp",
+};
+
+function poemKey(poem: Pick<CanonicalPoem, "title" | "author">): string {
+  return `${poem.title}\u0000${poem.author}`;
+}
+
+function relationKey(poemId: string, placeId: string): string {
+  return `${poemId}\u0000${placeId}`;
+}
+
+function batches<T>(values: T[]): T[][] {
+  const result: T[][] = [];
+  for (let index = 0; index < values.length; index += BATCH_SIZE) {
+    result.push(values.slice(index, index + BATCH_SIZE));
+  }
+  return result;
+}
+
+async function fetchAll<T>(table: string, columns: string): Promise<T[]> {
+  const rows: T[] = [];
+  for (let from = 0; ; from += PAGE_SIZE) {
+    const { data, error } = await supabase
+      .from(table)
+      .select(columns)
+      .range(from, from + PAGE_SIZE - 1);
+    if (error) throw error;
+    rows.push(...(data as T[]));
+    if (data.length < PAGE_SIZE) break;
+  }
+  return rows;
+}
+
+async function deleteIds(table: string, ids: string[]): Promise<number> {
+  let deleted = 0;
+  for (const batch of batches(ids)) {
+    const { error } = await supabase.from(table).delete().in("id", batch);
+    if (error) throw error;
+    deleted += batch.length;
+  }
+  return deleted;
+}
+
+async function syncPlaces(): Promise<void> {
+  const payload = places.map((place) => ({
+    id: place.id,
+    name: place.name,
+    type: place.type,
+    lng: place.lng,
+    lat: place.lat,
+    ancient_names: place.ancient_names ?? [],
+  }));
+
+  for (const batch of batches(payload)) {
+    const { error } = await supabase
+      .from("places")
+      .upsert(batch, { onConflict: "id" });
+    if (error) throw error;
+  }
+}
+
+async function syncPoems(): Promise<Map<string, string>> {
+  const canonicalPoems = new Map<string, CanonicalPoem>();
+  for (const place of places) {
     for (const poem of place.poems) {
-      // 先查重（同标题+作者认为是同一首）
-      const { data: existing, error: lookupErr } = await supabase
-        .from("poems")
-        .select("id")
-        .eq("title", poem.title)
-        .eq("author", poem.author)
-        .limit(1)
-        .maybeSingle();
-
-      if (lookupErr) {
-        console.error(`    ✗ lookup ${poem.title}: ${lookupErr.message}`);
-        failedOperations += 1;
-        continue;
+      const dynastyId = DYNASTY_IDS[poem.dynasty];
+      if (!dynastyId) {
+        throw new Error(`Unmapped dynasty: ${poem.dynasty} (${poem.title})`);
       }
 
-      const poemPayload = {
-        title: poem.title,
-        author: poem.author,
-        dynasty: poem.dynasty,
-        content: poem.content,
-      };
-
-      let poemId: string;
-      if (existing) {
-        poemId = existing.id;
-        const { error: updateErr } = await supabase
-          .from("poems")
-          .update(poemPayload)
-          .eq("id", poemId);
-        if (updateErr) {
-          console.error(`    ✗ update ${poem.title}: ${updateErr.message}`);
-          failedOperations += 1;
-          continue;
-        }
-        updatedPoems += 1;
-      } else {
-        const { data: inserted, error: poemErr } = await supabase
-          .from("poems")
-          .insert(poemPayload)
-          .select("id")
-          .single();
-        if (poemErr) {
-          console.error(`    ✗ poem ${poem.title}: ${poemErr.message}`);
-          failedOperations += 1;
-          continue;
-        }
-        poemId = inserted.id;
-        insertedPoems += 1;
+      const key = poemKey(poem);
+      const previous = canonicalPoems.get(key);
+      if (
+        previous &&
+        (previous.content !== poem.content || previous.dynasty !== poem.dynasty)
+      ) {
+        throw new Error(`Conflicting canonical poem rows: ${poem.title} / ${poem.author}`);
       }
-      seededPoemIds.add(poemId);
-
-      // 3. Insert join (幂等：已存在则跳过)
-      const { error: relationErr } = await supabase.from("poem_places").upsert(
-        { poem_id: poemId, place_id: place.id, relation_type: "description" },
-        { onConflict: "poem_id,place_id" }
-      );
-      if (relationErr) {
-        console.error(`    ✗ relation ${poem.title}: ${relationErr.message}`);
-        failedOperations += 1;
-      } else {
-        seededRelationKeys.add(`${poemId}\u0000${place.id}`);
-      }
+      canonicalPoems.set(key, poem);
     }
-
-    console.log(`  ✓ ${place.name} (${place.poems.length} poems)`);
   }
 
-  let prunedPoems = 0;
-  let prunedPlaces = 0;
+  const databasePoems = await fetchAll<DatabasePoem>(
+    "poems",
+    "id,title,author,dynasty",
+  );
+  const existingByKey = new Map<string, DatabasePoem>();
+  for (const poem of databasePoems) {
+    const key = poemKey(poem);
+    if (existingByKey.has(key)) {
+      throw new Error(`Duplicate database poem rows: ${poem.title} / ${poem.author}`);
+    }
+    existingByKey.set(key, poem);
+  }
+
+  const poemIds = new Map<string, string>();
+  const updates: Array<CanonicalPoem & { id: string; dynasty_id: string }> = [];
+  const inserts: Array<CanonicalPoem & { dynasty_id: string }> = [];
+  for (const poem of canonicalPoems.values()) {
+    const payload = { ...poem, dynasty_id: DYNASTY_IDS[poem.dynasty] };
+    const existing = existingByKey.get(poemKey(poem));
+    if (existing) updates.push({ id: existing.id, ...payload });
+    else inserts.push(payload);
+  }
+
+  for (const batch of batches(updates)) {
+    const { data, error } = await supabase
+      .from("poems")
+      .upsert(batch, { onConflict: "id" })
+      .select("id,title,author");
+    if (error) throw error;
+    for (const poem of data) {
+      poemIds.set(poemKey(poem), poem.id);
+    }
+  }
+
+  for (const batch of batches(inserts)) {
+    const { data, error } = await supabase
+      .from("poems")
+      .insert(batch)
+      .select("id,title,author");
+    if (error) throw error;
+    for (const poem of data) {
+      poemIds.set(poemKey(poem), poem.id);
+    }
+  }
+
+  if (poemIds.size !== canonicalPoems.size) {
+    throw new Error(
+      `Expected ${canonicalPoems.size} poem IDs after upsert, received ${poemIds.size}`,
+    );
+  }
+
+  return poemIds;
+}
+
+async function syncRelations(poemIds: Map<string, string>): Promise<Set<string>> {
+  const canonicalRelations = new Map<string, DatabaseRelation & { relation_type: string }>();
+  for (const place of places) {
+    for (const poem of place.poems) {
+      const poemId = poemIds.get(poemKey(poem));
+      if (!poemId) throw new Error(`Missing database ID for ${poem.title} / ${poem.author}`);
+      canonicalRelations.set(relationKey(poemId, place.id), {
+        poem_id: poemId,
+        place_id: place.id,
+        relation_type: "description",
+      });
+    }
+  }
+
+  for (const batch of batches([...canonicalRelations.values()])) {
+    const { error } = await supabase
+      .from("poem_places")
+      .upsert(batch, { onConflict: "poem_id,place_id" });
+    if (error) throw error;
+  }
+
+  return new Set(canonicalRelations.keys());
+}
+
+async function pruneCanonicalRows(
+  poemIds: Map<string, string>,
+  relationKeys: Set<string>,
+): Promise<{ poems: number; places: number; relations: number }> {
+  if (!SHOULD_PRUNE) return { poems: 0, places: 0, relations: 0 };
+
+  const databaseRelations = await fetchAll<DatabaseRelation>(
+    "poem_places",
+    "poem_id,place_id",
+  );
   let prunedRelations = 0;
-  if (SHOULD_PRUNE) {
-    if (failedOperations > 0) {
-      throw new Error(
-        `Refusing to prune after ${failedOperations} failed seed operation(s). Fix the errors and retry.`,
-      );
-    }
-
-    const pageSize = 1000;
-    const databasePoemIds: string[] = [];
-    for (let from = 0; ; from += pageSize) {
-      const { data, error } = await supabase
-        .from("poems")
-        .select("id")
-        .range(from, from + pageSize - 1);
-      if (error) throw error;
-      databasePoemIds.push(...data.map((poem) => poem.id));
-      if (data.length < pageSize) break;
-    }
-
-    const staleIds = databasePoemIds.filter((id) => !seededPoemIds.has(id));
-    for (let index = 0; index < staleIds.length; index += 500) {
-      const batch = staleIds.slice(index, index + 500);
-      const { error } = await supabase.from("poems").delete().in("id", batch);
-      if (error) throw error;
-      prunedPoems += batch.length;
-    }
-
-    const databasePlaceIds: string[] = [];
-    for (let from = 0; ; from += pageSize) {
-      const { data, error } = await supabase
-        .from("places")
-        .select("id")
-        .range(from, from + pageSize - 1);
-      if (error) throw error;
-      databasePlaceIds.push(...data.map((place) => place.id));
-      if (data.length < pageSize) break;
-    }
-
-    const stalePlaceIds = databasePlaceIds.filter((id) => !seededPlaceIds.has(id));
-    for (let index = 0; index < stalePlaceIds.length; index += 500) {
-      const batch = stalePlaceIds.slice(index, index + 500);
-      const { error } = await supabase.from("places").delete().in("id", batch);
-      if (error) throw error;
-      prunedPlaces += batch.length;
-    }
-
-    const databaseRelations: Array<{ poem_id: string; place_id: string }> = [];
-    for (let from = 0; ; from += pageSize) {
-      const { data, error } = await supabase
-        .from("poem_places")
-        .select("poem_id,place_id")
-        .order("poem_id")
-        .order("place_id")
-        .range(from, from + pageSize - 1);
-      if (error) throw error;
-      databaseRelations.push(...data);
-      if (data.length < pageSize) break;
-    }
-
-    const staleRelationsByPlace = new Map<string, string[]>();
-    for (const relation of databaseRelations) {
-      if (seededRelationKeys.has(`${relation.poem_id}\u0000${relation.place_id}`)) continue;
-      const poemIds = staleRelationsByPlace.get(relation.place_id) ?? [];
-      poemIds.push(relation.poem_id);
-      staleRelationsByPlace.set(relation.place_id, poemIds);
-    }
-
-    for (const [placeId, poemIds] of staleRelationsByPlace) {
-      for (let index = 0; index < poemIds.length; index += 500) {
-        const batch = poemIds.slice(index, index + 500);
-        const { error } = await supabase
-          .from("poem_places")
-          .delete()
-          .eq("place_id", placeId)
-          .in("poem_id", batch);
-        if (error) throw error;
-        prunedRelations += batch.length;
-      }
-    }
+  for (const relation of databaseRelations) {
+    if (relationKeys.has(relationKey(relation.poem_id, relation.place_id))) continue;
+    const { error } = await supabase
+      .from("poem_places")
+      .delete()
+      .eq("poem_id", relation.poem_id)
+      .eq("place_id", relation.place_id);
+    if (error) throw error;
+    prunedRelations += 1;
   }
+
+  const databasePoems = await fetchAll<{ id: string }>("poems", "id");
+  const canonicalPoemIds = new Set(poemIds.values());
+  const stalePoemIds = databasePoems
+    .map((poem) => poem.id)
+    .filter((id) => !canonicalPoemIds.has(id));
+  const prunedPoems = await deleteIds("poems", stalePoemIds);
+
+  const databasePlaces = await fetchAll<{ id: string }>("places", "id");
+  const canonicalPlaceIds = new Set(places.map((place) => place.id));
+  const stalePlaceIds = databasePlaces
+    .map((place) => place.id)
+    .filter((id) => !canonicalPlaceIds.has(id));
+  const prunedPlaces = await deleteIds("places", stalePlaceIds);
+
+  return { poems: prunedPoems, places: prunedPlaces, relations: prunedRelations };
+}
+
+async function rebuildAuthors(): Promise<{ upserted: number; pruned: number }> {
+  const poems = await fetchAll<DatabasePoem>("poems", "id,title,author,dynasty");
+  const relations = await fetchAll<DatabaseRelation>(
+    "poem_places",
+    "poem_id,place_id",
+  );
+  const placesByPoem = new Map<string, Set<string>>();
+  for (const relation of relations) {
+    const placeIds = placesByPoem.get(relation.poem_id) ?? new Set<string>();
+    placeIds.add(relation.place_id);
+    placesByPoem.set(relation.poem_id, placeIds);
+  }
+
+  const stats = new Map<
+    string,
+    { dynasty: string; poemIds: Set<string>; placeIds: Set<string> }
+  >();
+  for (const poem of poems) {
+    const current = stats.get(poem.author) ?? {
+      dynasty: poem.dynasty,
+      poemIds: new Set<string>(),
+      placeIds: new Set<string>(),
+    };
+    current.poemIds.add(poem.id);
+    for (const placeId of placesByPoem.get(poem.id) ?? []) {
+      current.placeIds.add(placeId);
+    }
+    stats.set(poem.author, current);
+  }
+
+  const eligibleAuthors = [...stats.entries()]
+    .filter(([, stat]) => stat.poemIds.size >= 3)
+    .map(([name, stat]) => ({
+      name,
+      dynasty: stat.dynasty,
+      poem_count: stat.poemIds.size,
+      place_count: stat.placeIds.size,
+    }));
+
+  for (const batch of batches(eligibleAuthors)) {
+    const { error } = await supabase
+      .from("authors")
+      .upsert(batch, { onConflict: "name" });
+    if (error) throw error;
+  }
+
+  const databaseAuthors = await fetchAll<{ id: string; name: string }>(
+    "authors",
+    "id,name",
+  );
+  const eligibleNames = new Set(eligibleAuthors.map((author) => author.name));
+  const staleAuthorIds = databaseAuthors
+    .filter((author) => !eligibleNames.has(author.name))
+    .map((author) => author.id);
+  const pruned = await deleteIds("authors", staleAuthorIds);
+
+  return { upserted: eligibleAuthors.length, pruned };
+}
+
+async function seed(): Promise<void> {
+  console.log(
+    `Synchronizing ${places.length} canonical places${SHOULD_PRUNE ? " with pruning" : ""}...`,
+  );
+
+  await syncPlaces();
+  const poemIds = await syncPoems();
+  const relationKeys = await syncRelations(poemIds);
+  const pruned = await pruneCanonicalRows(poemIds, relationKeys);
+  const authors = await rebuildAuthors();
 
   console.log(
-    `\n✓ Migration complete: ${insertedPoems} poems inserted, ${updatedPoems} poems updated, ` +
-      `${prunedPoems} poems pruned, ${prunedPlaces} places pruned, ` +
-      `${prunedRelations} relations pruned, ` +
-      `${failedOperations} operation(s) failed.`,
+    [
+      "Supabase seed complete:",
+      `${places.length} places`,
+      `${poemIds.size} poems`,
+      `${relationKeys.size} relations`,
+      `${authors.upserted} derived authors`,
+      `${pruned.places}/${pruned.poems}/${pruned.relations}/${authors.pruned} pruned places/poems/relations/authors`,
+    ].join(" "),
   );
 }
 
-seed().catch((e) => {
-  console.error("Migration failed:", e);
+seed().catch((error: unknown) => {
+  const message = error instanceof Error ? error.message : String(error);
+  console.error(`Supabase seed failed: ${message}`);
   process.exit(1);
 });

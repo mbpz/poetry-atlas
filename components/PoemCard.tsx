@@ -11,9 +11,6 @@ type PoemProps = {
   author: string;
   dynasty: string;
   content: string;
-  annotation?: string | null;
-  translation?: string | null;
-  appreciation?: string | null;
 };
 
 // 名句高亮
@@ -76,7 +73,6 @@ function isFamousLine(line: string): boolean {
 
 export function PoemCard({ poem }: { poem: PoemProps }) {
   const [expanded, setExpanded] = useState(false);
-  const [activeNote, setActiveNote] = useState<"annotation" | "translation" | "appreciation">("annotation");
   const [showShare, setShowShare] = useState(false);
   const contentRef = useRef<HTMLDivElement>(null);
   const { state, currentLine, speak, pause, resume, stop } = useSpeech();
@@ -139,43 +135,6 @@ export function PoemCard({ poem }: { poem: PoemProps }) {
                 {imagery.map((label, i) => (
                   <span key={i} className="imagery-chip">{label}</span>
                 ))}
-              </div>
-            </div>
-          )}
-
-          {/* 注释区域（有此诗词数据时展示） */}
-          {(poem.annotation || poem.translation || poem.appreciation) && (
-            <div className="poem-notes">
-              <div className="notes-tabs">
-                {poem.annotation && (
-                  <button
-                    className={`note-tab ${activeNote === "annotation" ? "active" : ""}`}
-                    onClick={() => setActiveNote("annotation")}
-                  >
-                    注释
-                  </button>
-                )}
-                {poem.translation && (
-                  <button
-                    className={`note-tab ${activeNote === "translation" ? "active" : ""}`}
-                    onClick={() => setActiveNote("translation")}
-                  >
-                    译文
-                  </button>
-                )}
-                {poem.appreciation && (
-                  <button
-                    className={`note-tab ${activeNote === "appreciation" ? "active" : ""}`}
-                    onClick={() => setActiveNote("appreciation")}
-                  >
-                    赏析
-                  </button>
-                )}
-              </div>
-              <div className="note-content">
-                {(activeNote === "annotation" && poem.annotation) ||
-                  (activeNote === "translation" && poem.translation) ||
-                  (activeNote === "appreciation" && poem.appreciation)}
               </div>
             </div>
           )}

@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState, useCallback } from "react";
 import Link from "next/link";
-import { PLACE_TYPES, type Place } from "@/lib/supabase";
+import { PLACE_TYPES, type Place, type Poem } from "@/lib/supabase";
 import { MapSkeleton, PoemCardSkeleton, AuthorPanelSkeleton } from "@/components/Skeleton";
 import { BottomDrawer } from "@/components/BottomDrawer";
 import { PoemCard } from "@/components/PoemCard";
@@ -25,11 +25,29 @@ type SearchResult = {
   places: { id: string; name: string; type: string }[];
 };
 
+type SelectedPlace = {
+  place: Place;
+  poems: Poem[];
+};
+
+type AuthorSummary = {
+  id: string;
+  name: string;
+  dynasty: string;
+  poem_count: number;
+  place_count: number;
+};
+
+type AuthorRoutePoint = {
+  lng: number;
+  lat: number;
+};
+
 export default function Home() {
   const isMobile = useIsMobile();
   const { count: favCount } = useFavorites();
   const [places, setPlaces] = useState<Place[]>([]);
-  const [selected, setSelected] = useState<any>(null);
+  const [selected, setSelected] = useState<SelectedPlace | null>(null);
   const [loading, setLoading] = useState(true);
   const [activeType, setActiveType] = useState("all");
   const [activeDynasty, setActiveDynasty] = useState("all");
@@ -42,7 +60,7 @@ export default function Home() {
   const [showAuthorPanel, setShowAuthorPanel] = useState(false);
 
   // 作者数据
-  const [authors, setAuthors] = useState<any[]>([]);
+  const [authors, setAuthors] = useState<AuthorSummary[]>([]);
   const [authorsLoading, setAuthorsLoading] = useState(true);
   const [authorRouteLoading, setAuthorRouteLoading] = useState(false);
 
@@ -64,7 +82,6 @@ export default function Home() {
 
   // 加载地点列表
   useEffect(() => {
-    setLoading(true);
     const params = new URLSearchParams();
     if (activeType !== "all") params.set("type", activeType);
     if (activeDynasty !== "all") params.set("dynasty", activeDynasty);
@@ -123,6 +140,28 @@ export default function Home() {
     handlePlaceClick(placeId);
   }, [handlePlaceClick]);
 
+  // 加载作者旅行路线
+  const loadAuthorRoute = useCallback(async (authorId: string) => {
+    setAuthorRouteLoading(true);
+    setShowAuthorPanel(false);
+    try {
+      const res = await fetch(`/api/authors/${authorId}`);
+      const data = (await res.json()) as { route?: AuthorRoutePoint[] };
+      if (data.route && data.route.length > 0) {
+        const avgLng =
+          data.route.reduce((sum, point) => sum + point.lng, 0) / data.route.length;
+        const avgLat =
+          data.route.reduce((sum, point) => sum + point.lat, 0) / data.route.length;
+        // TODO: 显示路线
+        console.log("Route center:", avgLng, avgLat);
+      }
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setAuthorRouteLoading(false);
+    }
+  }, []);
+
   return (
     <div style={{ display: "flex", height: "100vh", width: "100vw" }}>
       {/* 左侧地图区域 */}
@@ -137,7 +176,10 @@ export default function Home() {
           </span>
           <span style={{ color: "#8b6914", fontSize: "14px", marginRight: "8px" }}>维度：</span>
           <button
-            onClick={() => setActiveType("all")}
+            onClick={() => {
+              setLoading(true);
+              setActiveType("all");
+            }}
             style={{ ...styles.filterBtn, background: activeType === "all" ? "#8b6914" : "transparent", color: activeType === "all" ? "#fff" : "#8b6914" }}
           >
             全部
@@ -145,7 +187,10 @@ export default function Home() {
           {Object.entries(PLACE_TYPES).map(([key, val]) => (
             <button
               key={key}
-              onClick={() => setActiveType(key)}
+              onClick={() => {
+                setLoading(true);
+                setActiveType(key);
+              }}
               style={{ ...styles.filterBtn, background: activeType === key ? "#8b6914" : "transparent", color: activeType === key ? "#fff" : "#8b6914" }}
             >
               {val.icon} {val.label}
@@ -160,7 +205,10 @@ export default function Home() {
         <div style={styles.dynastyBar}>
           <span style={{ color: "#8b6914", fontSize: "13px", marginRight: "8px", whiteSpace: "nowrap" }}>朝代：</span>
           <button
-            onClick={() => setActiveDynasty("all")}
+            onClick={() => {
+              setLoading(true);
+              setActiveDynasty("all");
+            }}
             style={{ ...styles.dynastyBtn, background: activeDynasty === "all" ? "#8b6914" : "transparent", color: activeDynasty === "all" ? "#fff" : "#8b6914" }}
           >
             全部
@@ -168,7 +216,10 @@ export default function Home() {
           {dynasties.map((d) => (
             <button
               key={d.id}
-              onClick={() => setActiveDynasty(d.id)}
+              onClick={() => {
+                setLoading(true);
+                setActiveDynasty(d.id);
+              }}
               style={{ ...styles.dynastyBtn, background: activeDynasty === d.id ? "#8b6914" : "transparent", color: activeDynasty === d.id ? "#fff" : "#8b6914" }}
             >
               {d.name}
@@ -320,7 +371,7 @@ export default function Home() {
                   <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
                     <span style={{ fontSize: 22 }}>{PLACE_TYPES[selected.place?.type]?.icon || "📍"}</span>
                     <h2 style={{ fontSize: 24, color: "#3a2f1a", fontWeight: 600 }}>{selected.place?.name}</h2>
-                    {selected.place?.ancient_names?.length > 0 && (
+                    {selected.place?.ancient_names && selected.place.ancient_names.length > 0 && (
                       <span style={{ fontSize: 12, color: "#b8860b" }}>({selected.place.ancient_names.join(" · ")})</span>
                     )}
                   </div>
@@ -329,7 +380,7 @@ export default function Home() {
                 <p style={{ color: "#8b6914", fontSize: "14px", marginBottom: "24px" }}>
                   共 {selected.poems?.length || 0} 首诗词
                 </p>
-                {selected.poems?.map((poem: any, i: number) => (
+                {selected.poems?.map((poem, i) => (
                   <PoemCard key={poem.id || i} poem={poem} />
                 ))}
               </>
@@ -359,7 +410,7 @@ export default function Home() {
                   <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
                     <span style={{ fontSize: 22 }}>{PLACE_TYPES[selected.place?.type]?.icon || "📍"}</span>
                     <h2 style={{ fontSize: 24, color: "#3a2f1a", fontWeight: 600 }}>{selected.place?.name}</h2>
-                    {selected.place?.ancient_names?.length > 0 && (
+                    {selected.place?.ancient_names && selected.place.ancient_names.length > 0 && (
                       <span style={{ fontSize: 12, color: "#b8860b" }}>({selected.place.ancient_names.join(" · ")})</span>
                     )}
                   </div>
@@ -368,7 +419,7 @@ export default function Home() {
                 <p style={{ color: "#8b6914", fontSize: "14px", marginBottom: "24px" }}>
                   共 {selected.poems?.length || 0} 首诗词
                 </p>
-                {selected.poems?.map((poem: any, i: number) => (
+                {selected.poems?.map((poem, i) => (
                   <PoemCard key={poem.id || i} poem={poem} />
                 ))}
               </>
@@ -386,26 +437,6 @@ export default function Home() {
     </div>
   );
 
-  // 加载作者旅行路线
-  const loadAuthorRoute = useCallback(async (authorId: string) => {
-    setAuthorRouteLoading(true);
-    setShowAuthorPanel(false);
-    try {
-      const res = await fetch(`/api/authors/${authorId}`);
-      const data = await res.json();
-      // 飞到路线中心
-      if (data.route?.length > 0) {
-        const avgLng = data.route.reduce((s: number, r: any) => s + r.lng, 0) / data.route.length;
-        const avgLat = data.route.reduce((s: number, r: any) => s + r.lat, 0) / data.route.length;
-        // TODO: 显示路线
-        console.log("Route center:", avgLng, avgLat);
-      }
-    } catch (err) {
-      console.error(err);
-    } finally {
-      setAuthorRouteLoading(false);
-    }
-  }, []);
 }
 
 const styles: Record<string, React.CSSProperties> = {

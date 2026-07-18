@@ -3,6 +3,7 @@
     "id": "hangzhou",
     "name": "杭州",
     "type": "city",
+    "ancient_names": ["临安", "钱塘"],
     "lng": 120.15,
     "lat": 30.25,
     "poems": [
@@ -492,6 +493,7 @@
     "id": "xian",
     "name": "西安",
     "type": "city",
+    "ancient_names": ["长安"],
     "lng": 108.94,
     "lat": 34.26,
     "poems": [
@@ -675,6 +677,7 @@
     "id": "nanjing",
     "name": "南京",
     "type": "city",
+    "ancient_names": ["金陵", "建康"],
     "lng": 118.8,
     "lat": 32.06,
     "poems": [
@@ -798,6 +801,7 @@
     "id": "chengdu",
     "name": "成都",
     "type": "city",
+    "ancient_names": ["锦官城", "益州"],
     "lng": 104.07,
     "lat": 30.65,
     "poems": [
@@ -897,6 +901,7 @@
     "id": "suzhou",
     "name": "苏州",
     "type": "city",
+    "ancient_names": ["姑苏", "吴门"],
     "lng": 120.62,
     "lat": 31.32,
     "poems": [
@@ -954,6 +959,7 @@
     "id": "yangzhou",
     "name": "扬州",
     "type": "city",
+    "ancient_names": ["广陵"],
     "lng": 119.42,
     "lat": 32.39,
     "poems": [
@@ -1011,6 +1017,7 @@
     "id": "beijing",
     "name": "北京",
     "type": "city",
+    "ancient_names": ["幽州", "燕京"],
     "lng": 116.41,
     "lat": 39.9,
     "poems": [
@@ -1314,6 +1321,7 @@
     "id": "shaoxing",
     "name": "绍兴",
     "type": "city",
+    "ancient_names": ["会稽"],
     "lng": 120.58,
     "lat": 30.01,
     "poems": [
@@ -2004,6 +2012,7 @@
     "id": "kaifeng_new",
     "name": "开封",
     "type": "city",
+    "ancient_names": ["汴京", "汴州"],
     "lng": 114.35,
     "lat": 34.79,
     "poems": [
@@ -2151,6 +2160,7 @@
     "id": "jingzhou_new",
     "name": "荆州",
     "type": "city",
+    "ancient_names": ["江陵"],
     "lng": 112.24,
     "lat": 30.33,
     "poems": [
@@ -2217,6 +2227,7 @@
     "id": "jinan_new",
     "name": "济南",
     "type": "city",
+    "ancient_names": ["历下"],
     "lng": 116.99,
     "lat": 36.67,
     "poems": [

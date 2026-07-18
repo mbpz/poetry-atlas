@@ -308,69 +308,6 @@
   color: #c96060;
 }
 
-/* 注释面板 */
-.poem-notes {
-  margin-top: 16px;
-  padding: 16px;
-  background: rgba(255, 255, 255, 0.5);
-  border-radius: 10px;
-  border: 1px solid #e8dcc8;
-}
-
-.notes-tabs {
-  display: flex;
-  gap: 4px;
-  margin-bottom: 12px;
-  background: #f5f0e0;
-  border-radius: 8px;
-  padding: 3px;
-}
-
-.note-tab {
-  flex: 1;
-  padding: 8px 0;
-  border: none;
-  background: transparent;
-  color: #8b6914;
-  font-size: 13px;
-  cursor: pointer;
-  border-radius: 6px;
-  transition: all 0.2s;
-}
-
-.note-tab.active {
-  background: #fff;
-  color: #3a2f1a;
-  font-weight: 600;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-}
-
-.note-content {
-  font-size: 14px;
-  line-height: 1.9;
-  color: #5a4a30;
-  white-space: pre-line;
-  max-height: 300px;
-  overflow-y: auto;
-}
-
-/* 移动端注释 */
-@media (max-width: 768px) {
-  .note-content {
-    max-height: 200px;
-    font-size: 13px;
-  }
-
-  .notes-tabs {
-    gap: 2px;
-  }
-
-  .note-tab {
-    font-size: 12px;
-    padding: 6px 0;
-  }
-}
-
 /* ========= 分享弹窗 ========= */
 
 .share-overlay {

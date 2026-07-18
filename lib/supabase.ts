@@ -40,6 +40,10 @@ export const PLACE_TYPES: Record<string, { label: string; icon: string }> = {
   lake: { label: "湖泊", icon: "🌊" },
   temple: { label: "寺庙", icon: "🛕" },
   pass: { label: "关隘", icon: "🏰" },
+  river: { label: "江河", icon: "🏞️" },
+  bridge: { label: "桥梁", icon: "🌉" },
+  garden: { label: "园林", icon: "🌳" },
+  palace: { label: "宫殿", icon: "🏛️" },
 };
 
 export async function fetchPlaces(type?: string, dynasty?: string): Promise<Place[]> {
@@ -59,9 +63,11 @@ export async function fetchPlaces(type?: string, dynasty?: string): Promise<Plac
       .eq("poems.dynasty", dynastyName)
       .limit(200);
     if (error) throw error;
-    const places = (data ?? [])
-      .map((r: any) => r.places)
-      .filter(Boolean);
+    const places = (
+      (data ?? []) as unknown as Array<{ places: Place | null }>
+    )
+      .map((row) => row.places)
+      .filter((place): place is Place => place !== null);
     // 去重
     const seen = new Set<string>();
     return places.filter((p: Place) => {
@@ -97,9 +103,11 @@ export async function fetchPlaceWithPoems(placeId: string): Promise<PlaceWithPoe
     .eq("place_id", placeId);
   if (ppErr) throw ppErr;
 
-  const poems = (rows ?? [])
-    .map((r: any) => r.poems)
-    .filter(Boolean);
+  const poems = (
+    (rows ?? []) as unknown as Array<{ poems: Poem | null }>
+  )
+    .map((row) => row.poems)
+    .filter((poem): poem is Poem => poem !== null);
 
   return { ...place, poems };
 }

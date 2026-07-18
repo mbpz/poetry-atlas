@@ -1,19 +1,20 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useCallback, useEffect, useSyncExternalStore } from "react";
 
 export function useMediaQuery(query: string): boolean {
-  const [matches, setMatches] = useState(false);
+  const subscribe = useCallback(
+    (notify: () => void) => {
+      const mediaQuery = window.matchMedia(query);
+      mediaQuery.addEventListener("change", notify);
+      return () => mediaQuery.removeEventListener("change", notify);
+    },
+    [query],
+  );
+  const getSnapshot = useCallback(() => window.matchMedia(query).matches, [query]);
+  const getServerSnapshot = useCallback(() => false, []);
 
-  useEffect(() => {
-    const mql = window.matchMedia(query);
-    const handler = (e: MediaQueryListEvent) => setMatches(e.matches);
-    setMatches(mql.matches);
-    mql.addEventListener("change", handler);
-    return () => mql.removeEventListener("change", handler);
-  }, [query]);
-
-  return matches;
+  return useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
 }
 
 export function useIsMobile(): boolean {
@@ -25,18 +26,18 @@ export function useTouchEvents(onSwipeUp: () => void, onSwipeDown: () => void) {
     let startY = 0;
     let currentY = 0;
 
-    const handleStart = (e: TouchEvent) => {
-      startY = e.touches[0].clientY;
+    const handleStart = (event: TouchEvent) => {
+      startY = event.touches[0].clientY;
     };
 
-    const handleMove = (e: TouchEvent) => {
-      currentY = e.touches[0].clientY;
+    const handleMove = (event: TouchEvent) => {
+      currentY = event.touches[0].clientY;
     };
 
     const handleEnd = () => {
-      const diff = startY - currentY;
-      if (diff > 60) onSwipeUp();
-      else if (diff < -60) onSwipeDown();
+      const difference = startY - currentY;
+      if (difference > 60) onSwipeUp();
+      else if (difference < -60) onSwipeDown();
     };
 
     document.addEventListener("touchstart", handleStart, { passive: true });
