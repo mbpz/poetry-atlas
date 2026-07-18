@@ -32,6 +32,7 @@ async function seed() {
   console.log(`Starting migration: ${placesData.length} places from places.json`);
   const seededPoemIds = new Set<string>();
   const seededPlaceIds = new Set<string>();
+  const seededRelationKeys = new Set<string>();
   let insertedPoems = 0;
   let updatedPoems = 0;
   let failedOperations = 0;
@@ -115,6 +116,8 @@ async function seed() {
       if (relationErr) {
         console.error(`    ✗ relation ${poem.title}: ${relationErr.message}`);
         failedOperations += 1;
+      } else {
+        seededRelationKeys.add(`${poemId}\u0000${place.id}`);
       }
     }
 
@@ -123,6 +126,7 @@ async function seed() {
 
   let prunedPoems = 0;
   let prunedPlaces = 0;
+  let prunedRelations = 0;
   if (SHOULD_PRUNE) {
     if (failedOperations > 0) {
       throw new Error(
@@ -168,11 +172,46 @@ async function seed() {
       if (error) throw error;
       prunedPlaces += batch.length;
     }
+
+    const databaseRelations: Array<{ poem_id: string; place_id: string }> = [];
+    for (let from = 0; ; from += pageSize) {
+      const { data, error } = await supabase
+        .from("poem_places")
+        .select("poem_id,place_id")
+        .order("poem_id")
+        .order("place_id")
+        .range(from, from + pageSize - 1);
+      if (error) throw error;
+      databaseRelations.push(...data);
+      if (data.length < pageSize) break;
+    }
+
+    const staleRelationsByPlace = new Map<string, string[]>();
+    for (const relation of databaseRelations) {
+      if (seededRelationKeys.has(`${relation.poem_id}\u0000${relation.place_id}`)) continue;
+      const poemIds = staleRelationsByPlace.get(relation.place_id) ?? [];
+      poemIds.push(relation.poem_id);
+      staleRelationsByPlace.set(relation.place_id, poemIds);
+    }
+
+    for (const [placeId, poemIds] of staleRelationsByPlace) {
+      for (let index = 0; index < poemIds.length; index += 500) {
+        const batch = poemIds.slice(index, index + 500);
+        const { error } = await supabase
+          .from("poem_places")
+          .delete()
+          .eq("place_id", placeId)
+          .in("poem_id", batch);
+        if (error) throw error;
+        prunedRelations += batch.length;
+      }
+    }
   }
 
   console.log(
     `\n✓ Migration complete: ${insertedPoems} poems inserted, ${updatedPoems} poems updated, ` +
       `${prunedPoems} poems pruned, ${prunedPlaces} places pruned, ` +
+      `${prunedRelations} relations pruned, ` +
       `${failedOperations} operation(s) failed.`,
   );
 }

@@ -65,7 +65,7 @@ npm run check:data
 npm run seed:data
 ```
 
-完全由该 seed 数据集管理的数据库可执行以下命令，删除已经撤出规范数据的诗词和空地点：
+完全由该 seed 数据集管理的数据库可执行以下命令，删除已经撤出规范数据的诗词、空地点和旧关联：
 
 ```bash
 npm run seed:data -- --prune
