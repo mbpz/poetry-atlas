@@ -14,6 +14,7 @@
     "backup:verify": "node scripts/verify_database_backup.mjs",
     "restore:database": "node scripts/restore_database.mjs",
     "test:backup": "node scripts/test_database_backup.mjs",
+    "test:deployment-config": "node scripts/test_deployment_config.mjs",
     "repair:data": "node scripts/repair_poem_content.mjs",
     "seed:data": "tsx supabase/seed.ts"
   },

@@ -20,6 +20,7 @@ jobs:
       - run: npm ci
       - run: npm run check:data
       - run: npm run test:backup
+      - run: npm run test:deployment-config
       - run: npm run typecheck
       - run: npm run lint
       - run: npm run build

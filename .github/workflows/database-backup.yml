@@ -63,9 +63,10 @@ jobs:
           rm -rf database-backups-history/latest
           mkdir -p database-backups-history/latest
           cp -R /tmp/poetry-atlas-backup/. database-backups-history/latest/
+          cp vercel.json database-backups-history/vercel.json
           git -C database-backups-history config user.name "github-actions[bot]"
           git -C database-backups-history config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git -C database-backups-history add latest
+          git -C database-backups-history add latest vercel.json
           if git -C database-backups-history diff --cached --quiet; then
             echo "Snapshot is unchanged"
             exit 0
