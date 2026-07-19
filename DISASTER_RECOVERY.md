@@ -23,6 +23,7 @@
 3. **完整逻辑快照**：每日 GitHub Actions 制品，以及 `database-backups` 分支的长期提交历史。
 
 GitHub Actions 制品在公开仓库最多保留 90 天，因此不能作为唯一长期副本。备份分支每天正常追加提交，不做强制覆盖，历史版本可按 commit 恢复。
+`database-backups` 已启用分支保护，禁止删除与 force-push；备份工作流只做普通追加提交。
 
 ## 备份范围
 
