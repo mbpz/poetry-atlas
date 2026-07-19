@@ -1,0 +1,114 @@
+[
+  {
+    "id": "pre_qin",
+    "name": "先秦",
+    "name_en": "Pre-Qin",
+    "start_year": -1046,
+    "end_year": -221,
+    "sort_order": 10
+  },
+  {
+    "id": "han",
+    "name": "汉",
+    "name_en": "Han",
+    "start_year": -202,
+    "end_year": 220,
+    "sort_order": 20
+  },
+  {
+    "id": "wei_jin",
+    "name": "魏晋",
+    "name_en": "Wei-Jin",
+    "start_year": 220,
+    "end_year": 420,
+    "sort_order": 30
+  },
+  {
+    "id": "nanbei",
+    "name": "南北朝",
+    "name_en": "Northern and Southern Dynasties",
+    "start_year": 420,
+    "end_year": 589,
+    "sort_order": 40
+  },
+  {
+    "id": "sui",
+    "name": "隋",
+    "name_en": "Sui",
+    "start_year": 581,
+    "end_year": 618,
+    "sort_order": 50
+  },
+  {
+    "id": "tang",
+    "name": "唐",
+    "name_en": "Tang",
+    "start_year": 618,
+    "end_year": 907,
+    "sort_order": 60
+  },
+  {
+    "id": "wudai",
+    "name": "五代",
+    "name_en": "Five Dynasties",
+    "start_year": 907,
+    "end_year": 960,
+    "sort_order": 70
+  },
+  {
+    "id": "song",
+    "name": "宋",
+    "name_en": "Song",
+    "start_year": 960,
+    "end_year": 1279,
+    "sort_order": 80
+  },
+  {
+    "id": "jin",
+    "name": "金",
+    "name_en": "Jin",
+    "start_year": 1115,
+    "end_year": 1234,
+    "sort_order": 90
+  },
+  {
+    "id": "yuan",
+    "name": "元",
+    "name_en": "Yuan",
+    "start_year": 1271,
+    "end_year": 1368,
+    "sort_order": 100
+  },
+  {
+    "id": "ming",
+    "name": "明",
+    "name_en": "Ming",
+    "start_year": 1368,
+    "end_year": 1644,
+    "sort_order": 110
+  },
+  {
+    "id": "qing",
+    "name": "清",
+    "name_en": "Qing",
+    "start_year": 1644,
+    "end_year": 1912,
+    "sort_order": 120
+  },
+  {
+    "id": "modern",
+    "name": "近现代",
+    "name_en": "Modern",
+    "start_year": 1912,
+    "end_year": 1949,
+    "sort_order": 130
+  },
+  {
+    "id": "contemp",
+    "name": "当代",
+    "name_en": "Contemporary",
+    "start_year": 1949,
+    "end_year": null,
+    "sort_order": 140
+  }
+]

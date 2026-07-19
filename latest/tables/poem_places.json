@@ -1,0 +1,1702 @@
+[
+  {
+    "poem_id": "0010be73-7b39-4c58-a9ff-056803f7cc8f",
+    "place_id": "henan_xuchang",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "004fcbb8-ae01-44d1-8bde-796bd4a1a0a5",
+    "place_id": "hangzhou",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "0064a8ea-4d08-48b1-9ad9-ed2dc84f13a2",
+    "place_id": "dian_lake",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "0064a8ea-4d08-48b1-9ad9-ed2dc84f13a2",
+    "place_id": "kunming",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "011b1994-cfde-4256-a3a9-500db1bb1a93",
+    "place_id": "yangzhou",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "01afd307-a944-4868-9467-7f1f853ca1a4",
+    "place_id": "nanjing",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "02edc222-0bdf-454a-bde6-39ae0bc23e81",
+    "place_id": "hubei_huangshi",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "030c6d7e-26f9-4d4e-8ce8-ecb65c646962",
+    "place_id": "chongqing",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "03afc7fa-c543-4d1b-859f-d6c9da79d0d3",
+    "place_id": "suzhou",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "04061887-7f0d-4830-bba7-d68234a3bff7",
+    "place_id": "hangzhou",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "06fb6964-7b63-4ea8-8aa6-16b985506ac3",
+    "place_id": "henan_nanyang",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "09b421f9-9592-4ba7-826d-d6a186dea06e",
+    "place_id": "nanjing",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "09c900e0-d5a4-4042-aecb-450d85e93477",
+    "place_id": "changsha",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "0a5e5e93-5069-49d3-946b-fa8b8b650f56",
+    "place_id": "jingzhou_new",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "0a7c6b8b-b5ec-4845-abd5-4da2c5e54f3c",
+    "place_id": "dunhuang_c",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "0a7c6b8b-b5ec-4845-abd5-4da2c5e54f3c",
+    "place_id": "yumen_pass",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "0bce3005-a256-4b60-a015-b117bd8e3a39",
+    "place_id": "mount_tai",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "0c4247af-d7d2-4dcb-9e05-99a589da55f4",
+    "place_id": "river_huanghe",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "0cbf4751-e533-470b-9aba-3413472294e1",
+    "place_id": "bridge_lugou",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "0d79e86a-15f1-49e1-aae8-0dc660c3deb9",
+    "place_id": "suzhou",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "0d81ea6d-b2c8-4f78-a4f1-13e0a441b7be",
+    "place_id": "hangzhou",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "0df8fbba-8428-4189-a317-de4375d5dd17",
+    "place_id": "nanchang",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "0df8fbba-8428-4189-a317-de4375d5dd17",
+    "place_id": "tengwang_tower",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "0eb18cba-923e-470c-ae0d-622915b531b2",
+    "place_id": "changsha",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "0ed16dca-39c5-4995-9513-10ac358d2976",
+    "place_id": "hangzhou",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "0ed48f52-a29b-418d-ae40-ffd8c6c02dde",
+    "place_id": "xian",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "0ee5dec3-d1fc-47ef-ab00-1500b12cf391",
+    "place_id": "nanjing",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "0f40626a-3a8f-46e1-9d78-6ec5e2b1fad5",
+    "place_id": "xian",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "0f63922e-b3d2-4f39-a756-bc9305ae6d17",
+    "place_id": "chengdu",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "105ff594-0fe1-483a-a589-81c350ba5881",
+    "place_id": "hangzhou",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "10b93b09-bfed-49d9-978a-5d83f013d6bf",
+    "place_id": "xian",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "10e25d43-b7a8-44db-b612-9f1ebb21bc71",
+    "place_id": "luoyang_new",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "12bd2e85-7d54-4507-83d8-234ce9ffba4e",
+    "place_id": "xian",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "12d4ce31-3c4e-4acf-b25f-816a0495dc3b",
+    "place_id": "jiangyong",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "14cd0239-8027-4b68-b470-386d51a62636",
+    "place_id": "mount_huang",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "156326ba-871a-4968-8973-ba715c372bad",
+    "place_id": "hangzhou",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "17ea0483-b415-4ef3-b052-e414a522e90c",
+    "place_id": "jiangsu_zhenjiang",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "17f836c5-ddc6-4260-bde5-d2c213bd8ef6",
+    "place_id": "hangzhou",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "18de1e3c-7d71-4d6d-a45a-0a203fed1a2d",
+    "place_id": "xian",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "1900b181-9b4e-486a-9e52-078bb84cec83",
+    "place_id": "xian",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "1a06afb6-71ec-44da-8016-e459afbebb08",
+    "place_id": "hangzhou",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "1a47f34b-ad32-489a-a2c9-40623f2cbdf5",
+    "place_id": "hangzhou",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "1b080255-fc12-4630-90e4-ae08386aec60",
+    "place_id": "hangzhou",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "1b43835d-49a0-46e5-90ce-b1c1e4c3ebbd",
+    "place_id": "hangzhou",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "1c310d36-0940-4fe5-aece-61eebf980776",
+    "place_id": "mount_lu",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "1ca52aad-da48-460e-b939-c84b18f493ea",
+    "place_id": "sword_gate",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "1cf4f140-c0bc-4673-88e9-6a487d267b05",
+    "place_id": "wulumuqi",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "1cf8fa2d-ba6d-499c-816c-6e5e615c732c",
+    "place_id": "mount_tiantai_new",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "1dcbb1e4-00fd-4e61-ae80-27f261422b1c",
+    "place_id": "mount_tai_hang",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "1dd8bed8-22a0-42c6-b947-f03787a25dac",
+    "place_id": "nanjing",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "1e3a4f77-5739-49c1-a56b-a42bd2fd3004",
+    "place_id": "mount_lu",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "1ec971af-5065-41ca-a79d-50927ceef1e0",
+    "place_id": "yangzhou",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "1fa5d5f1-1ab6-41d8-b904-70a2c79a682b",
+    "place_id": "luoyang",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "1fb0b63f-7899-451f-8833-0101606799e5",
+    "place_id": "mount_qingcheng",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "1fdbe83d-e3fd-42e1-8fd7-d0a840206b16",
+    "place_id": "mount_wuyi",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "1ff515bd-f3e8-4d43-902c-b3a320f3948f",
+    "place_id": "hangzhou",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "1ff515bd-f3e8-4d43-902c-b3a320f3948f",
+    "place_id": "west_lake",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "21269ba0-44c9-48b3-9bd6-9a773363b9c7",
+    "place_id": "chongqing",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "223e7478-7e82-466a-af9b-4985f9367c97",
+    "place_id": "suzhou",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "224f1264-ea04-4682-92f5-ff7a87727c12",
+    "place_id": "hangzhou",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "2277ffce-93cd-4903-8af0-37f52222e613",
+    "place_id": "hangzhou",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "22f7297d-c373-4174-b066-208b7637c10e",
+    "place_id": "xian",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "233cc8c2-ff23-4ef4-9c62-c8074bb88de6",
+    "place_id": "hangzhou",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "2458b430-1e87-4ac3-90f6-12fe27b19465",
+    "place_id": "kashgar",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "257fc638-dd79-4549-88a9-f811f3c880b6",
+    "place_id": "chengdu",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "25f74017-1841-48f8-a5ba-669b9b818726",
+    "place_id": "yang_pass",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "2607677c-0ce7-461e-baaf-1a36cf6de52e",
+    "place_id": "hangzhou",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "268ceac8-51ae-44cb-9c77-c7020cbc8322",
+    "place_id": "yangzhou_pingshan",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "26dbf941-d5d6-4644-8b42-22d64c075e41",
+    "place_id": "kaifeng_new",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "27f03862-6141-4d43-b07d-f593774e2717",
+    "place_id": "qinghai_lake",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "29da878e-1f69-4b2f-8078-1eb4b277b138",
+    "place_id": "river_yangtze",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "2a4133b7-6027-43b5-9f50-b58e3475e3f4",
+    "place_id": "hangzhou",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "2b3905de-b2d9-465e-8bd9-445115a5e177",
+    "place_id": "xiangyang_new",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "2c72b9ef-306f-4cc4-9903-6a62e3a99c3c",
+    "place_id": "xian",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "2d763f19-5dcf-40b4-95e7-915b102587dc",
+    "place_id": "anhui_chizhou",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "2d94ac8d-cbb5-4fa7-91b2-7fca342bce07",
+    "place_id": "kaifeng_new",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "2f687e77-9c3a-4590-866b-d8e485448164",
+    "place_id": "river_yangtze",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "2fd0bb3b-0448-4187-a833-4fe48cf78464",
+    "place_id": "jiangsu_zhenjiang",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "300ca830-ba08-48de-87b1-6c89352966ea",
+    "place_id": "nanjing",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "306f1065-50c6-4a64-a4c5-e943563db516",
+    "place_id": "hangzhou",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "31792c86-ce9a-4343-9536-e46c14faa73a",
+    "place_id": "hangzhou",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "31acbe8b-7750-4ee2-8a2c-13a674437de8",
+    "place_id": "chongqing",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "3299201a-94fe-4832-9a29-0fb9f0479287",
+    "place_id": "hubei_huanggang",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "32ef9f94-8179-447b-8fc3-296c247ae191",
+    "place_id": "nanjing",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "3384790a-5133-4e40-98e6-1b463b215816",
+    "place_id": "mount_zhongnan",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "3409a745-38d4-46a7-9490-3d056bb55c31",
+    "place_id": "jingdezhen",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "34a1ecf2-031d-40d0-8c59-1d048d188f39",
+    "place_id": "beijing",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "34b8d21d-3a1f-4aa9-a709-b3cae2ddba39",
+    "place_id": "xian",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "359d3442-ac14-4fca-8121-8ef1d52fe35c",
+    "place_id": "xian",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "35b58506-cc8a-484b-99f1-befe7402e686",
+    "place_id": "yellow_crane_tower",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "35fc19e2-83b2-4da1-8611-b87aa8facae7",
+    "place_id": "jinan_new",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "37acd698-de2e-49e4-bf1a-9f06fea53292",
+    "place_id": "luoyang",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "39e35675-3147-4ced-a59a-2d9fed47dea3",
+    "place_id": "suzhou",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "3b8ccd1a-8fe0-4d2a-b3e9-eaf385d180cd",
+    "place_id": "jiayu_pass_new",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "3bfa187f-7120-46a7-876a-3cc944d55f76",
+    "place_id": "hangzhou",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "3c1d2d65-5ce3-4592-ba76-eb3187067bec",
+    "place_id": "luoyang",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "3cdde919-dd78-4f04-a9c6-e49653ebacc6",
+    "place_id": "dunhuang_c",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "3d316216-f4df-432d-92fc-7a9ab1848ea0",
+    "place_id": "nanjing",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "3f3a3425-361a-46e3-ba9b-e5cb25bf591d",
+    "place_id": "yueyang",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "43718abb-7b54-4ec2-829e-01dee2801304",
+    "place_id": "yueyang",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "43725efd-d2fc-49f8-a69a-8500c2002aed",
+    "place_id": "hangzhou",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "43e9edf2-92cd-4f65-9943-c7d56ac2b4c3",
+    "place_id": "beijing",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "458f390f-3f76-4add-9a31-0af33d06af1d",
+    "place_id": "xian",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "4634c673-f21d-4a0c-b11f-ebd69d7bf346",
+    "place_id": "dunhuang_c",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "475a09a7-b1f6-436c-86bb-edacd5825acb",
+    "place_id": "luoyang",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "4928a0c6-226f-4172-900d-1e38cf0a2532",
+    "place_id": "dunhuang_c",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "4a45720a-2aa2-4e9f-acf2-f88c312609b3",
+    "place_id": "nanjing",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "4aa12f85-5074-4bc5-85d3-aa482842f980",
+    "place_id": "yellow_crane_tower",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "4ab7ff82-348f-449a-8796-47af4c9e5a83",
+    "place_id": "tai_lake",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "4abd99cd-905c-4d07-839b-5b9299bbd67f",
+    "place_id": "luoyang_peony",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "4b1dcd60-9390-4a90-9589-565d461bcc53",
+    "place_id": "xian",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "4c0bbf23-5787-4943-94d7-577190951a62",
+    "place_id": "hangzhou",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "4d83896e-35b2-4bc1-8212-71f709e61d8e",
+    "place_id": "xian",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "4e366267-6353-49ff-b45d-6e2dcf751248",
+    "place_id": "gansu_liangzhou",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "502d3745-7c5e-455f-bf1e-c995687721dc",
+    "place_id": "yangzhou",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "513ee0b4-bcc2-4eb6-82ec-9981a563637d",
+    "place_id": "luoyang",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "545e5c6f-af36-4e17-bba4-1b9e4570719b",
+    "place_id": "xian",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "547f3baa-2ae4-4314-92be-38cbe627218b",
+    "place_id": "dunhuang_c",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "547f3baa-2ae4-4314-92be-38cbe627218b",
+    "place_id": "yumen_pass",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "54a6dd36-c5c9-41b9-bbb2-056e7d564d69",
+    "place_id": "yueyang_tower",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "54a79a13-aaa4-433c-ae0c-cec165f8e61a",
+    "place_id": "hangzhou",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "54f2c0c6-2c38-457e-b4b3-e5a62168c060",
+    "place_id": "neimenggu_huhehaote",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "551be726-ca4c-49cd-b78f-9a720a49ea9c",
+    "place_id": "dongting_lake",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "57682c44-e5e8-402a-8adc-58a7963ac0b8",
+    "place_id": "suzhou_old",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "581696d1-c64c-4d65-b969-17dc1ebb97ea",
+    "place_id": "hangzhou",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "581ddd0e-f003-4f7f-ab83-3767e9e19052",
+    "place_id": "mount_wu",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "58c84e3b-9348-487f-be19-244ac19aff6b",
+    "place_id": "mount_wu",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "590a46d0-4152-4503-8caf-c5ce5bdcadfe",
+    "place_id": "hangzhou",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "5a0872ff-597b-4356-82de-bdaa215bdc93",
+    "place_id": "hangzhou",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "5ae856d2-f3af-4ae3-b4d8-e0d6454b080b",
+    "place_id": "henan_xuchang",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "5bfc7439-a58a-4455-9bc1-54f00cc2e192",
+    "place_id": "hangzhou_xihu",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "5c60fbc8-56fd-46be-b21c-3e3237ae1aed",
+    "place_id": "xiangyang_new",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "60c58648-6c1b-4c70-97a5-7bfca0cf12a3",
+    "place_id": "shaoxing",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "615a841b-f0f2-4707-a9b5-6ca70021d0ca",
+    "place_id": "nanjing",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "61605794-eac3-4c56-83e1-65881e6d1253",
+    "place_id": "nanjing",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "6179daa7-92ef-43ab-b474-cba108b8e55a",
+    "place_id": "hangzhou",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "639d1954-3642-450f-a3b3-4d58c016c9fc",
+    "place_id": "hangzhou",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "639d1954-3642-450f-a3b3-4d58c016c9fc",
+    "place_id": "west_lake",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "642087fe-4358-4c65-94e0-aeac52000f4a",
+    "place_id": "jingzhou_new",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "65109bb8-d340-49eb-9c7d-e3b68a8b1938",
+    "place_id": "nanjing",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "6692d973-ff0a-41ed-9e1f-39cdcb8ccfb8",
+    "place_id": "suzhou",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "67ae26d6-503b-40bb-85c3-3ba6acc7b848",
+    "place_id": "xian",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "69bb90a7-70a7-495c-989b-1b68821dcb75",
+    "place_id": "mount_emei",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "6a3bc089-7d15-463a-8699-1b22e61d17db",
+    "place_id": "hangzhou",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "6a7eb2c8-1c6e-450b-a74c-0420959e1b64",
+    "place_id": "anhui_chuzhou",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "6c9c1130-ab79-4c81-8be1-6a3b2bd51e7e",
+    "place_id": "xian",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "6cfcac9f-fe11-4f71-aadf-a4f4a09fe636",
+    "place_id": "xian",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "6d291da9-bfff-4343-a62f-cb7e777a54aa",
+    "place_id": "ningbo_new",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "6d738830-cfe9-4c94-8715-36dc7d452d8c",
+    "place_id": "gansu_liangzhou",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "6d7d12d5-38df-4eb6-806f-3edfeaa5cec5",
+    "place_id": "hangzhou",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "6dbcfc2a-5702-4ae9-b565-2d3d7503316f",
+    "place_id": "nanjing",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "6e99ba60-57c2-40f3-a024-20faaaf14d7b",
+    "place_id": "hangzhou",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "6ec0177d-7b99-47e5-b07e-4802e1f910d3",
+    "place_id": "nanchang",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "6ec0177d-7b99-47e5-b07e-4802e1f910d3",
+    "place_id": "tengwang_tower",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "6f22e4a9-e909-4cc7-99e9-df36efd3445f",
+    "place_id": "jiangxi_jiujiang",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "702dc73e-a9c7-43b0-ad4d-a56075f755ca",
+    "place_id": "luoyang",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "70b44c64-8137-4d36-96f1-00a62fc45f58",
+    "place_id": "hangzhou",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "731d4c6f-3017-4b62-952f-e70920bd1658",
+    "place_id": "river_qiantang",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "7368bcf2-4ad0-4b46-b028-b3e45d5b04e1",
+    "place_id": "changsha",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "736c6ca0-a567-4ef3-a0e4-70178e650307",
+    "place_id": "hangzhou",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "767d37b7-fb6e-4330-a28f-87f57e092915",
+    "place_id": "changsha",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "7682ef82-baf5-47ea-a7e4-36bb3924cc62",
+    "place_id": "hangzhou",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "78034ce6-66ab-4298-8863-861f26ec0f4c",
+    "place_id": "mount_heng_north",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "7957bcd6-ffed-4c38-8960-c573b62d494e",
+    "place_id": "mount_shaoshi",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "7b0e20dd-50f6-442d-b213-b6507e7a6281",
+    "place_id": "hangzhou",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "7b0e20dd-50f6-442d-b213-b6507e7a6281",
+    "place_id": "west_lake",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "7c70206c-79b1-44d4-af91-0787434a4525",
+    "place_id": "mount_huang",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "7cbae205-7b70-41e6-b12b-521d6c1fbef4",
+    "place_id": "chongqing",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "7cbae205-7b70-41e6-b12b-521d6c1fbef4",
+    "place_id": "mount_wu",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "7cc8d320-c61d-4ae8-9d83-40ce95367d9b",
+    "place_id": "river_yangtze",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "7cd9a977-28bf-4975-ae6b-f845c6a16af4",
+    "place_id": "hangzhou",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "7d0886f9-3e12-49df-80e0-9de1f3165c94",
+    "place_id": "xian",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "7e10bfc9-7022-49fa-996c-1f5ab4168b16",
+    "place_id": "shenyang",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "7e2fa5d5-5b1f-4621-a2ea-956264028d6c",
+    "place_id": "hebei_handan",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "7e4c9420-d079-4f6f-a4c6-0351526ad8a8",
+    "place_id": "hangzhou",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "813f0d9b-fd0e-4567-92aa-8a26d5e30802",
+    "place_id": "beijing",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "81842b10-1b68-4270-9779-e93f41237ff3",
+    "place_id": "xian",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "81eb647b-5fb2-4f6b-8fac-ab3d963af7bb",
+    "place_id": "hangzhou",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "8232fb56-e1ba-40b2-bb0e-c46e8f892f69",
+    "place_id": "dunhuang_c",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "829bd627-c3f8-46c1-aa8e-c22714bdc75d",
+    "place_id": "xian",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "83bb9280-b7b7-451b-9c7f-9a87d85374b7",
+    "place_id": "mount_lu",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "844df94e-ba25-458b-8d47-72b2282379b4",
+    "place_id": "hangzhou",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "8682c950-6039-4ba4-b2b7-9328ff1bb998",
+    "place_id": "chengdu",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "86c87f32-74ef-4d55-8a81-2224c53a6619",
+    "place_id": "xian",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "879895ce-6861-497c-98e1-6560efd73f7d",
+    "place_id": "hangzhou",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "88735d8e-4d49-4622-963d-16ef56f58508",
+    "place_id": "chongqing",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "89f0f442-59b7-4333-bb42-f20213420d05",
+    "place_id": "hangzhou",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "8a32e4d4-e3e4-4de0-a711-006121be9a22",
+    "place_id": "nanjing",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "8d357c86-005b-4eba-94a2-40fbebdf6b86",
+    "place_id": "nanchang",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "8da11df1-480e-48c5-9191-3c62d9098e62",
+    "place_id": "dongting_lake",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "8da11df1-480e-48c5-9191-3c62d9098e62",
+    "place_id": "yueyang",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "8da11df1-480e-48c5-9191-3c62d9098e62",
+    "place_id": "yueyang_tower",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "8dd8415a-0a00-4c5d-a0c3-3569295f1284",
+    "place_id": "hangzhou",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "8ee6482c-6bdd-4a47-a0ea-1af84080ba3e",
+    "place_id": "luoyang_peony",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "910df3e5-0640-4621-ade6-30ea94a8e3d8",
+    "place_id": "henan_nanyang",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "9125ebd2-a1b6-48d9-82fc-e6da93a9ddbe",
+    "place_id": "luoyang_new",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "916c7fc2-383e-4b26-92bc-0477a42bcd9c",
+    "place_id": "hangzhou",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "926e600e-6584-46c8-ad9f-565dd96f5fcb",
+    "place_id": "hangzhou",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "92c7850d-9a0d-4edc-9e2e-92970a2b8a48",
+    "place_id": "xian",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "92f51a5f-42ea-46e8-9539-7f6a5d5bc0a6",
+    "place_id": "chongqing",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "930a437f-f674-4136-bbd7-8bf444e256e0",
+    "place_id": "hubei_huanggang",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "93666a72-da01-46b8-ad17-9d9583b119d5",
+    "place_id": "nanjing",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "9447962b-6429-460f-b8ff-97f62e0e0a6a",
+    "place_id": "xiangyang_new",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "94ac5736-9426-4e7d-be07-a6ef81164d8f",
+    "place_id": "hangzhou",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "9509ea0c-a92d-49f1-a137-f280833f814a",
+    "place_id": "chengdu",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "95919ecd-5e30-4220-8d28-ccdf89efde61",
+    "place_id": "yangzhou",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "959d526f-8197-483f-891b-7886fb742188",
+    "place_id": "mount_zhongnan",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "95e02dad-c05e-496a-b2f0-75701c957e90",
+    "place_id": "hangzhou",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "95f7b93b-5ca8-4f76-82d0-f97234c2383c",
+    "place_id": "river_han2",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "966463ca-2e32-42e6-b135-a557f32713ae",
+    "place_id": "jiayu_pass_new",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "97e9ffcb-6f1d-492a-95d7-964c10d7cda9",
+    "place_id": "xian",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "991688b2-4196-496a-b6c5-4cea8b1cb4d7",
+    "place_id": "river_han2",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "999376df-0387-4ae9-bf50-f037368d3275",
+    "place_id": "mount_hua",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "9a232050-3883-4904-9749-41cbadce7b85",
+    "place_id": "chengdu",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "9a622494-94a6-4646-8c9d-18d6000e5ead",
+    "place_id": "luoyang_new",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "9c0f4288-4911-42c4-afab-08c5f20ada6b",
+    "place_id": "nanjing",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "9f90f57d-420f-4642-89aa-e35a0f7a2f32",
+    "place_id": "tong_pass",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "9fa74fa2-a0c5-451a-9e89-c1bb6a7067e7",
+    "place_id": "yueyang",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "a001d04f-3a6d-4815-a79b-583b733cbdf4",
+    "place_id": "yellow_crane_tower",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "a004360e-50b8-4fcc-91e3-e65af2d4c355",
+    "place_id": "hangzhou",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "a21a681f-fa54-462e-8341-33dd00f76314",
+    "place_id": "mount_li",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "a21a681f-fa54-462e-8341-33dd00f76314",
+    "place_id": "xian",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "a39b6fa1-b39e-4951-8098-4675ce13b371",
+    "place_id": "shaoxing",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "a57bf7d1-48f2-4138-94df-cb3c26a48b0c",
+    "place_id": "hangzhou",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "a57bf7d1-48f2-4138-94df-cb3c26a48b0c",
+    "place_id": "west_lake",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "a623b207-c080-4259-b906-989f6b058921",
+    "place_id": "jiangsu_zhenjiang",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "a7c0c3bb-cc58-44b1-ae5d-0a44509a557f",
+    "place_id": "yellow_crane_tower",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "a9299e00-7fa3-4964-91fe-f84925994e61",
+    "place_id": "chengdu",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "aa5c02b7-5377-4917-aee1-d3ad8e6b5d56",
+    "place_id": "xian",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "ab88f767-c142-481e-8f69-0df08b25e8a4",
+    "place_id": "ningbo_new",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "abcef932-25c9-4d27-b64c-e0625de5fd13",
+    "place_id": "hubei_qingcao",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "ae4f154c-f07c-46c3-9def-a5e6b938bdd5",
+    "place_id": "hangzhou",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "af7a6325-dd04-4e44-b171-b11828802f6d",
+    "place_id": "hangzhou",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "afe6090c-f279-437b-876e-84c675a1da59",
+    "place_id": "hangzhou",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "b087d11b-0c75-4e32-850f-458532f54c93",
+    "place_id": "xian",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "b0b9b0b7-ce4c-467b-8b3a-6a9b68d77315",
+    "place_id": "hangzhou",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "b1ddb0e7-979e-4209-8447-bc97e2ce4db1",
+    "place_id": "mount_huang",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "b4134c29-78a2-4d55-9c05-27a295758dc7",
+    "place_id": "nanjing",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "b46c6f74-9495-4dce-9ce9-c11f114913f5",
+    "place_id": "hangzhou",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "b4844f99-8223-4902-8b53-143dc510ccaf",
+    "place_id": "mount_emei",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "b612954a-4830-4822-8cf0-9b776c010065",
+    "place_id": "ningxia_yinchuan",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "b647501d-6d50-4edb-8266-9752ceb5106b",
+    "place_id": "hangzhou",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "b728a3ba-7771-4237-ab0f-34f81e5c68ec",
+    "place_id": "poyang_lake",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "b742ee32-2838-4c13-ace7-b0b8b484764a",
+    "place_id": "dunhuang_c",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "b7b4384d-d534-4cb8-8038-ef3f22c155b4",
+    "place_id": "hubei_huanggang",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "b7c6b6ef-3b61-40b1-b21f-4119a36ec753",
+    "place_id": "hangzhou",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "b845a15a-3ea1-4ecf-8d33-e670d86acdad",
+    "place_id": "dongting_lake",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "b845a15a-3ea1-4ecf-8d33-e670d86acdad",
+    "place_id": "yueyang",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "b845a15a-3ea1-4ecf-8d33-e670d86acdad",
+    "place_id": "yueyang_tower",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "b965ebf0-38b8-4ec7-a02c-502f805d1d87",
+    "place_id": "mount_tiantai_new",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "b96747ab-412e-4b3c-a628-46efe4a5d542",
+    "place_id": "suzhou_canglang",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "bbda97f4-850c-4a27-9540-c43f4c049746",
+    "place_id": "hangzhou",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "bc1982ba-527a-47f0-80ce-62dd80bc7871",
+    "place_id": "suzhou_old",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "bd4a2191-678e-46d4-b280-377c876c1f9e",
+    "place_id": "hangzhou",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "bd646f86-0c9d-43a0-95cf-3ef23da4cab5",
+    "place_id": "henan_nanyang",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "bde7c620-fc6e-4e9f-a3ba-8901d7e00231",
+    "place_id": "shaoxing",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "c0d93282-8a8b-4a98-ab4e-f9caaffef413",
+    "place_id": "hangzhou",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "c0dcba2d-87ba-42d9-92fc-3faad74724ad",
+    "place_id": "mount_tai",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "c2aba0ea-00f9-4816-8134-9dbe25351944",
+    "place_id": "luoyang_peony",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "c2f3fbd9-1b7d-4c98-9f9a-b46b7b3445fa",
+    "place_id": "hangzhou",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "c4c0d1f6-003d-40b5-9b89-7384ba53f9de",
+    "place_id": "luoyang_new",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "c516062a-1e03-4bef-b424-d3e10895c706",
+    "place_id": "hangzhou",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "c59befd8-f965-41b0-8a8a-64821aec6345",
+    "place_id": "hangzhou",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "c63e3c5e-fe35-451d-8a8d-b8c896e2ce25",
+    "place_id": "hangzhou",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "c88f3c9b-7598-4387-b9bf-808dcbc4a3e7",
+    "place_id": "tong_pass",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "c92bcbb0-50aa-4ace-b813-e53899fd15b4",
+    "place_id": "lingyin_temple",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "ca8eb1bf-1359-4be4-b1cd-3f140951ac67",
+    "place_id": "chengdu",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "cac03391-9196-4c99-bd7b-ca2781124a07",
+    "place_id": "jiangsu_xuzhou",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "cb3d0620-583a-470c-88e5-81b52f35c066",
+    "place_id": "hangzhou",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "cb5126c8-7954-4f74-9b00-23a65caa6112",
+    "place_id": "hangzhou",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "cbd02a95-6a93-49c4-975a-769c377115e5",
+    "place_id": "river_qiantang",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "ce3116fc-d1d3-4527-aa15-67e020178524",
+    "place_id": "xian",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "cf28ed79-4f46-4981-8685-ef3abcfaed35",
+    "place_id": "changsha",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "d0b39985-acc9-4d4f-ae86-02ec4de7eb8b",
+    "place_id": "mount_jiuhua",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "d10c9650-44a9-4e5b-aa34-54aba4c3e469",
+    "place_id": "suzhou",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "d20bb4b2-889d-4512-b552-e6ae7a8bf890",
+    "place_id": "hangzhou",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "d309e1cd-4a01-45ec-ac6e-fb9cb28ce0c6",
+    "place_id": "hangzhou",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "d53a24ba-548e-4d2d-9ddf-bab75ca066e9",
+    "place_id": "chengdu",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "d768d848-61d2-477f-89b6-956d52b515f6",
+    "place_id": "chengdu",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "d7984c15-7b38-462e-80b6-db4646cafa1c",
+    "place_id": "hangzhou",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "d7b67123-565e-4359-8a2b-99f8ba6c861d",
+    "place_id": "guanque_tower",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "d7c11a74-11dd-434c-aba3-f792fb97bb9b",
+    "place_id": "mount_lu",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "d99b50ca-c121-4153-bb5b-01f13d9046e8",
+    "place_id": "shaoxing",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "da1958fa-81a3-4f54-af5c-800513c78cc8",
+    "place_id": "yanmen_pass_new",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "da848eb5-79bf-47ef-b200-e19b415665df",
+    "place_id": "yueyang",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "daa33c5d-070c-4da7-bdfa-0eb91f415568",
+    "place_id": "nanjing",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "dac6cc6a-369f-4bde-bd8f-bd51be75e505",
+    "place_id": "hebei_handan",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "db47b4b8-a82d-4274-84a2-e0d0fb41c7e2",
+    "place_id": "nanchang",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "db61f9c2-aef9-45fa-9817-81fc741f218a",
+    "place_id": "suzhou",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "dbe403ca-6823-4497-a42d-b53db17f1e73",
+    "place_id": "hangzhou",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "dcb68ab6-688b-4c45-b959-f361831c2966",
+    "place_id": "nanjing",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "dd04e047-1164-472d-8195-8cb6ca9016a0",
+    "place_id": "hubei_huanggang",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "dda36222-25f2-4a39-ae37-cd77ba44bd41",
+    "place_id": "hangzhou",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "dfa3ee68-5a1b-44d1-a41f-666452f8fdc7",
+    "place_id": "harbin",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "e181b44a-844e-4d81-a8e1-db947e67b4a8",
+    "place_id": "chongqing",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "e18d06b5-0701-4100-a8e6-4c29b5be5715",
+    "place_id": "garden_zhengyuan",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "e31fc625-7186-4483-a880-a32e757c61ba",
+    "place_id": "hanshan_temple",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "e31fc625-7186-4483-a880-a32e757c61ba",
+    "place_id": "suzhou",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "e381fc99-644e-453b-9fe6-8c0ad5131452",
+    "place_id": "yangzhou",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "e495f9c0-9b2f-4e09-ad5f-9f21f3f8dcae",
+    "place_id": "hangzhou",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "e5605954-af98-44e3-8454-23b27f248094",
+    "place_id": "suzhou_canglang",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "e5904154-008e-44f0-9381-f76d28baaffb",
+    "place_id": "yellow_crane_tower",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "e6abe555-4ac0-40b9-9a77-9783f77c45a3",
+    "place_id": "xian",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "e6d94083-42c8-46b2-b3d9-90df7ad16235",
+    "place_id": "hangzhou",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "e72d9da7-8bfa-4d40-aa39-666b776b8f1e",
+    "place_id": "nanjing",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "e72d9da7-8bfa-4d40-aa39-666b776b8f1e",
+    "place_id": "yuejiang_tower",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "e812eded-1c8a-4d13-9426-30f1bfdbd06c",
+    "place_id": "chengdu",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "e86201a3-aa76-41e0-9246-805299527824",
+    "place_id": "luoyang_peony",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "e9011e39-9934-42d9-846e-6574cd507207",
+    "place_id": "hangzhou",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "e912ae48-2201-4b74-b86e-f18d753abd99",
+    "place_id": "hangzhou",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "e94cfdfc-93ac-4505-8890-be6c293725e5",
+    "place_id": "mount_jiuhua",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "e98596e5-bcb8-439d-9b21-67b6037af38f",
+    "place_id": "hangzhou",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "ebd7b92b-5c12-4557-9b8c-e372f36682ef",
+    "place_id": "yellow_crane_tower",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "ecd1c945-6a58-458d-bac2-54ebd8d3981b",
+    "place_id": "hangzhou",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "ece5d9be-e772-4ac9-9a68-33d0a5f64577",
+    "place_id": "chengdu",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "ee2c9ef1-6ca8-48a4-b267-9e5444d5f2d0",
+    "place_id": "shaoxing",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "f0198a76-9f3e-49e9-aa2b-ba675967dd2f",
+    "place_id": "mount_qingcheng",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "f04fa58d-34a7-4e58-b699-6d8ef810d7ef",
+    "place_id": "hangzhou",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "f0b51d0f-d385-4b2c-bb58-306f6eb8dc3c",
+    "place_id": "river_yangtze",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "f1dbbb0f-3faa-48c1-9271-a74d1ae9a651",
+    "place_id": "chengdu",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "f2235b52-0755-4327-8743-333f9f6cf3ff",
+    "place_id": "xinjiang_turpan",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "f3367c84-2ba3-4219-94df-a0f98159a725",
+    "place_id": "shaoxing",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "f42ac6f8-45a9-4a80-b893-97b5d6b7af77",
+    "place_id": "xian",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "f48eb700-5908-4c76-8284-6db7b4518be9",
+    "place_id": "hangzhou",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "f56f9f69-f10c-42c4-8709-f0995b3f1ca1",
+    "place_id": "guangxi_guilin",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "f591ea5e-93d4-4e39-aa40-d9288af8cc98",
+    "place_id": "dunhuang_c",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "f5db71e3-b78e-4b9c-91ac-82159a43bd47",
+    "place_id": "chengdu",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "f80db3de-0d69-46a6-b876-6c37ae22526e",
+    "place_id": "xianyang",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "f8414ff4-8b47-4d5c-a441-9856c85140f0",
+    "place_id": "yellow_crane_tower",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "f8ac5c71-aed1-4b02-8ff6-675560140b34",
+    "place_id": "chengdu",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "f95b425a-759e-4b12-8b22-19ebf16865ee",
+    "place_id": "hangzhou",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "fb7b0618-1ecd-41a7-8bd3-01ace77abfe0",
+    "place_id": "anhui_chizhou",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "fcc63484-47d9-4db3-b5c8-48e717ed0a79",
+    "place_id": "hangzhou",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "fccaf17e-8bf0-413f-aa78-e296ab81b559",
+    "place_id": "hangzhou",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "fcce09eb-7453-4a76-9143-3fe77b610b23",
+    "place_id": "chengdu",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "fcec105e-3dd5-4e0e-9abd-138316c893c8",
+    "place_id": "yangzhou",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "fd096006-8c9f-4577-b097-cbe1f451251a",
+    "place_id": "dunhuang_c",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "fdf12b74-ba09-4f17-be85-5a31f10b115e",
+    "place_id": "ningbo_new",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "fe5c3439-7733-442b-902b-4673a6cec928",
+    "place_id": "yangzhou",
+    "relation_type": "description"
+  },
+  {
+    "poem_id": "fef22bb6-c7b7-498b-9a51-717282666b46",
+    "place_id": "yangzhou",
+    "relation_type": "description"
+  }
+]

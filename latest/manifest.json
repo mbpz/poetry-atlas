@@ -1,0 +1,61 @@
+{
+  "format": "poetry-atlas-supabase-backup",
+  "version": 1,
+  "created_at": "2026-07-18T23:59:26.509Z",
+  "source": {
+    "project_ref": "ivjopdktmxbvubeqqujd",
+    "git_sha": "0cbfa64132aac93b32a526f89983966eb432bdc6"
+  },
+  "schema": {
+    "migrations": [
+      {
+        "filename": "20260718000000_canonical_schema.sql",
+        "sha256": "309d7579fa59baa3d16a47344fb376420de083ae05bececc9dbd22472e4d1493"
+      }
+    ]
+  },
+  "snapshot_sha256": "d15700e525e510155d899474d0ea19777d0046200a339fcd500e244a006172ae",
+  "tables": {
+    "dynasties": {
+      "file": "tables/dynasties.json",
+      "rows": 14,
+      "sha256": "56c54f7e3e094aad24999ef6b71d22d3c67f78c8d49523278594f8ed15d155bd",
+      "primary_key": [
+        "id"
+      ]
+    },
+    "places": {
+      "file": "tables/places.json",
+      "rows": 89,
+      "sha256": "4665d26595e8edddf84ccf72e79dc849f745890ad501c697f53750b7d82cd1af",
+      "primary_key": [
+        "id"
+      ]
+    },
+    "poems": {
+      "file": "tables/poems.json",
+      "rows": 323,
+      "sha256": "ce19a169c43610e5238f959355136c00b7b64f12f2f51ba54590a826e066cacb",
+      "primary_key": [
+        "id"
+      ]
+    },
+    "poem_places": {
+      "file": "tables/poem_places.json",
+      "rows": 340,
+      "sha256": "d7f8074a44565920e57c0b013325c932395695eaa05b742d2071ba74335983dc",
+      "primary_key": [
+        "poem_id",
+        "place_id"
+      ]
+    },
+    "authors": {
+      "file": "tables/authors.json",
+      "rows": 27,
+      "sha256": "a39991ce70c00f7dda602cef4d22a2b8d20302302b6d2e89bb6a168ad9c7c830",
+      "primary_key": [
+        "id"
+      ]
+    }
+  }
+}
